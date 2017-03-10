@@ -121,7 +121,7 @@ Git工具
 yourname.github.io
 
 github上已经建好了项目">
-<meta property="og:updated_time" content="2017-03-10T10:11:15.326Z">
+<meta property="og:updated_time" content="2017-03-10T12:56:58.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gitbub-hexo搭建">
 <meta name="twitter:description" content="看着别人高大上的博客布局，你是不是喜欢，是不是也想拥有自己的一个那样的博客。如果是，那么一起来开启搭建自己的博客之旅吧
@@ -444,6 +444,7 @@ github上已经建好了项目">
 <p>回到_config.yml文件的Deployment部分<br>初始化时：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type:</div></pre></td></tr></table></figure></p>
 <p>要修改成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:  </div><div class="line">  type: git</div><div class="line">  repository: http://github.com/yourname/yourname.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
 <p>修改后保存，执行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g</div><div class="line">$ hexo d</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">如果出现以下异常</div><div class="line">ERROR Deployer not found: git</div><div class="line">尝试输入以下命令，然后重新执行刚刚的两条命令</div><div class="line">$ npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
 <p>之后来到你的github库：yourname.github.io。刷新，正常你会看到，多了许多文件，如下图</p>
 <p>现在可以远程访问了，浏览器输入<a href="https://yourname.github.io/，如：https://yy.github.io/" target="_blank" rel="external">https://yourname.github.io/，如：https://yy.github.io/</a></p>
 <p>##配置博客<br>基本的github-pages已经搭起来了。如果想精细化自己的博客，如博客主题，加入第三方服务：评论、打赏、访问量计数等</p>

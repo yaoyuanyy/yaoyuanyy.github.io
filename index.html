@@ -379,64 +379,15 @@
       
         
           
-            <p>看着别人高大上的博客布局，你是不是喜欢，是不是也想拥有自己的一个那样的博客。如果是，那么一起来开启搭建自己的博客之旅吧</p>
-<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>环境：win7</p>
-<p>你需要先安装以下软件：</p>
-<ul>
-<li>Node.js环境</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ node -v</div><div class="line">v6.9.1</div></pre></td></tr></table></figure>
-<ul>
-<li>Git工具</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git --version</div><div class="line">git version 2.8.1.windows.1</div></pre></td></tr></table></figure>
-<ul>
-<li>yourname.github.io</li>
-</ul>
-<p>github上已经建好了项目：yourname.github.io，并能在浏览器中访问如：<a href="https://yourname.github.io/，如yy.github.io" target="_blank" rel="external">https://yourname.github.io/，如yy.github.io</a></p>
-<h2 id="Hexo安装"><a href="#Hexo安装" class="headerlink" title="Hexo安装"></a>Hexo安装</h2><p>到桌面鼠标右键，选择git bash,打开命令行窗口<br>在命令行中输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-cli -g</div></pre></td></tr></table></figure></p>
-<p>看到这些信息，说明安装成功了，再确认一下。 在命令行中输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo -v</div></pre></td></tr></table></figure></p>
-<p>选择一个路径存放hexo的文件，如我的：E:\tomcat_test\blog，最好blog文件夹是新建的<br>到这个目录下，右键打开Git Bash Here，如下图：</p>
-<p>然后依次输入以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo init // 初始化hexo,即把hexo的所有的配置文件下载到本地目录（放在当前文件下）</div></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install // npm将会自动安装你需要的组件</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo g // g:generatee 生成js css html等静态文件ra te</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo s // s:server 本地运行启动，启动后就可以本地访问了</div></pre></td></tr></table></figure>
-<p>hexo g命令运行后，目录下的文件内容类似如下：</p>
-<p>hexo s命令运行后，这时候在浏览器输入<a href="http://localhost:4000/" target="_blank" rel="external">http://localhost:4000/</a> 就可以看到hexo已经成功生成了博客， 这只是我们本地可以访问。要想远程访问，就需要hexo配置github了</p>
-<h2 id="配置Hexo到Github"><a href="#配置Hexo到Github" class="headerlink" title="配置Hexo到Github"></a>配置Hexo到Github</h2><p>可以看到，在E:\tomcat_test\blog有一个_config.yml的文件，这个文件配置着网站的基本信息，分为几大部分：site，Directory，Category &amp; Tag，Extensions，Deployment等。每部分的作用稍后细说 </p>
-<p>先说一下Deployment这个部分，这里用于配置远程的git库地址的。git库上文说了，这里再说一下<br>登录GitHub账号，然后新建一个Repository，接着在命名的时候需要注意，GitHubPage的名字必须是：用户名.github.io。如我的github用户名是yaoyuanyy，这个Repository的名字必须是yaoyuanyy.github.io，这样这个库才能作为GitHubPage的库。</p>
-<p>回到_config.yml文件的Deployment部分<br>初始化时：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type:</div></pre></td></tr></table></figure></p>
-<p>要修改成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:  </div><div class="line">  type: git</div><div class="line">  repository: http://github.com/yourname/yourname.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
-<p>修改后保存，执行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g</div><div class="line">$ hexo d</div></pre></td></tr></table></figure></p>
-<p>之后来到你的github库：yourname.github.io。刷新，正常你会看到，多了许多文件，如下图</p>
-<p>现在可以远程访问了，浏览器输入<a href="https://yourname.github.io/，如：https://yy.github.io/" target="_blank" rel="external">https://yourname.github.io/，如：https://yy.github.io/</a></p>
-<p>##配置博客<br>基本的github-pages已经搭起来了。如果想精细化自己的博客，如博客主题，加入第三方服务：评论、打赏、访问量计数等</p>
-<h4 id="变更博客主题为：NexT"><a href="#变更博客主题为：NexT" class="headerlink" title="变更博客主题为：NexT"></a>变更博客主题为：NexT</h4><p>Hexo默认的theme: landscape，现在很多人都喜欢next主题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd /e/tomcat_test/blog</div><div class="line">$ git clone https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure></p>
-<p>这时修改E:\tomcat_test\blog_config.yml文件的Extensions部分,修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Extensions</div><div class="line">## Plugins: https://hexo.io/plugins/</div><div class="line">## Themes: https://hexo.io/themes/</div><div class="line">## theme: landscape</div><div class="line">theme: next</div></pre></td></tr></table></figure></p>
-<p>之后依次执行hexo clean，hexo g， hexo d。刷新github库，刷新<a href="https://yy.github.io/，可以看到新的主题效果" target="_blank" rel="external">https://yy.github.io/，可以看到新的主题效果</a></p>
-<h4 id="变更博客site信息主题为：NexT"><a href="#变更博客site信息主题为：NexT" class="headerlink" title="变更博客site信息主题为：NexT"></a>变更博客site信息主题为：NexT</h4><p>此外：E:\tomcat_test\blog_config.yml文件的Site部分用于设置博客的作者 邮箱 语言等，修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># Site</div><div class="line">title: **-blog</div><div class="line">subtitle: </div><div class="line">description: 个人技术网站分享</div><div class="line">author: **</div><div class="line">email: **@gmail.com</div><div class="line">language: zh-Hans // 中文</div><div class="line">timezone:</div></pre></td></tr></table></figure></p>
-<h4 id="博客增添评论功能"><a href="#博客增添评论功能" class="headerlink" title="博客增添评论功能"></a>博客增添评论功能</h4><p>再有：添加多说评论服务的时候，需要修改URL和Extensions部分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># URL</div><div class="line">## If your site is put in a subdirectory, set url as &apos;http://yoursite.com/child&apos; and root as &apos;/child/&apos;</div><div class="line">url: https://**.github.io，如 https://yy.github.io</div></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Extensions</div><div class="line">duoshuo_shortname: **</div></pre></td></tr></table></figure>
-<p>文章后面会详细介绍添加多说评论服务</p>
-<h4 id="变更博客主题的Scheme"><a href="#变更博客主题的Scheme" class="headerlink" title="变更博客主题的Scheme"></a>变更博客主题的Scheme</h4><p>如果要修改博客的菜单栏位置、显示items、字体大小等，这些设置都在具体的主题theme的配置文件中，如我的主题theme是next，那么这些设置需要在E:\tomcat_test\blog\themes\next_config.yml中(注意与上面所说的_config.yml的位置区别)。</p>
-<p>next主题有三个，默认是Muse<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Schemes</div><div class="line">scheme: Muse</div><div class="line">#scheme: Mist，</div><div class="line">#scheme: Pisces</div><div class="line">我喜欢Mist，所以以这个为例</div></pre></td></tr></table></figure></p>
-<p>打开E:\tomcat_test\blog\themes\next_config.yml，找到Scheme Settings，修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># ---------------------------------------------------------------</div><div class="line"># Scheme Settings</div><div class="line"># ---------------------------------------------------------------</div><div class="line"></div><div class="line"># Schemes</div><div class="line"># scheme: Muse</div><div class="line">scheme: Mist</div><div class="line">#scheme: Pisces</div></pre></td></tr></table></figure></p>
-<p>之后再执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo clean</div><div class="line">$ hexo g</div><div class="line">$ hexo d</div></pre></td></tr></table></figure></p>
-<p>刷新github库，刷新<a href="https://yy.github.io/，可以看到新的效果" target="_blank" rel="external">https://yy.github.io/，可以看到新的效果</a></p>
-<h4 id="变更博客分类、标签、关于"><a href="#变更博客分类、标签、关于" class="headerlink" title="变更博客分类、标签、关于"></a>变更博客分类、标签、关于</h4><p>默认hexo支持首页和归档，分类、标签、关于需要我们自己添加.<br>打开E:\tomcat_test\blog\themes\next_config.yml，找到Menu Settings，修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># ---------------------------------------------------------------</div><div class="line"># Menu Settings</div><div class="line"># ---------------------------------------------------------------</div><div class="line"></div><div class="line"># When running the site in a subdirectory (e.g. domain.tld/blog), remove the leading slash (/archives -&gt; archives)</div><div class="line">menu:</div><div class="line">  home: /</div><div class="line">  categories: /categories</div><div class="line">  about: /about</div><div class="line">  archives: /archives</div><div class="line">  tags: /tags</div><div class="line">  #sitemap: /sitemap.xml</div><div class="line">  #commonweal: /404.html</div><div class="line">  </div><div class="line">  </div><div class="line"># Enable/Disable menu icons.</div><div class="line"># Icon Mapping:</div><div class="line">menu_icons:</div><div class="line">  enable: true</div><div class="line">  #KeyMapsToMenuItemKey: NameOfTheIconFromFontAwesome</div><div class="line">  home: home</div><div class="line">  about: user</div><div class="line">  categories: th</div><div class="line">  schedule: calendar</div><div class="line">  tags: tags</div><div class="line">  archives: archive</div><div class="line">  sitemap: sitemap</div><div class="line">  commonweal: heartbeat</div></pre></td></tr></table></figure></p>
-<h6 id="新建标签页面"><a href="#新建标签页面" class="headerlink" title="新建标签页面"></a>新建标签页面</h6><p>运行以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page &quot;tags&quot;</div></pre></td></tr></table></figure></p>
-<p>同时，在/source目录下会生成一个tags文件夹，里面包含一个index.md文件。<br>修改/source/tags目录下的index.md文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">title: tags</div><div class="line">date: 2015-09-29 14:37:02</div><div class="line">type: &quot;tags&quot;</div></pre></td></tr></table></figure></p>
-<p>注意：如果有启用多说 或者 Disqus 评论，默认页面也会带有评论。需要关闭的话，请添加字段 comments 并将值设置为 false，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">title: tags</div><div class="line">date: 2015-09-29 14:37:02</div><div class="line">type: &quot;tags&quot;</div><div class="line">comments: false</div></pre></td></tr></table></figure>
-<h6 id="新建标签页面-1"><a href="#新建标签页面-1" class="headerlink" title="新建标签页面"></a>新建标签页面</h6><p>运行以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page categories</div></pre></td></tr></table></figure></p>
-<p>同时，在/source目录下会生成一个categories文件夹，里面包含一个index.md文件。修改/source/categories目录下的index.md文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">title: categories</div><div class="line">date: 2015-09-29 14:47:21</div><div class="line">type: &quot;categories&quot;</div></pre></td></tr></table></figure></p>
-<h6 id="新建关于页面"><a href="#新建关于页面" class="headerlink" title="新建关于页面"></a>新建关于页面</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page about</div></pre></td></tr></table></figure>
-<p>同时，在/source目录下会生成一个about文件夹，里面包含一个index.md文件。修改/source/about目录下的index.md文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">title: about</div><div class="line">date: 2017-03-09 20:37:11</div><div class="line">type: &quot;about&quot;</div></pre></td></tr></table></figure></p>
-<h6 id="侧边栏头像设置"><a href="#侧边栏头像设置" class="headerlink" title="侧边栏头像设置"></a>侧边栏头像设置</h6><p>编辑站点配置文件(E:\tomcat_test\blog_config.yml)，增加avatar字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 头像</div><div class="line">avatar: /images/avatar.png</div></pre></td></tr></table></figure></p>
-<p>头像图片须放置在主题的/source/images/目录下(绝对路径：E:\tomcat_test\blog\themes\next\source\images)</p>
-<p>参考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">简要搭建：http://www.jianshu.com/p/956c44c87fb1</div><div class="line">详细搭建：https://xuanwo.org/2015/03/26/hexo-intor/</div><div class="line">hexo官方文档：</div><div class="line">更高级的配置：</div><div class="line">http://www.lzblog.cn/2016/04/07/Hexo%E7%AB%99%E7%82%B9%E3%80%81NexT%E4%B8%BB%E9%A2%98%E4%BF%AE%E6%94%B9%E5%85%A8%E8%AE%B0%E5%BD%95/</div><div class="line"></div><div class="line">http://zhiho.github.io/2015/09/29/hexo-next/</div><div class="line"></div><div class="line">https://github.com/iissnan/hexo-theme-next/wiki</div><div class="line"></div><div class="line">http://www.selfrebuild.net/2015/06/24/github-hexo-themes-next-config/</div></pre></td></tr></table></figure></p>
-
-          
+          看着别人高大上的博客布局，你是不是喜欢，是不是也想拥有自己的一个那样的博客。如果是，那么一起来开启搭
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/10/gitbub-hexo搭建/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -562,17 +513,15 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
+          Welcome to Hexo! This is your very first post. Che
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/09/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -720,9 +669,16 @@
       
         
           
-            <p>有了自己的博客站点很高兴,希望自己不断学习，不断努力，不断进步，生活美好，亲人身体健康，家庭幸福</p>
+          有了自己的博客站点很高兴,希望自己不断学习，不断努力，不断进步，生活美好，亲人身体健康，家庭幸福
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/09/my-first-page/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
