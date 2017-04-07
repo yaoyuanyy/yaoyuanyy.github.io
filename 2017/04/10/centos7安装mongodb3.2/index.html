@@ -1,0 +1,767 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,github," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="centos7安装mongodb3.2通过yum安装mongodbyum添加MongoDB存储库CentOS的默认存储库中不存在mongodb-org包。但是，MongoDB维护一个专用的存储库，现在将其添加到服务器。使用vi编辑器为yum创建.repo文件，yum是CentOS的软件包管理实用程序：12345678910[root@localhost etc]# vi /etc/yum.repo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos7安装mongodb3.2">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2017/04/10/centos7安装mongodb3.2/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="centos7安装mongodb3.2通过yum安装mongodbyum添加MongoDB存储库CentOS的默认存储库中不存在mongodb-org包。但是，MongoDB维护一个专用的存储库，现在将其添加到服务器。使用vi编辑器为yum创建.repo文件，yum是CentOS的软件包管理实用程序：12345678910[root@localhost etc]# vi /etc/yum.repo">
+<meta property="og:updated_time" content="2017-04-07T12:09:21.646Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="centos7安装mongodb3.2">
+<meta name="twitter:description" content="centos7安装mongodb3.2通过yum安装mongodbyum添加MongoDB存储库CentOS的默认存储库中不存在mongodb-org包。但是，MongoDB维护一个专用的存储库，现在将其添加到服务器。使用vi编辑器为yum创建.repo文件，yum是CentOS的软件包管理实用程序：12345678910[root@localhost etc]# vi /etc/yum.repo">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2017/04/10/centos7安装mongodb3.2/"/>
+
+
+
+
+
+  <title> centos7安装mongodb3.2 | skyler-blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2017/04/10/centos7安装mongodb3.2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                centos7安装mongodb3.2
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-10T00:00:00+08:00">
+                2017-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/10/centos7安装mongodb3.2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/10/centos7安装mongodb3.2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="centos7安装mongodb3-2"><a href="#centos7安装mongodb3-2" class="headerlink" title="centos7安装mongodb3.2"></a>centos7安装mongodb3.2</h2><h4 id="通过yum安装mongodb"><a href="#通过yum安装mongodb" class="headerlink" title="通过yum安装mongodb"></a>通过yum安装mongodb</h4><h6 id="yum添加MongoDB存储库"><a href="#yum添加MongoDB存储库" class="headerlink" title="yum添加MongoDB存储库"></a>yum添加MongoDB存储库</h6><p>CentOS的默认存储库中不存在mongodb-org包。但是，MongoDB维护一个专用的存储库，现在将其添加到服务器。使用vi编辑器为yum创建.repo文件，yum是CentOS的软件包管理实用程序：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# vi /etc/yum.repos.d/mongodb-org.repo</div><div class="line"></div><div class="line">把以下内容加入mongodb-org.repo文件中</div><div class="line"></div><div class="line">[mongodb-org-3.2]</div><div class="line">name=MongoDB Repository</div><div class="line">baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.2/x86_64/</div><div class="line">gpgcheck=1</div><div class="line">enabled=1</div><div class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc</div></pre></td></tr></table></figure></p>
+<p>然后保存关闭文件</p>
+<p>在继续之前，首先验证MongoDB存储库是否存在于yum实用程序中。 repolist命令显示已启用的存储库的列表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# yum repolist</div><div class="line"></div><div class="line">输出结果：</div><div class="line">Output</div><div class="line">. . .</div><div class="line">repo id                          repo name</div><div class="line">base/7/x86_64                    CentOS-7 - Base</div><div class="line">extras/7/x86_64                  CentOS-7 - Extras</div><div class="line">mongodb-org-3.2/7/x86_64         MongoDB Repository</div><div class="line">updates/7/x86_64                 CentOS-7 - Updates</div><div class="line">. . .</div></pre></td></tr></table></figure></p>
+<p>可以看见mongodb-org-3.2/7/x86_64，证明mongodb已经在yum中了</p>
+<h6 id="yum安装MongoDB"><a href="#yum安装MongoDB" class="headerlink" title="yum安装MongoDB"></a>yum安装MongoDB</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# yum install mongodb-org</div></pre></td></tr></table></figure>
+<p>在每次提示时，键入Y，然后按ENTER键。安装后，查看mongodb 版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# mongod -version</div><div class="line"></div><div class="line">输出结果：</div><div class="line">db version v3.2.12</div></pre></td></tr></table></figure></p>
+<p>安装后使用systemctl实用工具启动MongoDB服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# systemctl reload mongod</div></pre></td></tr></table></figure></p>
+<p>在执行start命令后，systemctl实用程序不提供结果，但是我们可以通过使用tail命令查看mongod.log文件的结尾，以此来检查是否启动服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tail /var/log/mongodb/mongod.log</div><div class="line">Output</div><div class="line">. . .</div><div class="line">[initandlisten] waiting for connections on port 27017</div></pre></td></tr></table></figure></p>
+<p>证明mongod服务已启动，客户端就可以链接mongod服务了</p>
+<h6 id="客户端链接mongod服务"><a href="#客户端链接mongod服务" class="headerlink" title="客户端链接mongod服务"></a>客户端链接mongod服务</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# mongo</div></pre></td></tr></table></figure>
+<p>注意：启动MongoDB Shell时，用户可能将看到如下警告：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">** WARNING: soft rlimits too low. rlimits set to 4096 processes, 64000 files. Number of processes should be at least 32000 : 0.5 times number of files.</div></pre></td></tr></table></figure></p>
+<p>MongoDB是一个进程级应用程序，其可以通过新建其他进程来帮其分担其工作量。为了使MongoDB保持其最高效的状态，会有一个警告，其启动的进程数量应该是在任何给定时间可以打开文件数量的一半。要解决此警告，编辑20-nproc.conf文件更改mongod的过程soft rlimit值：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# vi /etc/security/limits.d/20-nproc.conf</div></pre></td></tr></table></figure></p>
+<p>将以下行添加到文件末尾：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">. . .</div><div class="line">mongod soft nproc 32000</div></pre></td></tr></table></figure></p>
+<p>保存并退出。要使用MongoDB的新限制，则使用systemctl实用程序将其重新启动：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# systemctl restart mongod</div></pre></td></tr></table></figure></p>
+<p>重新链接mongod服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# mongo</div><div class="line"></div><div class="line">输出结果：</div><div class="line">MongoDB shell version: 3.2.12</div><div class="line">connecting to: test</div><div class="line">Server has startup warnings: </div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten] </div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent</div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten] **        We suggest setting it to &apos;ne</div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten] </div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent</div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten] **        We suggest setting it to &apos;ne</div><div class="line">2017-03-29T12:04:53.493+0800 I CONTROL  [initandlisten]</div></pre></td></tr></table></figure></p>
+<p>使用mongo的帮助命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&gt; help或db.help()</div><div class="line">输出结果：</div><div class="line">    db.help()                    help on db methods</div><div class="line">    db.mycoll.help()             help on collection methods</div><div class="line">    sh.help()                    sharding helpers</div><div class="line">    rs.help()                    replica set helpers</div><div class="line">    help admin                   administrative help</div><div class="line">    help connect                 connecting to a db help</div><div class="line">    help keys                    key shortcuts</div><div class="line">    help misc                    misc things to know</div><div class="line">    help mr                      mapreduce</div><div class="line"></div><div class="line">    show dbs                     show database names</div><div class="line">    show collections             show collections in current database</div><div class="line">    show users                   show users in current database</div><div class="line">    show profile                 show most recent system.profile entries with time &gt;= 1ms</div><div class="line">    show logs                    show the accessible logger names</div><div class="line">    show log [name]              prints out the last segment of log in memory, &apos;global&apos; is default</div><div class="line">    use &lt;db_name&gt;                set current database</div><div class="line">    db.foo.find()                list objects in collection foo</div><div class="line">    db.foo.find( &#123; a : 1 &#125; )     list objects in foo where a == 1</div><div class="line">    it                           result of the last line evaluated; use to further iterate</div><div class="line">    DBQuery.shellBatchSize = x   set default number of items to display on shell</div><div class="line">    exit                         quit the mongo shell</div></pre></td></tr></table></figure></p>
+<p>查看有哪些数据库，默认有一个local库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt; show dbs</div><div class="line">local  0.000GB</div><div class="line"></div><div class="line">&gt; use yytest # 有就使用这个数据库，没有就创建一个新的</div><div class="line">&gt; db.yytest.insert(&#123;&quot;name&quot;:&quot;yy&quot;,&quot;age&quot;:10&#125;) # 向yytest数据库插入一条记录</div><div class="line">输出结果：</div><div class="line">WriteResult(&#123; &quot;nInserted&quot; : 1 &#125;)</div><div class="line"></div><div class="line">&gt; db.yytest.find() # 查看本数据库所有记录</div><div class="line">输出结果：</div><div class="line">&#123; &quot;_id&quot; : ObjectId(&quot;58db8e87c1a8030da155a084&quot;), &quot;name&quot; : &quot;yy&quot;, &quot;age&quot; : 10 &#125;</div></pre></td></tr></table></figure></p>
+<p>退出服务连接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; exit</div><div class="line">输出结果：</div><div class="line">Bye</div></pre></td></tr></table></figure></p>
+<h4 id="mongodb用户权限设置"><a href="#mongodb用户权限设置" class="headerlink" title="mongodb用户权限设置"></a>mongodb用户权限设置</h4><p>注意： MongoDB 3.2 安全权限访问控制，在添加用户上面3.2版本和之前的版本有很大的区别，这里就说明下3.2的添加用户的方法</p>
+<p>mongodb默认是没有访问权限控制的，需要在配置文件mongod.conf加配置<br>首先编辑mongod.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# vim /etc/mongod.conf</div></pre></td></tr></table></figure></p>
+<p>然后添加信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">security:</div><div class="line">  authorization:enabled</div></pre></td></tr></table></figure></p>
+<p>之后重启服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]# systemctl restart mongod.service</div></pre></td></tr></table></figure></p>
+<p>在安装MongoDB之后，第一次进入查看数据库，只有一个local库，admin库是不存在的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1. MongoDB是没有默认管理员账号，所以要先添加管理员账号，再开启权限认证。</div><div class="line">2. 切换到admin数据库，添加的账号才是管理员账号。</div><div class="line">3. 用户只能在用户所在数据库登录，包括管理员账号。</div><div class="line">4. 管理员可以管理所有数据库，但是不能直接管理其他数据库，要先在admin数据库认证后才可以。</div></pre></td></tr></table></figure></p>
+<p>所以要先创建admin数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&gt; use admin</div><div class="line">switched to db admin</div><div class="line">&gt; db.createUser(&#123;user:&quot;admin&quot;,pwd:&quot;gome&quot;,roles:[&#123;role:&quot;userAdminAnyDatabase&quot;,db:&quot;admin&quot;&#125;]&#125;)</div><div class="line">输出结果：</div><div class="line">Successfully added user: &#123;</div><div class="line">    &quot;user&quot; : &quot;admin&quot;,</div><div class="line">    &quot;roles&quot; : [</div><div class="line">        &#123;</div><div class="line">            &quot;role&quot; : &quot;userAdminAnyDatabase&quot;,</div><div class="line">            &quot;db&quot; : &quot;admin&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div><div class="line">&gt; show users # 查看本数据库的用户</div><div class="line">&#123;</div><div class="line">    &quot;_id&quot; : &quot;admin.admin&quot;,</div><div class="line">    &quot;user&quot; : &quot;admin&quot;,</div><div class="line">    &quot;db&quot; : &quot;admin&quot;,</div><div class="line">    &quot;roles&quot; : [</div><div class="line">        &#123;</div><div class="line">            &quot;role&quot; : &quot;userAdminAnyDatabase&quot;,</div><div class="line">            &quot;db&quot; : &quot;admin&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div><div class="line">&gt; db.system.users.find() # xxxxx</div><div class="line">&#123; &quot;_id&quot; : &quot;admin.admin&quot;, &quot;user&quot; : &quot;admin&quot;, &quot;db&quot; : &quot;admin&quot;, &quot;credentials&quot; : &#123; &quot;SCRAM-SHA-1&quot; : &#123; &quot;9zLNi3zT6/AO5g==&quot;, &quot;storedKey&quot; : &quot;SHlUm0VD43/UvAShi8BFnreujRE=&quot;, &quot;serverKey&quot; : &quot;LLphzUajQGBvSFr4userAdminAnyDatabase&quot;, &quot;db&quot; : &quot;admin&quot; &#125; ] &#125;</div></pre></td></tr></table></figure></p>
+<h6 id="验证添加的访问权限控制是否生效"><a href="#验证添加的访问权限控制是否生效" class="headerlink" title="验证添加的访问权限控制是否生效"></a>验证添加的访问权限控制是否生效</h6><p>创建一个yytest数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">&gt; use yytest</div><div class="line">switched to db yytest</div><div class="line">&gt; db.yytest.insert(&#123;&quot;name&quot;:&quot;yy&quot;,&quot;age&quot;:10&#125;)</div><div class="line">WriteResult(&#123;</div><div class="line">    &quot;writeError&quot; : &#123;</div><div class="line">        &quot;code&quot; : 13,</div><div class="line">        &quot;errmsg&quot; : &quot;not authorized on yytest to execute command &#123; insert: \&quot;yytest\&quot;, documents: [ &#123; _id: ObjectId(&apos;58db8dbdc1a8030da155a081&apos;), name: \&quot;yy\&quot;, age: 10.0 &#125; ], ordered: true &#125;&quot;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">提示说没有权限</div><div class="line"></div><div class="line">为yytest数据库创建用户</div><div class="line">&gt; db.createUser(&#123;user:&quot;user&quot;,pwd:&quot;gome&quot;,roles:[&#123;role:&quot;readWrite&quot;,db:&quot;yytest&quot;&#125;]&#125;)</div><div class="line">Successfully added user: &#123;</div><div class="line">    &quot;user&quot; : &quot;user&quot;,</div><div class="line">    &quot;roles&quot; : [</div><div class="line">        &#123;</div><div class="line">            &quot;role&quot; : &quot;readWrite&quot;,</div><div class="line">            &quot;db&quot; : &quot;yytest&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div><div class="line">&gt; db.yytest.insert(&#123;&quot;name&quot;:&quot;yy&quot;,&quot;age&quot;:10&#125;)</div><div class="line">WriteResult(&#123;</div><div class="line">    &quot;writeError&quot; : &#123;</div><div class="line">        &quot;code&quot; : 13,</div><div class="line">        &quot;errmsg&quot; : &quot;not authorized on yytest to execute command &#123; insert: \&quot;yytest\&quot;, documents: [ &#123; _id: ObjectId(&apos;58db8e5dc1a8030da155a083&apos;), name: \&quot;yy\&quot;, age: 10.0 &#125; ], ordered: true &#125;&quot;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line">提示说没有权限</div><div class="line"></div><div class="line">&gt; db.auth(&quot;user&quot;,&quot;gome&quot;) # 类似登录</div><div class="line">&gt; db.yytest.insert(&#123;&quot;name&quot;:&quot;yy&quot;,&quot;age&quot;:10&#125;)</div><div class="line">WriteResult(&#123; &quot;nInserted&quot; : 1 &#125;)</div><div class="line">发现操作成功了，也就是通过权限验证了</div></pre></td></tr></table></figure></p>
+<p>到这，设置用户访问权限控制就完成了</p>
+<p>更多的操作还需要自己动手多多实践···</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/github/" rel="tag"># github</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/10/gitbub-hexo搭建/" rel="next" title="gitbub-hexo搭建">
+                <i class="fa fa-chevron-left"></i> gitbub-hexo搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/touxiang.png"
+               alt="Skyler" />
+          <p class="site-author-name" itemprop="name">Skyler</p>
+           
+              <p class="site-description motion-element" itemprop="description">个人技术网站分享</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#centos7安装mongodb3-2"><span class="nav-number">1.</span> <span class="nav-text">centos7安装mongodb3.2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过yum安装mongodb"><span class="nav-number">1.0.1.</span> <span class="nav-text">通过yum安装mongodb</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#yum添加MongoDB存储库"><span class="nav-number">1.0.1.0.1.</span> <span class="nav-text">yum添加MongoDB存储库</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#yum安装MongoDB"><span class="nav-number">1.0.1.0.2.</span> <span class="nav-text">yum安装MongoDB</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#客户端链接mongod服务"><span class="nav-number">1.0.1.0.3.</span> <span class="nav-text">客户端链接mongod服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb用户权限设置"><span class="nav-number">1.0.2.</span> <span class="nav-text">mongodb用户权限设置</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#验证添加的访问权限控制是否生效"><span class="nav-number">1.0.2.0.1.</span> <span class="nav-text">验证添加的访问权限控制是否生效</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017.1 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'yaoyihao1';
+      var disqus_identifier = '2017/04/10/centos7安装mongodb3.2/';
+
+      var disqus_title = "centos7安装mongodb3.2";
+
+
+      function run_disqus_script(disqus_script) {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
