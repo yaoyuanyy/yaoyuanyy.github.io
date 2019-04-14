@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="#  8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The numb">
+<meta name="description" content="8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The number">
 <meta name="keywords" content="mysql,interactive_timeout,wait_timeout">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql server timeout 8小时问题">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="#  8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The numb">
+<meta property="og:description" content="8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The number">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-14T14:06:34.496Z">
+<meta property="og:updated_time" content="2019-04-14T16:26:06.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql server timeout 8小时问题">
-<meta name="twitter:description" content="#  8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The numb">
+<meta name="twitter:description" content="8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The number">
 
 
 
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-14T22:06:34+08:00">
-                2019-04-14
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-15T00:26:06+08:00">
+                2019-04-15
               </time>
             
           </span>
@@ -436,8 +436,7 @@
       
 
       
-        <p># </p>
-<h2 id="8小时问题及interactive-timeout和wait-timeout的区别"><a href="#8小时问题及interactive-timeout和wait-timeout的区别" class="headerlink" title="8小时问题及interactive_timeout和wait_timeout的区别"></a>8小时问题及interactive_timeout和wait_timeout的区别</h2><p>实际开发遇到的问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TODO</span><br></pre></td></tr></table></figure></p>
+        <h2 id="8小时问题及interactive-timeout和wait-timeout的区别"><a href="#8小时问题及interactive-timeout和wait-timeout的区别" class="headerlink" title="8小时问题及interactive_timeout和wait_timeout的区别"></a>8小时问题及interactive_timeout和wait_timeout的区别</h2><p>实际开发遇到的问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TODO</span><br></pre></td></tr></table></figure></p>
 <p>原理说明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">那么，连接的时长是如何确认的？</span><br><span class="line">其实，这个与interactive_timeout和wait_timeout的设置有关。</span><br><span class="line">首先，看看官方文档对于这两个参数的定义</span><br><span class="line"></span><br><span class="line">interactive_timeout</span><br><span class="line">默认是28800，单位秒，即8个小时</span><br><span class="line">官方文档：</span><br><span class="line">The number of seconds the server waits for activity on an interactive connection before closing it. An interactive client is defined as a client that uses the CLIENT_INTERACTIVE option to mysql_real_connect(). See also wait_timeout.</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wait_timeout</span><br><span class="line">默认同样是28800s</span><br><span class="line">官方文档：</span><br><span class="line">The number of seconds the server waits for activity on a noninteractive connection before closing it.</span><br><span class="line">On thread startup, the session wait_timeout value is initialized from the global wait_timeout value or from the global interactive_timeout value, depending on the type of client (as defined by the CLIENT_INTERACTIVE connect option to mysql_real_connect()). See also interactive_timeout.</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">根据上述定义，两者的区别显而易见</span><br><span class="line"></span><br><span class="line">1&gt; interactive_timeout针对交互式连接，wait_timeout针对非交互式连接。所谓的交互式连接，即在mysql_real_connect()函数中使用了CLIENT_INTERACTIVE选项。</span><br><span class="line">     说得直白一点，通过mysql客户端连接数据库是交互式连接，通过jdbc连接数据库是非交互式连接。 </span><br><span class="line"></span><br><span class="line">2&gt; 在连接启动的时候，根据连接的类型，来确认会话变量wait_timeout的值是继承于全局变量wait_timeout，还是interactive_timeout。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">下面来测试一下，确认如下问题</span><br><span class="line">1. 控制连接最大空闲时长的是哪个参数。</span><br><span class="line">2. 会话变量wait_timeout的继承问题</span><br></pre></td></tr></table></figure>
