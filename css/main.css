@@ -1949,7 +1949,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #4bff66;
+  background: #e704a3;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3048,4 +3048,8 @@ body {
 }
 .header-inner {
   opacity: 0.8;
+}
+#posts code {
+  color: #000;
+  background-color: #808080;
 }
