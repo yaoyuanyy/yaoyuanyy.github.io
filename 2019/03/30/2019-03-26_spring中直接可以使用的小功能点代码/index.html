@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="阅读，spring, springboot时能发现很多的很好的小功能点，如，加载文件、解析类的方法注解、通过class生成bean等等，本文就来整理下这些小功能 加载META-INF/spring.factory 1234List&amp;lt;String&amp;gt; configurations = SpringFactoriesLoader.loadFactoryNames(		EnableAutoCo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/03/30/2019-03-26_spring中直接可以使用的小功能点代码/media/15535588350157.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/03/30/2019-03-26_spring中直接可以使用的小功能点代码/15535588350157.jpg">
 <meta property="og:updated_time" content="2019-04-14T16:24:50.733Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring中可以直接使用的小功能代码">
 <meta name="twitter:description" content="阅读，spring, springboot时能发现很多的很好的小功能点，如，加载文件、解析类的方法注解、通过class生成bean等等，本文就来整理下这些小功能 加载META-INF/spring.factory 1234List&amp;lt;String&amp;gt; configurations = SpringFactoriesLoader.loadFactoryNames(		EnableAutoCo">
-<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/03/30/2019-03-26_spring中直接可以使用的小功能点代码/media/15535588350157.jpg">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/03/30/2019-03-26_spring中直接可以使用的小功能点代码/15535588350157.jpg">
 
 
 
@@ -439,7 +439,7 @@
 
       
         <p>阅读，spring, springboot时能发现很多的很好的小功能点，如，加载文件、解析类的方法注解、通过class生成bean等等，本文就来整理下这些小功能</p>
-<h3 id="加载META-INF-spring-factory"><a href="#加载META-INF-spring-factory" class="headerlink" title="加载META-INF/spring.factory"></a>加载META-INF/spring.factory</h3><p><img src="media/15535588350157.jpg" alt="-w977"></p>
+<h3 id="加载META-INF-spring-factory"><a href="#加载META-INF-spring-factory" class="headerlink" title="加载META-INF/spring.factory"></a>加载META-INF/spring.factory</h3><p><img src="/2019/03/30/2019-03-26_spring中直接可以使用的小功能点代码/15535588350157.jpg" alt="-w977"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; configurations = SpringFactoriesLoader.loadFactoryNames(</span><br><span class="line">		EnableAutoConfiguration.class, getBeanClassLoader());</span><br><span class="line">Assert.notEmpty(configurations, &quot;No auto configuration classes found in META-INF/spring.factories. If you &quot; + &quot;are using a custom packaging, make sure that file is correct.&quot;);</span><br><span class="line">return configurations;</span><br></pre></td></tr></table></figure>
 <h3 id="加载classPath-application-yml"><a href="#加载classPath-application-yml" class="headerlink" title="加载classPath:application.yml"></a>加载classPath:application.yml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(&quot;application.yml&quot;))</span><br><span class="line">String value = properties.getProperty(String key);</span><br></pre></td></tr></table></figure>
 <h3 id="加载jar-file-Users-xx-spring-xx-jar-META-INF-spring-factories"><a href="#加载jar-file-Users-xx-spring-xx-jar-META-INF-spring-factories" class="headerlink" title="加载jar:file:/Users/xx/spring-xx.jar!/META-INF/spring.factories"></a>加载jar:file:/Users/xx/spring-xx.jar!/META-INF/spring.factories</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加载jar:file:/Users/skyler/.m2/repository/org/springframework/boot/spring-boot/1.5.10.RELEASE/spring-boot-1.5.10.RELEASE.jar!/META-INF/spring.factories</span><br><span class="line">把key=value,value,value转成list&lt;value&gt;</span><br><span class="line"></span><br><span class="line">Properties properties = PropertiesLoaderUtils.loadProperties(new UrlResource(url));</span><br><span class="line">String factoryClassNames = properties.getProperty(factoryClassName);</span><br><span class="line">List&lt;String&gt; result = new ArrayList&lt;String&gt;();</span><br><span class="line">result.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray(factoryClassNames)));</span><br></pre></td></tr></table></figure>
