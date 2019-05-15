@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="mysql,interactive_timeout,wait_timeout,">
+  <meta name="keywords" content="mac,alfred,">
 
 
 
@@ -81,18 +81,27 @@
 
 
 
-<meta name="description" content="8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The number">
-<meta name="keywords" content="mysql,interactive_timeout,wait_timeout">
+<meta name="description" content="alfredalfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置前提：默认你的mac已经安装了Iterm场景：没有这个插件之前，我们要连接远程服务器，步骤如下：1231. 打开iterm2. ssh root@50.100">
+<meta name="keywords" content="mac,alfred">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql server timeout 8小时问题">
-<meta property="og:url" content="https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/index.html">
+<meta property="og:title" content="开发效率神提升之alfred继承ssh+iterm">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The number">
+<meta property="og:description" content="alfredalfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置前提：默认你的mac已经安装了Iterm场景：没有这个插件之前，我们要连接远程服务器，步骤如下：1231. 打开iterm2. ssh root@50.100">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-14T16:26:06.498Z">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577321523837.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577346116140.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577336702452.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577338823190.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577340080816.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577341442575.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577355607756.jpg">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577356013122.jpg">
+<meta property="og:updated_time" content="2019-05-13T10:42:54.009Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql server timeout 8小时问题">
-<meta name="twitter:description" content="8小时问题及interactive_timeout和wait_timeout的区别实际开发遇到的问题：1TODO 原理说明12345678那么，连接的时长是如何确认的？其实，这个与interactive_timeout和wait_timeout的设置有关。首先，看看官方文档对于这两个参数的定义interactive_timeout默认是28800，单位秒，即8个小时官方文档：The number">
+<meta name="twitter:title" content="开发效率神提升之alfred继承ssh+iterm">
+<meta name="twitter:description" content="alfredalfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置前提：默认你的mac已经安装了Iterm场景：没有这个插件之前，我们要连接远程服务器，步骤如下：1231. 打开iterm2. ssh root@50.100">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577321523837.jpg">
 
 
 
@@ -122,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/">
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/">
 
 
 
 
 
-  <title>mysql server timeout 8小时问题 | skyler-blog</title>
+  <title>开发效率神提升之alfred继承ssh+iterm | skyler-blog</title>
   
 
 
@@ -285,7 +294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Skyler">
@@ -302,7 +311,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mysql server timeout 8小时问题</h1>
+          <h1 class="post-title" itemprop="name headline">开发效率神提升之alfred继承ssh+iterm</h1>
         
 
         <div class="post-meta">
@@ -314,8 +323,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T00:00:00+08:00">
-                2019-04-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-13T00:00:00+08:00">
+                2019-05-13
               </time>
             
 
@@ -330,8 +339,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-15T00:26:06+08:00">
-                2019-04-15
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-13T18:42:54+08:00">
+                2019-05-13
               </time>
             
           </span>
@@ -349,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
+                  <a href="/categories/mac开发工具/" itemprop="url" rel="index">
+                    <span itemprop="name">mac开发工具</span>
                   </a>
                 </span>
 
@@ -367,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/10/mysql_timeout 8小时问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/10/mysql_timeout 8小时问题/" itemprop="commentCount"></span>
+                <a href="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/13/开发效率神提升之alfred继承ssh+iterm/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -376,7 +385,7 @@
 
           
           
-             <span id="/2019/04/10/mysql_timeout 8小时问题/" class="leancloud_visitors" data-flag-title="mysql server timeout 8小时问题">
+             <span id="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/" class="leancloud_visitors" data-flag-title="开发效率神提升之alfred继承ssh+iterm">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -401,7 +410,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  364
+                  971
                 </span>
               
 
@@ -417,7 +426,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
@@ -438,11 +447,48 @@
       
 
       
-        <h2 id="8小时问题及interactive-timeout和wait-timeout的区别"><a href="#8小时问题及interactive-timeout和wait-timeout的区别" class="headerlink" title="8小时问题及interactive_timeout和wait_timeout的区别"></a>8小时问题及interactive_timeout和wait_timeout的区别</h2><p>实际开发遇到的问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TODO</span><br></pre></td></tr></table></figure></p>
-<p>原理说明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">那么，连接的时长是如何确认的？</span><br><span class="line">其实，这个与interactive_timeout和wait_timeout的设置有关。</span><br><span class="line">首先，看看官方文档对于这两个参数的定义</span><br><span class="line"></span><br><span class="line">interactive_timeout</span><br><span class="line">默认是28800，单位秒，即8个小时</span><br><span class="line">官方文档：</span><br><span class="line">The number of seconds the server waits for activity on an interactive connection before closing it. An interactive client is defined as a client that uses the CLIENT_INTERACTIVE option to mysql_real_connect(). See also wait_timeout.</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wait_timeout</span><br><span class="line">默认同样是28800s</span><br><span class="line">官方文档：</span><br><span class="line">The number of seconds the server waits for activity on a noninteractive connection before closing it.</span><br><span class="line">On thread startup, the session wait_timeout value is initialized from the global wait_timeout value or from the global interactive_timeout value, depending on the type of client (as defined by the CLIENT_INTERACTIVE connect option to mysql_real_connect()). See also interactive_timeout.</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">根据上述定义，两者的区别显而易见</span><br><span class="line"></span><br><span class="line">1&gt; interactive_timeout针对交互式连接，wait_timeout针对非交互式连接。所谓的交互式连接，即在mysql_real_connect()函数中使用了CLIENT_INTERACTIVE选项。</span><br><span class="line">     说得直白一点，通过mysql客户端连接数据库是交互式连接，通过jdbc连接数据库是非交互式连接。 </span><br><span class="line"></span><br><span class="line">2&gt; 在连接启动的时候，根据连接的类型，来确认会话变量wait_timeout的值是继承于全局变量wait_timeout，还是interactive_timeout。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">下面来测试一下，确认如下问题</span><br><span class="line">1. 控制连接最大空闲时长的是哪个参数。</span><br><span class="line">2. 会话变量wait_timeout的继承问题</span><br></pre></td></tr></table></figure>
-<p>参考：<a href="https://www.cnblogs.com/ivictor/p/5979731.html" target="_blank" rel="noopener">https://www.cnblogs.com/ivictor/p/5979731.html</a></p>
+        <h2 id="alfred"><a href="#alfred" class="headerlink" title="alfred"></a>alfred</h2><p>alfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置<br><code>前提</code>：默认你的mac已经安装了Iterm<br><code>场景</code>：<br>没有这个插件之前，我们要连接远程服务器，步骤如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 打开iterm</span><br><span class="line">2. ssh root@50.100.11.10</span><br><span class="line">3. 输入密码</span><br></pre></td></tr></table></figure></p>
+<p>实际工作中有多个远程服务器，需要连接。每个都要如上操作一遍，实在繁琐。尤其是复杂密码的时候</p>
+<h2 id="使用ssh-config"><a href="#使用ssh-config" class="headerlink" title="使用ssh config"></a>使用ssh config</h2><p><code>配置</code>：<br>首先我们解决每次连接重复步骤1,2,3的问题。解决的方法是openssh 的ssh config的功能。具体为：<br><code>vim ~/.ssh/config</code>，如果不存在，可以新建一个<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host aliyun</span><br><span class="line">  HostName 50.100.11.10</span><br><span class="line">  User root</span><br><span class="line">  Port 22</span><br></pre></td></tr></table></figure></p>
+<p>保存退出。这时在<em>Iterm</em>中就可以输入<code>ssh aliyun</code>, 回车直接跳到了输入密码的操作。接着设置免密登录，方法是使用<code>ssh-copy-id</code>功能，原理是将本机的密钥复制到远程要连接的机器上，从而授权连接。iterm终端输入：</p>
+<ul>
+<li>如果你的机器没有生成过ssh密钥则输入，如果已经存在，则忽略</li>
+</ul>
+<blockquote>
+<p>$ ssh-keygen</p>
+</blockquote>
+<ul>
+<li>复制密钥到远程目的服务器</li>
+</ul>
+<blockquote>
+<p>$ ssh-copy-id -i <a href="mailto:demouser@192.168.1.1" target="_blank" rel="noopener">demouser@192.168.1.1</a></p>
+</blockquote>
+<p>按提示输入一次密码，<code>ssh-copy-id</code>就会自动将刚才生成的公钥id_rsa.pub追加到远程主机的<code>~/.ssh/authorized_keys</code>后面了，这样以后的 ssh 连接都不用输入密码了。</p>
+<ul>
+<li>设置后，连接看看效果</li>
+</ul>
+<blockquote>
+<p>$ ssh aliyun</p>
+</blockquote>
+<p>你会发现一步命令直接链上了远程服务器，一劳永逸。</p>
+<p>到目前为止，你会发现也没有用到<code>alfred</code>啊，在<code>Iterm</code>上就搞定了呢。是的，但是我们通过<code>alfred</code>，还可以更简便的方式来连接远程服务器。这时就需要使用到alfred了。安装和使用<code>alfred</code>这里忽略，下面有破解版的下载连接，安装即可。</p>
+<h2 id="安装alfred-ssh插件"><a href="#安装alfred-ssh插件" class="headerlink" title="安装alfred-ssh插件"></a>安装<code>alfred-ssh</code>插件</h2><p>连接如下：<a href="https://github.com/deanishe/alfred-ssh" target="_blank" rel="noopener">https://github.com/deanishe/alfred-ssh</a> 下载最新版：Secure-SHell-0.8.0.alfredworkflow，双击自动添加到alfred的workflow页，效果如下图<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577321523837.jpg" alt="-w1078"></p>
+<p>此时alfred-ssh就引入到alfred了，这时候你就可以使用alfred来打开远程服务器了，输入<code>ssh aliyun</code>,你会发现终端连接上了aliyun，够爽吧。但你会发现，这个终端显示的mac自带的终端，而我们早已喜欢上了Iterm2。</p>
+<h2 id="安装alfred集成Iterm2配置"><a href="#安装alfred集成Iterm2配置" class="headerlink" title="安装alfred集成Iterm2配置"></a>安装alfred集成Iterm2配置</h2><p>所以如果想使用Iterm2作为终端，需要接着配置，如下图<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577346116140.jpg" alt=""><br>从图中可以看到，有两步操作</p>
+<ol>
+<li>install iTerm2 plugin for Alfred</li>
+<li>配置iterm的Url Schemes</li>
+</ol>
+<p>首先我们到Alfred的Features页面，具体为Alfred <code>Preferences → Features → Terminal/Shell</code> 将Application的值改为Custom，如下图<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577336702452.jpg" alt=""><br>同时显示出一个大输入框，这个输入需要输入一段代码，而代码的来源见下图<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577338823190.jpg" alt=""></p>
+<h3 id="安装alfred插件custom-iterm-applescripts-for-alfred"><a href="#安装alfred插件custom-iterm-applescripts-for-alfred" class="headerlink" title="安装alfred插件custom-iterm-applescripts-for-alfred"></a>安装alfred插件custom-iterm-applescripts-for-alfred</h3><p>点击<a href="https://github.com/stuartcryan/custom-iterm-applescripts-for-alfred" target="_blank" rel="noopener">iTerm2 plugin for Alfred</a>，这是一个牛人写的custom applescript，根据你的iterm版本选择applescript命令，如下图<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577340080816.jpg" alt=""></p>
+<p>我的iterm2的版本是Build 3.2.9，所以我选择<code>For 3.1.1</code>的命令，选中复制curl … ，粘贴到iterm中回车，如下图<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577341442575.jpg" alt=""></p>
+<p>粘贴它到上文的大输入框中，即Alfred的配置中：<code>Alfred Preferences → Features → Terminal/Shell → Application → Custom</code></p>
+<h3 id="itermURL-Schemes配置"><a href="#itermURL-Schemes配置" class="headerlink" title="itermURL Schemes配置"></a>itermURL Schemes配置</h3><p><code>preferences → Profiles → PROFILE_NAME → General → URL Schemes</code>，选择ssh，这样设置默认为ssh激活状态</p>
+<p>到此就全部配置完成了</p>
+<h2 id="爽不爽"><a href="#爽不爽" class="headerlink" title="爽不爽"></a>爽不爽</h2><p>验收效果<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577355607756.jpg" alt="-w1069"></p>
+<p>回车<br><img src="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/15577356013122.jpg" alt="-w391"></p>
+<p>可以看到，最终的效果是只需要在alfred中输入一个命令：<code>ssh 50.100.11.10</code>，就直接连接上了aliyun的远程服务器了，爽不爽</p>
+<p>版权所属<a href="mailto:mxr_it@163.com" target="_blank" rel="noopener">mxr_it@163.com</a>，<a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a>，转载经标明原作链接</p>
 
       
     </div>
@@ -487,7 +533,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/" title="mysql server timeout 8小时问题">https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/</a>
+    <a href="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/" title="开发效率神提升之alfred继承ssh+iterm">https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -502,11 +548,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mysql/" rel="tag"># mysql</a>
+            <a href="/tags/mac/" rel="tag"># mac</a>
           
-            <a href="/tags/interactive-timeout/" rel="tag"># interactive_timeout</a>
-          
-            <a href="/tags/wait-timeout/" rel="tag"># wait_timeout</a>
+            <a href="/tags/alfred/" rel="tag"># alfred</a>
           
         </div>
       
@@ -519,8 +563,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/10/2019-03-11_springcloud_eureka_client从server同步数据/" rel="next" title="springcloud-eureka client从eureka server同步数据">
-                <i class="fa fa-chevron-left"></i> springcloud-eureka client从eureka server同步数据
+              <a href="/2019/04/12/2019-03-31_spring_创建bean过程_todo/" rel="next" title="spring创建bean过程分析">
+                <i class="fa fa-chevron-left"></i> spring创建bean过程分析
               </a>
             
           </div>
@@ -528,10 +572,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/12/2019-03-31_spring_创建bean过程_todo/" rel="prev" title="spring创建bean过程分析">
-                spring创建bean过程分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -705,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#8小时问题及interactive-timeout和wait-timeout的区别"><span class="nav-number">1.</span> <span class="nav-text">8小时问题及interactive_timeout和wait_timeout的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#alfred"><span class="nav-number">1.</span> <span class="nav-text">alfred</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ssh-config"><span class="nav-number">2.</span> <span class="nav-text">使用ssh config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred-ssh插件"><span class="nav-number">3.</span> <span class="nav-text">安装alfred-ssh插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred集成Iterm2配置"><span class="nav-number">4.</span> <span class="nav-text">安装alfred集成Iterm2配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装alfred插件custom-iterm-applescripts-for-alfred"><span class="nav-number">4.1.</span> <span class="nav-text">安装alfred插件custom-iterm-applescripts-for-alfred</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itermURL-Schemes配置"><span class="nav-number">4.2.</span> <span class="nav-text">itermURL Schemes配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爽不爽"><span class="nav-number">5.</span> <span class="nav-text">爽不爽</span></a></li></ol></div>
             
 
           </div>
@@ -868,9 +908,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://yaoyuanyy.github.io/2019/04/10/mysql_timeout 8小时问题/';
-          this.page.identifier = '2019/04/10/mysql_timeout 8小时问题/';
-          this.page.title = 'mysql server timeout 8小时问题';
+          this.page.url = 'https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred继承ssh+iterm/';
+          this.page.identifier = '2019/05/13/开发效率神提升之alfred继承ssh+iterm/';
+          this.page.title = '开发效率神提升之alfred继承ssh+iterm';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';
