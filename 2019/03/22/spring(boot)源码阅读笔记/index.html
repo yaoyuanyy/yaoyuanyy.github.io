@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="springboot,spring,">
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="个人技术博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="skyler-blog">
-<meta property="og:url" content="https://yaoyuanyy.github.io/archives/index.html">
+<meta name="description" content="分为三块  源码逻辑记录  源码阅读问题池 spring XXXUtils类的使用例子  源码逻辑记录aop1todo 源码阅读问题池aopAspectJProxyFactory干什么用的实验：1.定义一个class 用cglib代理debug源码2.对一个生成的代理对象再次做代理会产生什么现象$Proxy2内部结构spring中Advisor与advice的区别 SimpleInstantiat">
+<meta name="keywords" content="springboot,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring(boot&#x2F;cloud)源码阅读笔记">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/03/22/spring(boot)源码阅读笔记/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="个人技术博客">
+<meta property="og:description" content="分为三块  源码逻辑记录  源码阅读问题池 spring XXXUtils类的使用例子  源码逻辑记录aop1todo 源码阅读问题池aopAspectJProxyFactory干什么用的实验：1.定义一个class 用cglib代理debug源码2.对一个生成的代理对象再次做代理会产生什么现象$Proxy2内部结构spring中Advisor与advice的区别 SimpleInstantiat">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-14T16:24:52.599Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="skyler-blog">
-<meta name="twitter:description" content="个人技术博客">
+<meta name="twitter:title" content="spring(boot&#x2F;cloud)源码阅读笔记">
+<meta name="twitter:description" content="分为三块  源码逻辑记录  源码阅读问题池 spring XXXUtils类的使用例子  源码逻辑记录aop1todo 源码阅读问题池aopAspectJProxyFactory干什么用的实验：1.定义一个class 用cglib代理debug源码2.对一个生成的代理对象再次做代理会产生什么现象$Proxy2内部结构spring中Advisor与advice的区别 SimpleInstantiat">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://yaoyuanyy.github.io/archives/">
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/03/22/spring(boot)源码阅读笔记/">
 
 
 
 
 
-  <title>归档 | skyler-blog</title>
+  <title>spring(boot/cloud)源码阅读笔记 | skyler-blog</title>
   
 
 
@@ -155,7 +157,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -269,637 +271,291 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/03/22/spring(boot)源码阅读笔记/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">spring(boot/cloud)源码阅读笔记</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-22T00:00:00+08:00">
+                2019-03-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-15T00:24:52+08:00">
+                2019-04-15
+              </time>
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 17 篇日志。 继续努力。
-      </span>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/" itemprop="url">
-              
-                <span itemprop="name">开发效率神提升之alfred继承ssh+iterm</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-13T00:00:00+08:00" content="2019-05-13">
-          05-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/12/spring创建bean过程_todo/" itemprop="url">
-              
-                <span itemprop="name">spring创建bean过程分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-12T00:00:00+08:00" content="2019-04-12">
-          04-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/10/springcloud ibbon负载均衡源码分析/" itemprop="url">
-              
-                <span itemprop="name">springcloud-ribbon负载均衡源码分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-10T00:00:00+08:00" content="2019-04-10">
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/10/mysql_timeout 8小时问题/" itemprop="url">
-              
-                <span itemprop="name">mysql server timeout 8小时问题</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-10T00:00:00+08:00" content="2019-04-10">
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/10/springcloud eureka client从server同步数据/" itemprop="url">
-              
-                <span itemprop="name">springcloud-eureka client从eureka server同步数据</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-10T00:00:00+08:00" content="2019-04-10">
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/30/spring中直接可以使用的小功能点代码/" itemprop="url">
-              
-                <span itemprop="name">spring中可以直接使用的小功能代码</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-30T00:00:00+08:00" content="2019-03-30">
-          03-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/24/BeanFactoryPostProcessor集团解析/" itemprop="url">
-              
-                <span itemprop="name">BeanFactoryPostProcessor集团解析别</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-24T00:00:00+08:00" content="2019-03-24">
-          03-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/22/@Configuration标记的类的加载解析/" itemprop="url">
-              
-                <span itemprop="name">springboot @Configuration标记的类的加载解析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-22T00:00:00+08:00" content="2019-03-22">
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/22/spring(boot)源码阅读笔记/" itemprop="url">
-              
-                <span itemprop="name">spring(boot/cloud)源码阅读笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-22T00:00:00+08:00" content="2019-03-22">
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/22/springboot @ConditionalOnXXX注解集团解析过程源码分析/" itemprop="url">
-              
-                <span itemprop="name">springboot @ConditionalOnXXX注解集团解析过程源码分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-22T00:00:00+08:00" content="2019-03-22">
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/12/BeanPostProcessor类集团解析-TODO/" itemprop="url">
-              
-                <span itemprop="name">BeanPostProcessor集团的解析AnnotationAwareAspectJAutoProxyCreator处理过程分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-12T00:00:00+08:00" content="2019-03-12">
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/12/BeanFactoryPostProcessory与BeanPostProcessor区别/" itemprop="url">
-              
-                <span itemprop="name">BeanFactoryPostProcessory与BeanPostProcessor区别</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-12T00:00:00+08:00" content="2019-03-12">
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/12/springaop自动生成代理源码解析-TODO/" itemprop="url">
-              
-                <span itemprop="name">spring boot @AspectJ解析过程AnnotationAwareAspectJAutoProxyCreator处理过程分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-12T00:00:00+08:00" content="2019-03-12">
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/22/spring(boot)源码阅读笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/22/spring(boot)源码阅读笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-        
+          
+          
+             <span id="/2019/03/22/spring(boot)源码阅读笔记/" class="leancloud_visitors" data-flag-title="spring(boot/cloud)源码阅读笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/05/what-is-springboot/" itemprop="url">
+          
+            <div class="post-wordcount">
               
-                <span itemprop="name">what is spring boot</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  125
+                </span>
               
-            </a>
-        
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-05-05T00:00:00+08:00" content="2017-05-05">
-          05-05
-        </time>
-      </div>
+              
+                <span class="post-meta-divider">|</span>
+              
 
-    </header>
-  </article>
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1
+                </span>
+              
+            </div>
+          
 
+          
 
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/10/centos7安装mongodb3.2/" itemprop="url">
-              
-                <span itemprop="name">centos7安装mongodb3.2</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-04-10T00:00:00+08:00" content="2017-04-10">
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/10/gitbub-hexo搭建/" itemprop="url">
-              
-                <span itemprop="name">gitbub-hexo搭建</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-03-10T00:00:00+08:00" content="2017-03-10">
-          03-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>分为三块</p>
+<ul>
+<li>源码逻辑记录 </li>
+<li>源码阅读问题池</li>
+<li>spring XXXUtils类的使用例子</li>
+</ul>
+<h2 id="源码逻辑记录"><a href="#源码逻辑记录" class="headerlink" title="源码逻辑记录"></a>源码逻辑记录</h2><h3 id="aop"><a href="#aop" class="headerlink" title="aop"></a>aop</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">todo</span><br></pre></td></tr></table></figure>
+<h2 id="源码阅读问题池"><a href="#源码阅读问题池" class="headerlink" title="源码阅读问题池"></a>源码阅读问题池</h2><h3 id="aop-1"><a href="#aop-1" class="headerlink" title="aop"></a>aop</h3><p>AspectJProxyFactory干什么用的<br>实验：<br>1.定义一个class 用cglib代理debug源码<br>2.对一个生成的代理对象再次做代理会产生什么现象<br>$Proxy2内部结构<br>spring中Advisor与advice的区别</p>
+<p>SimpleInstantiationStrategy代码和作用</p>
+<p>Enhancer.setCallbackFilter</p>
+<h2 id="spring-XXXUtils类的使用例子"><a href="#spring-XXXUtils类的使用例子" class="headerlink" title="spring XXXUtils类的使用例子"></a>spring XXXUtils类的使用例子</h2><h3 id="className实例化成Object"><a href="#className实例化成Object" class="headerlink" title="className实例化成Object"></a>className实例化成Object</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">Class&lt;?&gt; conditionClass = ClassUtils.resolveClassName(conditionClassName, classloader);</span><br><span class="line">   return (Condition) BeanUtils.instantiateClass(conditionClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/09/my-first-page/" itemprop="url">
-              
-                <span itemprop="name">hello everyone</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-03-09T00:00:00+08:00" content="2017-03-09">
-          03-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2019/03/22/spring(boot)源码阅读笔记/" title="spring(boot/cloud)源码阅读笔记">https://yaoyuanyy.github.io/2019/03/22/spring(boot)源码阅读笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/22/springboot @ConditionalOnXXX注解集团解析过程源码分析/" rel="next" title="springboot @ConditionalOnXXX注解集团解析过程源码分析">
+                <i class="fa fa-chevron-left"></i> springboot @ConditionalOnXXX注解集团解析过程源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/22/@Configuration标记的类的加载解析/" rel="prev" title="springboot @Configuration标记的类的加载解析">
+                springboot @Configuration标记的类的加载解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -907,6 +563,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -927,8 +597,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -1020,6 +699,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#源码逻辑记录"><span class="nav-number">1.</span> <span class="nav-text">源码逻辑记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#aop"><span class="nav-number">1.1.</span> <span class="nav-text">aop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码阅读问题池"><span class="nav-number">2.</span> <span class="nav-text">源码阅读问题池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#aop-1"><span class="nav-number">2.1.</span> <span class="nav-text">aop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-XXXUtils类的使用例子"><span class="nav-number">3.</span> <span class="nav-text">spring XXXUtils类的使用例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#className实例化成Object"><span class="nav-number">3.1.</span> <span class="nav-text">className实例化成Object</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1153,6 +848,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -1170,6 +869,18 @@
       <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2019/03/22/spring(boot)源码阅读笔记/';
+          this.page.identifier = '2019/03/22/spring(boot)源码阅读笔记/';
+          this.page.title = 'spring(boot/cloud)源码阅读笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
