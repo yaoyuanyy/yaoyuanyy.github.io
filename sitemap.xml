@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yaoyuanyy.github.io/2019/03/12/BeanPostProcessor%E5%AE%B6%E6%97%8F%E7%B1%BB%E8%A7%A3%E6%9E%90/</loc>
+    
+    <lastmod>2019-05-16T08:17:31.771Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yaoyuanyy.github.io/2019/03/24/BeanFactoryPostProcessor%E5%AE%B6%E6%97%8F%E7%B1%BB%E8%A7%A3%E6%9E%90/</loc>
+    
+    <lastmod>2019-05-16T08:15:49.993Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yaoyuanyy.github.io/2019/04/10/springcloud%20ribbon%E5%90%8C%E6%AD%A5eureka%20server%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8%E4%B8%8E%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</loc>
     
-    <lastmod>2019-05-16T08:12:03.567Z</lastmod>
+    <lastmod>2019-05-16T08:12:22.117Z</lastmod>
     
   </url>
   
@@ -79,23 +93,9 @@
   </url>
   
   <url>
-    <loc>https://yaoyuanyy.github.io/2019/03/12/BeanPostProcessor%E7%B1%BB%E9%9B%86%E5%9B%A2%E8%A7%A3%E6%9E%90-TODO/</loc>
-    
-    <lastmod>2019-04-14T16:25:36.108Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yaoyuanyy.github.io/2019/03/12/BeanFactoryPostProcessory%E4%B8%8EBeanPostProcessor%E5%8C%BA%E5%88%AB/</loc>
     
     <lastmod>2019-04-14T16:25:29.304Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yaoyuanyy.github.io/2019/03/24/BeanFactoryPostProcessor%E9%9B%86%E5%9B%A2%E8%A7%A3%E6%9E%90/</loc>
-    
-    <lastmod>2019-04-14T16:25:23.105Z</lastmod>
     
   </url>
   
