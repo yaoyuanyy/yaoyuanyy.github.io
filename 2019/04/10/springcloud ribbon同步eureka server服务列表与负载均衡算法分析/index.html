@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="本篇内容特别适合对ribbon有基本了解的同学，初学者可以看运行起ribbon的demo后再来这篇，效率更高。所以ribbon的理论功能和介绍不作阐述，只从源码角度关注细节。 前言适应版本：springcloud1和springcloud2 本篇是ribbon结合eureka实现负载均衡的源码解析，学完本篇后，将清楚以下知识点：  ribbon实现负载均衡需要的server列表是如何获取和定时同步">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-16T08:10:15.250Z">
+<meta property="og:updated_time" content="2019-05-16T08:12:03.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springcloud ribbon同步eureka server服务列表与负载均衡算法分析">
 <meta name="twitter:description" content="本篇内容特别适合对ribbon有基本了解的同学，初学者可以看运行起ribbon的demo后再来这篇，效率更高。所以ribbon的理论功能和介绍不作阐述，只从源码角度关注细节。 前言适应版本：springcloud1和springcloud2 本篇是ribbon结合eureka实现负载均衡的源码解析，学完本篇后，将清楚以下知识点：  ribbon实现负载均衡需要的server列表是如何获取和定时同步">
@@ -330,7 +330,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-16T16:10:15+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-16T16:12:03+08:00">
                 2019-05-16
               </time>
             
@@ -449,7 +449,7 @@
 </ul>
 <p>我们知道，eureka server是动态注册服务列表的，当有服务出现故障或下线时，eureka client会更新服务列表，以便eureka client获取最新的server列表。ribbon作为一个eureka client，又是一个consumer组件，从功能上讲可以分为两大步</p>
 <ol>
-<li>eureka client定时从eureka server获取最新server列表放到eureka client中，见<a href="https://yaoyuanyy.github.io/2019/04/10/springcloud%20eureka%20client%E4%BB%8Eserver%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE/">eureka client从server同步数据</a></li>
+<li>eureka client定时从eureka server获取最新server列表放到eureka client中，见<a href="https://yaoyuanyy.github.io/2019/04/10/springcloud%20eureka%20client%E4%BB%8Eeureka%20server%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE/">eureka client从server同步数据</a></li>
 <li>ribbon定时再从eureka client获取最新server列表。当一个请求过来时从即server列表负载均衡确定一个server，完成request请求</li>
 </ol>
 <p>本篇主要分析当一个请求过来时，ribbon从server列表负载均衡确定一个server的过程，包括从哪里获取的server列表，怎样确定一个server的。下面进入正文</p>
