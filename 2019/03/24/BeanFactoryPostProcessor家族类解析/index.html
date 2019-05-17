@@ -89,10 +89,12 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="date 2019-03-24 BeanFactoryPostProcessory简介首先看下类的javadoc   Allows for custom modification of an application context’s bean definitions, adapting the bean property values of the context’s underlying be">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-16T08:15:49.993Z">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/03/24/BeanFactoryPostProcessor家族类解析/05.png">
+<meta property="og:updated_time" content="2019-05-17T05:54:31.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BeanFactoryPostProcessor家族类解析">
 <meta name="twitter:description" content="date 2019-03-24 BeanFactoryPostProcessory简介首先看下类的javadoc   Allows for custom modification of an application context’s bean definitions, adapting the bean property values of the context’s underlying be">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/03/24/BeanFactoryPostProcessor家族类解析/05.png">
 
 
 
@@ -330,8 +332,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-16T16:15:49+08:00">
-                2019-05-16
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-17T13:54:31+08:00">
+                2019-05-17
               </time>
             
           </span>
@@ -444,6 +446,7 @@
 </em> Application contexts can auto-detect BeanFactoryPostProcessor beans in their bean definitions and apply them before any other beans get created.<br><em> Useful for custom config files targeted at system administrators that override bean properties configured in the application context.
 </em> See PropertyResourceConfigurer and its concrete implementations for out-of-the-box solutions that address such configuration needs.<br>* A BeanFactoryPostProcessor may interact with and modify bean definitions, but never bean instances. Doing so may cause premature bean instantiation, violating the container and causing unintended side-effects. If bean instance interaction is required, consider implementing BeanPostProcessor instead<br><br></font>
 
+<p><img src="/2019/03/24/BeanFactoryPostProcessor家族类解析/05.png" alt="05"></p>
 <p>翻译如下：</p>
 <font size="1"><br><em> 允许application context的bean definitions自定义修改，改写the context的底层bean factory的bean的属性值。
 </em> Application context能通过他的bean definitions自动检测到 BeanFactoryPostProcessor beans，并在其他的beans被创建前应用the beans<br><em> 自定义config files去覆盖application context配置的bean属性是有用的
