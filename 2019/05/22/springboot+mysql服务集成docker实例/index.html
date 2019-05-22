@@ -98,9 +98,11 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/50-09.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/56-44.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/14-13.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/21-25.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/19-59.png">
-<meta property="og:updated_time" content="2019-05-21T14:41:47.638Z">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/38-24.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/48-39.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/48-23.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/40-15.png">
+<meta property="og:updated_time" content="2019-05-22T06:49:25.485Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot+mysql服务集成docker实例">
 <meta name="twitter:description" content="回顾上篇笔者实战操作了&amp;lt;springboot集成docker&amp;gt;从0开始的操作例子，本篇再深入一点：把mysql继承进来，形成springboot+mysql服务集成docker实例，本篇是在上篇&amp;lt;springboot集成docker&amp;gt;的基础上进行的 项目代码: springboot_mybatis docker集成springboot_mybatis+mysql集成myba">
@@ -342,8 +344,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-21T22:41:47+08:00">
-                2019-05-21
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-22T14:49:25+08:00">
+                2019-05-22
               </time>
             
           </span>
@@ -413,7 +415,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.3k
+                  2.8k
                 </span>
               
 
@@ -429,7 +431,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10
+                  12
                 </span>
               
             </div>
@@ -476,12 +478,21 @@
 <h3 id="上传springboot-mybatis-project到docker服务器"><a href="#上传springboot-mybatis-project到docker服务器" class="headerlink" title="上传springboot_mybatis project到docker服务器"></a>上传springboot_mybatis project到docker服务器</h3><p>docker-compose执行需要项目jar和Dockerfile，接下来我们需要把springboot_mybatis和Dockerfile上传到docker-compose.yml所在目录<br>现在回到intellij，执行<code>mvn clean package</code>，如下图<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/50-09.png" alt="50-09"><br>使用scp上传Dockerfile和jar文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /Users/xx/springboot_mybatis/target/docker</span><br><span class="line"></span><br><span class="line">scp Dockerfile root@48.99.190.38:/root/skyler_home/project/docker_compose #输入密码</span><br><span class="line"></span><br><span class="line">scp springboot_mybatis-0.0.1-SNAPSHOT.jar root@48.99.190.38:/root/skyler_home/project/docker_compose #输入密码</span><br></pre></td></tr></table></figure></p>
 <p>现在docker_compose目录下文件如下<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/56-44.png" alt="56-44"></p>
 <h3 id="使用docker-compose启动springboot-mybatis-jar"><a href="#使用docker-compose启动springboot-mybatis-jar" class="headerlink" title="使用docker_compose启动springboot_mybatis jar"></a>使用docker_compose启动springboot_mybatis jar</h3><p>启动前需要stop rm之前启动的container<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker stop demo-springboot-docker</span><br><span class="line">docker stop mybatis-mysql</span><br><span class="line">docker rm demo-springboot-docker</span><br><span class="line">docker rm mybatis-mysql</span><br></pre></td></tr></table></figure></p>
-<p>运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure></p>
-<p>可能会报错，如下图<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/14-13.png" alt="14-13"><br>但是container已经创建了，只是状态是exited</p>
-<p>再运行一次：<code>docker-compose up</code><br>看日志，显示成功</p>
-<p><img src="/2019/05/22/springboot+mysql服务集成docker实例/21-25.png" alt="21-25"><br>container的状态为Up<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/19-59.png" alt="19-59"></p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
+<p>可能会报错，如下图</p>
+<p><img src="/2019/05/22/springboot+mysql服务集成docker实例/14-13.png" alt="14-13"><br>而且springboot-mybatis和mysql container已经创建了，但是状态是Exited<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/38-24.png" alt="38-24"></p>
+<h4 id="报错原因"><a href="#报错原因" class="headerlink" title="报错原因"></a>报错原因</h4><ol>
+<li>mysql container状态是Exited的原因:<br>为docker-compose.yml中<code>MYSQL_USER=root</code>。此docker镜像使用您提供的密码创建root用户，因此当您想再次创建root用户时，它会失败并关闭容器。只需将其更改为<code>MYSQL_USER=myuser</code>即可</li>
+<li>springboot-mybatis启动失败的原因:<br>本质是docker-compose的启动顺序问题。springboot-mybatis依赖mysql, 在docker-compose.yml中，通过配置depends_on, links, volumes_from, 以及 network_mode: “service:…”.可以控制服务的启动顺序，但是却不能知道被依赖的服务是否启动完毕，在一个服务必须要依赖另一个服务完成的时候，这样就会有问题。从springboot-mybatis启动日志也可以看出demo-springboot-docker_1先于mybatis-mysql_dev初始化了<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/48-39.png" alt="48-39"></li>
+</ol>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>针对这样的问题，有两种解决方案:</p>
+<p>1、足够的容错和重试机制，比如连接数据库，在初次连接不上的时候，服务消费者可以不断重试，直到连接上服务。也就是在服务中定义： restart: always</p>
+<p>2、同步等待，使用 wait-for-it.sh或者其他 shell脚本将当前服务启动阻塞，直到被依赖的服务加载完毕。这种方案后期可以尝试使用</p>
+<p>这里我们使用第一种。具体操作：编辑docker-compose.yml，新增restart: always。docker-compose.yml全内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;3.3&apos;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  mybatis-mysql:</span><br><span class="line">    image: mysql:latest</span><br><span class="line">    environment:</span><br><span class="line">      - MYSQL_ROOT_PASSWORD=root123</span><br><span class="line"># MYSQL_USER设置为root，启动服务时报错：Operation CREATE USER failed for &apos;root&apos;@&apos;%&apos;</span><br><span class="line">      - MYSQL_USER=skyler</span><br><span class="line">      - MYSQL_PASSWORD=root123</span><br><span class="line">      - MYSQL_DATABASE=jdbc_test</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;</span><br><span class="line">    restart: always </span><br><span class="line">    container_name: mybatis-mysql_dev</span><br><span class="line">  demo-springboot-docker:</span><br><span class="line">    restart: always</span><br><span class="line">    image: springboot_demo/springboot_mybatis</span><br><span class="line">    depends_on:</span><br><span class="line">      - mybatis-mysql</span><br><span class="line">    ports:</span><br><span class="line">      - 2372:2371</span><br><span class="line">    environment:</span><br><span class="line">      - DATABASE_HOST=mybatis-mysql</span><br><span class="line">      - DATABASE_PORT=3306</span><br><span class="line">      - DATABASE_USER=skyler</span><br><span class="line">      - DATABASE_PASSWORD=root123</span><br><span class="line">      - DATABASE_NAME=jdbc_test</span><br></pre></td></tr></table></figure></p>
+<p>再运行一次：<code>docker-compose up -d</code>。-d为后台启动，可选<br>使用<code>docker logs -f -t --tail 20 62617312c8bf</code>看日志，你会发现，失败之后自动重启，最后显示服务启动成功</p>
+<p><img src="/2019/05/22/springboot+mysql服务集成docker实例/48-23.png" alt="48-23"><br>使用docker-compose ps(类似docker ps -a)查看container的状态为Up<br><img src="/2019/05/22/springboot+mysql服务集成docker实例/40-15.png" alt="40-15"></p>
 <p>现在，无论docker集成springboot_mybatis+mysql还是docker-compose集成springboot_mybatis+mysql，都实战完成</p>
-<p>项目代码: <a href="https://github.com/yaoyuanyy/springboot_project/tree/feature-docker-20190517/springboot_mybatis" target="_blank" rel="noopener">springboot_mybatis</a></p>
+<p>文中所用代码: <a href="https://github.com/yaoyuanyy/springboot_project/tree/feature-docker-20190517/springboot_mybatis" target="_blank" rel="noopener">springboot_mybatis</a></p>
 
       
     </div>
@@ -558,8 +569,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/13/开发效率神提升之alfred继承ssh+iterm/" rel="next" title="开发效率神提升之alfred继承ssh+iterm">
-                <i class="fa fa-chevron-left"></i> 开发效率神提升之alfred继承ssh+iterm
+              <a href="/2019/05/22/springboot集成docker实例/" rel="next" title="springboot集成docker">
+                <i class="fa fa-chevron-left"></i> springboot集成docker
               </a>
             
           </div>
@@ -567,10 +578,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/22/springboot集成docker实例/" rel="prev" title="springboot集成docker">
-                springboot集成docker <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -744,7 +751,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#回顾"><span class="nav-number">1.</span> <span class="nav-text">回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker集成springboot-mybatis-mysql"><span class="nav-number">2.</span> <span class="nav-text">docker集成springboot_mybatis+mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集成mybatis"><span class="nav-number">2.1.</span> <span class="nav-text">集成mybatis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建项目并发到docker服务器"><span class="nav-number">2.2.</span> <span class="nav-text">构建项目并发到docker服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker运行mysql-image"><span class="nav-number">2.3.</span> <span class="nav-text">docker运行mysql image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker运行springboot-mybatis项目"><span class="nav-number">2.4.</span> <span class="nav-text">docker运行springboot_mybatis项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问springboot-mybatis服务"><span class="nav-number">2.5.</span> <span class="nav-text">访问springboot_mybatis服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-compose集成springboot-mybatis-mysql"><span class="nav-number">3.</span> <span class="nav-text">docker-compose集成springboot_mybatis+mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose安装和运行"><span class="nav-number">3.1.</span> <span class="nav-text">docker-compose安装和运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose-yml添加mysql的配置"><span class="nav-number">3.2.</span> <span class="nav-text">docker-compose.yml添加mysql的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传springboot-mybatis-project到docker服务器"><span class="nav-number">3.3.</span> <span class="nav-text">上传springboot_mybatis project到docker服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用docker-compose启动springboot-mybatis-jar"><span class="nav-number">3.4.</span> <span class="nav-text">使用docker_compose启动springboot_mybatis jar</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#回顾"><span class="nav-number">1.</span> <span class="nav-text">回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker集成springboot-mybatis-mysql"><span class="nav-number">2.</span> <span class="nav-text">docker集成springboot_mybatis+mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集成mybatis"><span class="nav-number">2.1.</span> <span class="nav-text">集成mybatis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建项目并发到docker服务器"><span class="nav-number">2.2.</span> <span class="nav-text">构建项目并发到docker服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker运行mysql-image"><span class="nav-number">2.3.</span> <span class="nav-text">docker运行mysql image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker运行springboot-mybatis项目"><span class="nav-number">2.4.</span> <span class="nav-text">docker运行springboot_mybatis项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问springboot-mybatis服务"><span class="nav-number">2.5.</span> <span class="nav-text">访问springboot_mybatis服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-compose集成springboot-mybatis-mysql"><span class="nav-number">3.</span> <span class="nav-text">docker-compose集成springboot_mybatis+mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose安装和运行"><span class="nav-number">3.1.</span> <span class="nav-text">docker-compose安装和运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose-yml添加mysql的配置"><span class="nav-number">3.2.</span> <span class="nav-text">docker-compose.yml添加mysql的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传springboot-mybatis-project到docker服务器"><span class="nav-number">3.3.</span> <span class="nav-text">上传springboot_mybatis project到docker服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用docker-compose启动springboot-mybatis-jar"><span class="nav-number">3.4.</span> <span class="nav-text">使用docker_compose启动springboot_mybatis jar</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行"><span class="nav-number">3.4.1.</span> <span class="nav-text">运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错原因"><span class="nav-number">3.4.2.</span> <span class="nav-text">报错原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决办法"><span class="nav-number">3.4.3.</span> <span class="nav-text">解决办法</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
