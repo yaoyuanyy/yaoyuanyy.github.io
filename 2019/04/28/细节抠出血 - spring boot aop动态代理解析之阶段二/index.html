@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="在上一篇spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载知道，我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-pro">
+<meta name="description" content="此篇是细节抠出血-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
 <meta name="keywords" content="springboot,spring,spring aop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="细节抠出血 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血 - spring boot aop动态代理解析之阶段二/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="在上一篇spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载知道，我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-pro">
+<meta property="og:description" content="此篇是细节抠出血-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血%20-%20spring%20boot%20aop动态代理解析之阶段二/41-37.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血%20-%20spring%20boot%20aop动态代理解析之阶段二/36-51.png">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血%20-%20spring%20boot%20aop动态代理解析之阶段二/38-40.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血%20-%20spring%20boot%20aop动态代理解析之阶段二/39-42.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血%20-%20spring%20boot%20aop动态代理解析之阶段二/31-46.png">
-<meta property="og:updated_time" content="2019-05-27T10:37:46.722Z">
+<meta property="og:updated_time" content="2019-05-27T10:45:54.992Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节抠出血 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类">
-<meta name="twitter:description" content="在上一篇spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载知道，我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-pro">
+<meta name="twitter:description" content="此篇是细节抠出血-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
 <meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/04/28/细节抠出血%20-%20spring%20boot%20aop动态代理解析之阶段二/41-37.png">
 
 
@@ -337,7 +337,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-27T18:37:46+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-27T18:45:54+08:00">
                 2019-05-27
               </time>
             
@@ -445,13 +445,14 @@
       
 
       
-        <p>在上一篇<a href="https://yaoyuanyy.github.io/2019/04/21/%E7%BB%86%E8%8A%82%E6%8A%A0%E5%87%BA%E8%A1%80%20-%20spring%20boot%20aop%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%98%B6%E6%AE%B5%E4%B8%80/">spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载</a>知道，我们把spring boot的aop实现分为三个阶段</p>
+        <p>此篇是细节抠出血-spring boot aop过程解析系列的第二篇，即第二阶段</p>
+<p>我们把spring boot的aop实现分为三个阶段</p>
 <ul>
 <li>AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段</li>
 <li>AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanClass是否可以生成Proxy代理类阶段</li>
 <li>CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段</li>
 </ul>
-<p>上一篇中，笔者和大家一起学习了spring boot中aop相关类<code>AnnotationAwareAspectJAutoProxyCreator</code>的加载、初始化。这篇我们说下阶段二：<b>判断beanName或beanClass是否生成Proxy代理类</b>。在spring boot中，每个类在生成代理类时，都会判断是否可以生成代理类</p>
+<p>上一篇中，笔者和大家一起学习了<a href="https://yaoyuanyy.github.io/2019/04/21/%E7%BB%86%E8%8A%82%E6%8A%A0%E5%87%BA%E8%A1%80%20-%20spring%20boot%20aop%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%98%B6%E6%AE%B5%E4%B8%80/">spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载</a>。这篇我们说下阶段二：<b>判断beanName或beanClass是否生成Proxy代理类</b>。在spring boot中，每个类在生成代理类时，都会判断是否可以生成代理类</p>
 <h2 id="带着问题学习"><a href="#带着问题学习" class="headerlink" title="带着问题学习"></a>带着问题学习</h2><blockquote>
 <p>带着问题学习往往起到更好的效果</p>
 </blockquote>
