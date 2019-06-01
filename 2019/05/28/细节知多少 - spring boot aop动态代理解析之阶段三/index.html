@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/48-29.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/07-57.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/25-49.png">
-<meta property="og:updated_time" content="2019-06-01T23:53:08.420Z">
+<meta property="og:updated_time" content="2019-06-01T23:55:32.572Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot aop过程解析之阶段三 CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段">
 <meta name="twitter:description" content="此篇是细节知多少-spring boot aop过程解析系列的第三篇，即第三阶段 spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanClass是">
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-02T07:53:08+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-02T07:55:32+08:00">
                 2019-06-02
               </time>
             
@@ -493,22 +493,17 @@
 <p>方法(1)处获取<code>MethodIntercetor</code>集合，从而获取对应的<code>dvice</code>集合，如下图<br><img src="/2019/05/28/细节知多少 - spring boot aop动态代理解析之阶段三/07-57.png" alt="07-57"></p>
 <p>方法(2)处调用拦截器，<code>CglibMethodInvocation</code>包装了<code>MethodInterceptor</code>，通过proceed()调用拦截去逻辑，如下图<br><img src="/2019/05/28/细节知多少 - spring boot aop动态代理解析之阶段三/25-49.png" alt="25-49"></p>
 <p>从图中我们知道，调用了<code>MethodBeforeAdvice.before()</code>方法，<code>MethodBeforeAdvice</code>持有<code>aspectJAdviceMethod</code>属性，这个<code>aspectJAdviceMethod</code>其实就<code>TimeFeeAspect.doTimeFeeIntercepter()</code>方法，所以before方法会进去我们定义的Aspect切面，从而实现了切入方法的功能</p>
-<h2 id="spring-aop-关键词"><a href="#spring-aop-关键词" class="headerlink" title="spring aop 关键词"></a>spring aop 关键词</h2><p>现在我们走了一遍spring aop生成代理类的逻辑和代码实现方式，感觉门清了。但千万不要忽略时间老人的魔力，不久的以后你可能没有这么清晰的记忆了，一些点可能已经忘记了。这个时候关键词会给你指引和作为回忆的钥匙<br>spring aop 关键词<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. AdvisedSupport</span><br></pre></td></tr></table></figure></p>
+<h2 id="spring-aop-关键词"><a href="#spring-aop-关键词" class="headerlink" title="spring aop 关键词"></a>spring aop 关键词</h2><p>现在我们走了一遍spring aop生成代理类的逻辑和代码实现方式，感觉门清了。但千万不要忽略时间老人的魔力，不久的以后你可能没有这么清晰的记忆了，一些点可能已经忘记了。这个时候关键词会给你指引和作为回忆的钥匙<br>spring aop 关键词</p>
 <ol>
-<li>Base class for AOP proxy configuration managers</li>
-<li>ProxyConfig的子类，又是ProxyFactory的父类</li>
-<li><p>包含Advisor，而advisor又包含advice</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.AbstractAutoProxyCreator</span><br></pre></td></tr></table></figure>
+<li>AdvisedSupport<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. Base class for AOP proxy configuration managers</span><br><span class="line">2. ProxyConfig的子类，又是ProxyFactory的父类</span><br><span class="line">3. 包含Advisor，而advisor又包含advice</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>前后置方法生成代理类逻辑</p>
+</ol>
+<p>2.AbstractAutoProxyCreator<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 前后置方法生成代理类逻辑</span><br><span class="line">2. postProcessBeforeInstantiation()</span><br><span class="line">3. postProcessAfterInitialization()</span><br></pre></td></tr></table></figure></p>
+<p>3.InstantiationModelAwarePointcutAdvisor<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 包含切入点表达式expression</span><br><span class="line">2. advice method：TimeFeeAspect.doTimeFeeIntercepter</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li><p>MethodInterceptor</p>
 </li>
-<li>postProcessBeforeInstantiation()</li>
-<li><p>postProcessAfterInitialization()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3.InstantiationModelAwarePointcutAdvisor</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>包含切入点表达式expression</p>
-</li>
-<li>advice method：TimeFeeAspect.doTimeFeeIntercepter<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4. MethodInterceptor</span><br><span class="line"></span><br><span class="line">5. MethodBeforeAdvice</span><br></pre></td></tr></table></figure>
+<li><p>MethodBeforeAdvice</p>
 </li>
 </ol>
 <h2 id="扩展-内存中生成的代理类class字节码输出到硬盘-class文件"><a href="#扩展-内存中生成的代理类class字节码输出到硬盘-class文件" class="headerlink" title="扩展 - 内存中生成的代理类class字节码输出到硬盘.class文件"></a>扩展 - 内存中生成的代理类class字节码输出到硬盘.class文件</h2><p>即 将jvm中的代理对象输出到硬盘</p>
