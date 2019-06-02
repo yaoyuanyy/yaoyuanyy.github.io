@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/48-29.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/07-57.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/25-49.png">
-<meta property="og:updated_time" content="2019-06-02T03:02:57.601Z">
+<meta property="og:updated_time" content="2019-06-02T23:38:21.920Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot aop过程解析之阶段三 CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段">
 <meta name="twitter:description" content="此篇是细节知多少-spring boot aop过程解析系列的第三篇，即第三阶段 spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanClass是">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-02T11:02:57+08:00">
-                2019-06-02
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-03T07:38:21+08:00">
+                2019-06-03
               </time>
             
           </span>
@@ -421,7 +421,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  18
+                  19
                 </span>
               
             </div>
@@ -501,9 +501,10 @@
 </li>
 </ol>
 <p>2.AbstractAutoProxyCreator<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 前后置方法生成代理类逻辑</span><br><span class="line">2. postProcessBeforeInstantiation()</span><br><span class="line">3. postProcessAfterInitialization()</span><br></pre></td></tr></table></figure></p>
-<p>3.InstantiationModelAwarePointcutAdvisor<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 包含切入点表达式expression</span><br><span class="line">2. advice method：TimeFeeAspect.doTimeFeeIntercepter</span><br></pre></td></tr></table></figure></p>
+<p>3.InstantiationModelAwarePointcutAdvisor<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">看名字知道他是一个advisor，是它携带者pointcut和advice，从abstractAutoProxyCreater的后置方法传递给到ProxyFacatory，再传递到CglibMethodInvocation中</span><br><span class="line">1. 包含pointcut(expression)</span><br><span class="line">2. 包含advice：TimeFeeAspect.doTimeFeeIntercepter</span><br></pre></td></tr></table></figure></p>
 <ol start="4">
 <li><p>MethodInterceptor内部类DynamicAdvisedInterceptor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DynamicAdvisedInterceptor是interceptor责任链模式的开始处。代理类把它切入到真实对象方法前后，执行切入功能</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>MethodBeforeAdvice</p>
 </li>
