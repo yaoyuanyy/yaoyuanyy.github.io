@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段二/38-40.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段二/39-42.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/04/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段二/31-46.png">
-<meta property="og:updated_time" content="2019-06-01T13:03:33.988Z">
+<meta property="og:updated_time" content="2019-06-03T00:36:27.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类">
 <meta name="twitter:description" content="此篇是细节知多少-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
@@ -337,8 +337,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-01T21:03:33+08:00">
-                2019-06-01
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-03T08:36:27+08:00">
+                2019-06-03
               </time>
             
           </span>
@@ -499,7 +499,10 @@ CustomInstantiationAwarePostProcessorAdapter</code>。在<code>CustomInstantiati
 <p>另外，targerClass是否匹配pointcut的过程我们也可以通过debug的调用栈来观察调用关系，如下图。这样，你自己debug走代码的时候体会的更直接</p>
 <p><img src="/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/31-46.png" alt="31-46"></p>
 <p>到这里，spring boot aop过程解析之阶段二判断beanName或beanClass是否生成Proxy代理类就走完了。没有面面俱到，但关键地方都有提到。如有任何疑问和问题，欢迎一起交流进步，可以留言或邮箱 <a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a> <a href="mailto:yaoyihao1@gmail.com" target="_blank" rel="noopener">yaoyihao1@gmail.com</a></p>
-<p>针对文章开头的问题我们可以回答下了：<br>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. spring aop是如果获取和解析Aspect(advisor)切面类的</span><br><span class="line">2. spring aop是如果获取和解析@Pointcut注解的</span><br><span class="line">3. @Pointcut注解的execution(expression)存放在哪个对象，什么时候被使用</span><br><span class="line">4. @Before注解spring aop是如果获取和解析的，spring aop如何找到@Before对应的Pointcut？</span><br><span class="line">5. 什么时候什么位置在真实对象方法前后加上代理逻辑的</span><br></pre></td></tr></table></figure></p>
+<h3 id="问题回答"><a href="#问题回答" class="headerlink" title="问题回答"></a>问题回答</h3><ul>
+<li>针对文章开头的问题我们可以回答下了：</li>
+</ul>
+<p>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. spring aop是如果获取和解析Aspect(advisor)切面类的</span><br><span class="line">2. spring aop是如果获取和解析@Pointcut注解的</span><br><span class="line">3. @Pointcut注解的execution(expression)存放在哪个对象，什么时候被使用</span><br><span class="line">4. @Before注解spring aop是如果获取和解析的，spring aop如何找到@Before对应的Pointcut？</span><br><span class="line">5. 什么时候什么位置在真实对象方法前后加上代理逻辑的</span><br></pre></td></tr></table></figure></p>
 <p>答案：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. spring是从两个方面获取Aspect(advisor)切面类的</span><br><span class="line">一方面：String[] advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this.beanFactory, Advisor.class, true, false);</span><br><span class="line">另一方面：String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this.beanFactory, Object.class, true, false);然后遍历beanNames，找到对应的bean，看看这个bean是否有@Aspect注解，有就是Aspect(advisor)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. spring是找到并解析Aspect类中Advice方法的参数，如@Before(&quot;cut()&quot;) public void doTimeFeeIntercepter方法。具体的解析位置是AspectJExpressionPointcut=ReflectiveAspectJAdvisorFactory.getPointcut()方法，这时的AspectJExpressionPointcut只有值cut(),表达式还没有赋值呢。然后再根据cut()重新解析Aspect类，找到Expression并赋值给AspectJExpressionPointcut，这步是在Pointcut.resolve()中完成的</span><br><span class="line"></span><br><span class="line">3. execution(expression)存放在KindedPointcut对象中，在验证targerClass是否匹配时被使用</span><br></pre></td></tr></table></figure></p>
 <p>如有任何疑问和问题，欢迎一起交流进步，可以留言或邮箱 <a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a> <a href="mailto:yaoyihao1@gmail.com" target="_blank" rel="noopener">yaoyihao1@gmail.com</a></p>
 
@@ -578,8 +581,8 @@ CustomInstantiationAwarePostProcessorAdapter</code>。在<code>CustomInstantiati
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/21/细节知多少 - spring boot aop动态代理解析之阶段一/" rel="next" title="细节知多少 - spring boot aop过程解析之阶段一 AnnotationAwareAspectJAutoProxyCreator加载">
-                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot aop过程解析之阶段一 AnnotationAwareAspectJAutoProxyCreator加载
+              <a href="/2019/04/21/细节知多少 - spring boot aop动态代理解析之阶段一/" rel="next" title="细节知多少 - spring boot aop过程解析之阶段一 AnnotationAwareAspectJAutoProxyCreator加载和初始化">
+                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot aop过程解析之阶段一 AnnotationAwareAspectJAutoProxyCreator加载和初始化
               </a>
             
           </div>
@@ -679,7 +682,7 @@ CustomInstantiationAwarePostProcessorAdapter</code>。在<code>CustomInstantiati
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -764,7 +767,7 @@ CustomInstantiationAwarePostProcessorAdapter</code>。在<code>CustomInstantiati
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#带着问题学习"><span class="nav-number">1.</span> <span class="nav-text">带着问题学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证和生成代理的入口"><span class="nav-number">3.</span> <span class="nav-text">验证和生成代理的入口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#postProcessBeforeInstantiation"><span class="nav-number">3.1.</span> <span class="nav-text">postProcessBeforeInstantiation()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postProcessAfterInitialization"><span class="nav-number">3.2.</span> <span class="nav-text">postProcessAfterInitialization()</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#带着问题学习"><span class="nav-number">1.</span> <span class="nav-text">带着问题学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证和生成代理的入口"><span class="nav-number">3.</span> <span class="nav-text">验证和生成代理的入口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#postProcessBeforeInstantiation"><span class="nav-number">3.1.</span> <span class="nav-text">postProcessBeforeInstantiation()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postProcessAfterInitialization"><span class="nav-number">3.2.</span> <span class="nav-text">postProcessAfterInitialization()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题回答"><span class="nav-number">3.3.</span> <span class="nav-text">问题回答</span></a></li></ol></li></ol></div>
             
 
           </div>
