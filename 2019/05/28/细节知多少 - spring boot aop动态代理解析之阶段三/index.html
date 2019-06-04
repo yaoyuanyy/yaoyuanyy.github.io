@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/48-29.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/07-57.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/28/细节知多少%20-%20spring%20boot%20aop动态代理解析之阶段三/25-49.png">
-<meta property="og:updated_time" content="2019-06-04T12:56:14.197Z">
+<meta property="og:updated_time" content="2019-06-04T13:00:30.659Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot aop过程解析之阶段三 CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段">
 <meta name="twitter:description" content="此篇是细节知多少-spring boot aop过程解析系列的第三篇，即第三阶段 spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanClass是">
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-04T20:56:14+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-04T21:00:30+08:00">
                 2019-06-04
               </time>
             
@@ -509,7 +509,7 @@
 <li><p>MethodBeforeAdvice</p>
 </li>
 </ol>
-<h2 id="扩展-内存中生成的代理类class字节码输出到硬盘-class文件"><a href="#扩展-内存中生成的代理类class字节码输出到硬盘-class文件" class="headerlink" title="扩展 - 内存中生成的代理类class字节码输出到硬盘.class文件"></a>扩展 - 内存中生成的代理类class字节码输出到硬盘.class文件</h2><p>即 将jvm中的代理对象输出到硬盘</p>
+<h2 id="扩展-jvm内存中生成的代理类class字节码输出到硬盘-class文件"><a href="#扩展-jvm内存中生成的代理类class字节码输出到硬盘-class文件" class="headerlink" title="扩展 - jvm内存中生成的代理类class字节码输出到硬盘.class文件"></a>扩展 - jvm内存中生成的代理类class字节码输出到硬盘.class文件</h2><p>以下两种方法的代码放在main方法中</p>
 <h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">该设置用于输出cglib动态代理产生的类</span><br><span class="line">System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, &quot;/Users/xx/skyler&quot;);</span><br><span class="line"></span><br><span class="line">该设置用于输出jdk动态代理产生的类，输出的文件路径为your project下。如我的项目是java_example, $ProxyX.class在java_example/com/sun/proxy/下</span><br><span class="line">System.getProperties().put(&quot;sun.misc.ProxyGenerator.saveGeneratedFiles&quot;, &quot;true&quot;);</span><br></pre></td></tr></table></figure>
 <h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><pre><code>writeProxyClass2File(&quot;/Users/xx/skyler/project/mytest/java_example/target/classes/com/yy/example/pattern_mode/structure/proxy/dynamic_proxy/spring_aop/$Proxy2.class&quot;);
 
@@ -787,7 +787,7 @@ public static void writeProxyClass2File(String outPath) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#带着问题学习"><span class="nav-number">1.</span> <span class="nav-text">带着问题学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Proxy代理类入口"><span class="nav-number">3.</span> <span class="nav-text">生成Proxy代理类入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Proxy代理类"><span class="nav-number">4.</span> <span class="nav-text">生成Proxy代理类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成的class文件我们可以输出到-class"><span class="nav-number">4.1.</span> <span class="nav-text">生成的class文件我们可以输出到.class</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问业务方法"><span class="nav-number">5.</span> <span class="nav-text">访问业务方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-aop-关键词"><span class="nav-number">6.</span> <span class="nav-text">spring aop 关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展-内存中生成的代理类class字节码输出到硬盘-class文件"><span class="nav-number">7.</span> <span class="nav-text">扩展 - 内存中生成的代理类class字节码输出到硬盘.class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一"><span class="nav-number">7.0.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二"><span class="nav-number">7.0.2.</span> <span class="nav-text">方法二</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#带着问题学习"><span class="nav-number">1.</span> <span class="nav-text">带着问题学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Proxy代理类入口"><span class="nav-number">3.</span> <span class="nav-text">生成Proxy代理类入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Proxy代理类"><span class="nav-number">4.</span> <span class="nav-text">生成Proxy代理类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成的class文件我们可以输出到-class"><span class="nav-number">4.1.</span> <span class="nav-text">生成的class文件我们可以输出到.class</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问业务方法"><span class="nav-number">5.</span> <span class="nav-text">访问业务方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-aop-关键词"><span class="nav-number">6.</span> <span class="nav-text">spring aop 关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展-jvm内存中生成的代理类class字节码输出到硬盘-class文件"><span class="nav-number">7.</span> <span class="nav-text">扩展 - jvm内存中生成的代理类class字节码输出到硬盘.class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一"><span class="nav-number">7.0.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二"><span class="nav-number">7.0.2.</span> <span class="nav-text">方法二</span></a></li></ol></li></ol></div>
             
 
           </div>
