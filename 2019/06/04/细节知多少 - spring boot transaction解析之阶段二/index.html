@@ -84,14 +84,14 @@
 <meta name="description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 我把spring boot transaction的整个过程分为三个阶段  事务">
 <meta name="keywords" content="spring boot,spring transaction">
 <meta property="og:type" content="article">
-<meta property="og:title" content="细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化">
+<meta property="og:title" content="细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/index.html">
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 我把spring boot transaction的整个过程分为三个阶段  事务">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-11T08:34:22.281Z">
+<meta property="og:updated_time" content="2019-06-12T12:10:04.482Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化">
+<meta name="twitter:title" content="细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段">
 <meta name="twitter:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 我把spring boot transaction的整个过程分为三个阶段  事务">
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化 | skyler-blog</title>
+  <title>细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段 | skyler-blog</title>
   
 
 
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化</h1>
+          <h1 class="post-title" itemprop="name headline">细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段</h1>
         
 
         <div class="post-meta">
@@ -330,8 +330,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-11T16:34:22+08:00">
-                2019-06-11
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-12T20:10:04+08:00">
+                2019-06-12
               </time>
             
           </span>
@@ -376,7 +376,7 @@
 
           
           
-             <span id="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/" class="leancloud_visitors" data-flag-title="细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化">
+             <span id="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/" class="leancloud_visitors" data-flag-title="细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -495,7 +495,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/" title="细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化">https://yaoyuanyy.github.io/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/</a>
+    <a href="https://yaoyuanyy.github.io/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/" title="细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段">https://yaoyuanyy.github.io/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -525,8 +525,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/04/细节知多少 - spring boot transaction解析之阶段一/" rel="next" title="细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化">
-                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化
+              <a href="/2019/06/04/细节知多少 - spring boot transaction解析之阶段一/" rel="next" title="细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段">
+                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段
               </a>
             
           </div>
@@ -872,7 +872,7 @@
         var disqus_config = function () {
           this.page.url = 'https://yaoyuanyy.github.io/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/';
           this.page.identifier = '2019/06/04/细节知多少 - spring boot transaction解析之阶段二/';
-          this.page.title = '细节知多少 - spring boot transaction解析之阶段一 transaction相关类加载和初始化';
+          this.page.title = '细节知多少 - spring boot transaction解析之阶段一 访问service类的@Transactional方法实现事务的阶段';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';
