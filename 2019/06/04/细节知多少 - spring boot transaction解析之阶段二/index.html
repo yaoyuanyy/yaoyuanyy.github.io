@@ -89,16 +89,17 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 笔者把spring boot transaction的整个过程分为两个阶段  带">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/18-57.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-25.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/50-03.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/23-51.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-10.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/27-29.png">
-<meta property="og:updated_time" content="2019-06-16T06:23:24.369Z">
+<meta property="og:updated_time" content="2019-06-16T08:21:51.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot transaction解析之阶段二 访问service类的@Transactional方法实现事务的阶段">
 <meta name="twitter:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 笔者把spring boot transaction的整个过程分为两个阶段  带">
-<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-25.png">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/18-57.png">
 
 
 
@@ -336,7 +337,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-16T14:23:24+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-16T16:21:51+08:00">
                 2019-06-16
               </time>
             
@@ -407,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4.3k
+                  4.4k
                 </span>
               
 
@@ -455,6 +456,7 @@
 <p>带着问题学习往往起到更好的效果</p>
 </blockquote>
 <p>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 平时总是spring默认的事务只有运行时异常才回滚，为什么</span><br><span class="line">2. 事务的savepoint是什么</span><br><span class="line">3. 如何做到多个数据操作的事务提交和回滚的</span><br></pre></td></tr></table></figure></p>
+<h2 id="调用流程图"><a href="#调用流程图" class="headerlink" title="调用流程图"></a>调用流程图</h2><p><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/18-57.png" alt="18-57"><br>这是spring官网doc上关于spring transaction的调用流程图。我们大致先有个印象，每个节点的细节正是本文的重点内容。随着本文细节的逐一阐述完成，再回来看下这个图，会有更深的理解和掌握</p>
 <h2 id="http-访问"><a href="#http-访问" class="headerlink" title="http 访问"></a>http 访问</h2><blockquote>
 <p><a href="http://localhost:2372/user/updateSchoolName?schoolName=vl&amp;studentId=3" target="_blank" rel="noopener">http://localhost:2372/user/updateSchoolName?schoolName=vl&amp;studentId=3</a></p>
 </blockquote>
@@ -792,7 +794,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术栈"><span class="nav-number">2.</span> <span class="nav-text">技术栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带着问题学习"><span class="nav-number">3.</span> <span class="nav-text">带着问题学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http-访问"><span class="nav-number">4.</span> <span class="nav-text">http 访问</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理类的方法"><span class="nav-number">4.1.</span> <span class="nav-text">代理类的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务入口点"><span class="nav-number">5.</span> <span class="nav-text">事务入口点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-transaction-关键词"><span class="nav-number">6.</span> <span class="nav-text">spring transaction 关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用链图"><span class="nav-number">7.</span> <span class="nav-text">调用链图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">8.</span> <span class="nav-text">扩展</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术栈"><span class="nav-number">2.</span> <span class="nav-text">技术栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带着问题学习"><span class="nav-number">3.</span> <span class="nav-text">带着问题学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用流程图"><span class="nav-number">4.</span> <span class="nav-text">调用流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http-访问"><span class="nav-number">5.</span> <span class="nav-text">http 访问</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理类的方法"><span class="nav-number">5.1.</span> <span class="nav-text">代理类的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务入口点"><span class="nav-number">6.</span> <span class="nav-text">事务入口点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-transaction-关键词"><span class="nav-number">7.</span> <span class="nav-text">spring transaction 关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用链图"><span class="nav-number">8.</span> <span class="nav-text">调用链图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">9.</span> <span class="nav-text">扩展</span></a></li></ol></div>
             
 
           </div>
