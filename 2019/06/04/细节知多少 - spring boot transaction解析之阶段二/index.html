@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/50-03.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/23-51.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/27-29.png">
-<meta property="og:updated_time" content="2019-06-15T15:30:52.648Z">
+<meta property="og:updated_time" content="2019-06-16T00:10:37.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot transaction解析之阶段二 访问service类的@Transactional方法实现事务的阶段">
 <meta name="twitter:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 笔者把spring boot transaction的整个过程分为两个阶段  带">
@@ -335,8 +335,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-15T23:30:52+08:00">
-                2019-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-16T08:10:37+08:00">
+                2019-06-16
               </time>
             
           </span>
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4.1k
+                  4.3k
                 </span>
               
 
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  17
+                  18
                 </span>
               
             </div>
@@ -509,7 +509,9 @@
 <p>到这里我们就明白了，<font color="green">为什么说spring事务默认只有运行时异常RuntimeException才回滚，像非运行时异常不回滚，所以平时在实际的开发过程中，写事务时记得配置@Transactional.rollbackfor，这样任何异常都会执行回滚操作了</font></p>
 <p>##问题回答<br>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 平时总是spring默认的事务只有运行时异常才回滚，为什么</span><br><span class="line">2. 事务的savepoint是什么</span><br><span class="line">3. 如何做到多个数据操作的事务提交和回滚的</span><br></pre></td></tr></table></figure></p>
 <p>回答：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. RuleBasedTransactionAttribute.rollbackOn(Throwable ex)方法解释了这个问题的本质，文中也有详细的分析和阐述</span><br><span class="line">2. 事务的savepoint是什么 TODO</span><br><span class="line">3. 事务具有传播特性，同一个事务对数据库的连接Connection的是相同的，本质的通过Connection.commit和Connection.rollback实现的</span><br></pre></td></tr></table></figure></p>
-<h2 id="spring-transaction-关键词"><a href="#spring-transaction-关键词" class="headerlink" title="spring transaction 关键词"></a>spring transaction 关键词</h2><ol>
+<h2 id="spring-transaction-关键词"><a href="#spring-transaction-关键词" class="headerlink" title="spring transaction 关键词"></a>spring transaction 关键词</h2><ol start="0">
+<li><p>AbstractPlatformTransactionManager<br>spring标准事务工作流的基础类，作为具体事务管理器的基础。这个基础类提供以下的工作流的处理：<br>. 判断是否有一个存在的事务<br>. 应用合适的传播行为<br>. 暂停suspend和重新使用resume事务if necessary<br>. 在commit提交是检查回滚rollback-only标识<br>. 在回滚rollback时应用合适的修改动作 actual rollback or setting rollback-only<br>. triggers registered synchronization callbacks (if transaction synchronization is active).<br>子类必须为事务特定状态实现特定的template methods，像: begin, suspend, resume, commit, rollback. 他们都是很重要的，必须被具体的实现类实现和提供<br>事务同步(Transaction synchronization)是当事务完成时提供回调的一般机制。这主要是被用于内部的数据 the data access support classes for JDBC, Hibernate, JPA</p>
+</li>
 <li><p>ConnectionHolder<br>持有Connection，savepointsSupported属性</p>
 </li>
 <li><p>TransactionAspectSupport<br>事务切面的基础类(Base class for transactional aspects)，是TransactionInterceptor的父类，拥有transactionInfoHolder属性，他的方法invokeWithinTransaction是事务和业务方法结合的入口处，事务操作几乎在这个类中完成</p>
