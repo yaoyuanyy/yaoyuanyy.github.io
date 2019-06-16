@@ -92,8 +92,9 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-25.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/50-03.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/23-51.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-10.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/27-29.png">
-<meta property="og:updated_time" content="2019-06-16T00:10:37.850Z">
+<meta property="og:updated_time" content="2019-06-16T01:49:15.494Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot transaction解析之阶段二 访问service类的@Transactional方法实现事务的阶段">
 <meta name="twitter:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 笔者把spring boot transaction的整个过程分为两个阶段  带">
@@ -335,7 +336,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-16T08:10:37+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-16T09:49:15+08:00">
                 2019-06-16
               </time>
             
@@ -529,7 +530,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拥有PlatformTransactionManager,TransactionAttribute,TransactionStatus,oldTransactionInfo等属性</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>这几个对象间的关系通过图的方法<br>todo</p>
+<p>这几个对象间的关系通过图的方法<br><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/49-10.png" alt="49-10"></p>
 <h2 id="调用链图"><a href="#调用链图" class="headerlink" title="调用链图"></a>调用链图</h2><p><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/27-29.png" alt="27-29"></p>
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ol>
 <li>Transaction Synchronization含义 (触发提交操作回调的)Trigger xxxCommit callbacks.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Transaction Synchronization. The Java Transaction API includes a javax.transaction.Synchronization interface, which issues notifications before and after a transaction is completed. ... After the transaction is committed or rolled back, the TransactionManager calls the Synchronization object&apos;s afterCompletion() method.</span><br></pre></td></tr></table></figure>
