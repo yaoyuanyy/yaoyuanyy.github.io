@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="本篇内容特别适合对ribbon有基本了解的同学，初学者可以看运行起ribbon的demo后再来这篇，效率更高。所以ribbon的理论功能和介绍不作阐述，只从源码角度关注细节。 前言适应版本：springcloud1和springcloud2 本篇是ribbon结合eureka实现负载均衡的源码解析，学完本篇后，将清楚以下知识点：  ribbon实现负载均衡需要的server列表是如何获取和定时同步">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-16T08:12:22.117Z">
+<meta property="og:updated_time" content="2019-06-20T12:49:40.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springcloud ribbon同步eureka server服务列表与负载均衡算法分析">
 <meta name="twitter:description" content="本篇内容特别适合对ribbon有基本了解的同学，初学者可以看运行起ribbon的demo后再来这篇，效率更高。所以ribbon的理论功能和介绍不作阐述，只从源码角度关注细节。 前言适应版本：springcloud1和springcloud2 本篇是ribbon结合eureka实现负载均衡的源码解析，学完本篇后，将清楚以下知识点：  ribbon实现负载均衡需要的server列表是如何获取和定时同步">
@@ -330,8 +330,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-16T16:12:22+08:00">
-                2019-05-16
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-20T20:49:40+08:00">
+                2019-06-20
               </time>
             
           </span>
@@ -460,7 +460,7 @@
 <h3 id="ribbon周期性从eureka-client拿到最新服务列表"><a href="#ribbon周期性从eureka-client拿到最新服务列表" class="headerlink" title="ribbon周期性从eureka client拿到最新服务列表"></a>ribbon周期性从eureka client拿到最新服务列表</h3><ul>
 <li>先总结下：从哪到哪-&gt;从DiscoveryClient.LocalRegionApps/remoteRegionVsApps获取服务列表数据塞到BaseLoadBalacer.upServerList</li>
 </ul>
-<p>注意：而ribbon(eureka client)的DiscoveryClient.LocalRegionApps/remoteRegionVsApps数据是先周期性从eureka server中拿到的，详解参见<a href="https://yaoyuanyy.github.io/gitbook/gitbook_web/spring%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/2019-03-11_springcloud_eureka_client%E4%BB%8Eserver%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE.html">eureka client从server同步数据</a></p>
+<p>注意：而ribbon(eureka client)的DiscoveryClient.LocalRegionApps/remoteRegionVsApps数据是先周期性从eureka server中拿到的，详解参见<a href="https://yaoyuanyy.github.io/2019/04/10/springcloud%20eureka%20client%E4%BB%8Eeureka%20server%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE/">eureka client从server同步数据</a></p>
 <p>调用栈<br>-PollingServerListUpdater.start(UpdateAction)<br>–ServerListUpdater.UpdateAction.doUpdate()<br>—-DynamicServerListLoadBalancer.updateListOfServers(<br>—–DiscoveryEnabledNIWSServerList.getUpdatedListOfServers() // 获取到servers<br>——this.obtainServersViaDiscovery()<br>——-DiscoverClient.getInstancesByVipAddress(vipAddress, isSecure, targetRegion)<br>—–ZonePreferenceServerListFilter.getFilteredListOfServers(servers)<br>—–DynamicServerListLoadBalancer.updateAllServerList(servers)<br>——DynamicServerListLoadBalancer.setServersList(servers)// servers赋值到this.super.upServerList</p>
 <p>调用栈总结：从DiscoveryClient.LocalRegionApps/remoteRegionVsApps获取服务列表数据塞到BaseLoadBalacer.upServerList的同时，DynamicServerListLoadBalancer.setServersList()方法还会将zone和servers作映射形成map，赋值给LoadBalancerStats.upServerListZoneMap和zoneStatsMap，留作后用</p>
 <p>一个zone–&gt;一个BaseLoadBalancer–&gt;一个IRule,其中一个BaseLoadBalancer包含upServerList和allServerList，即服务集合</p>
