@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/32-13.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/46-42.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/47-49.png">
-<meta property="og:updated_time" content="2019-07-14T03:02:41.544Z">
+<meta property="og:updated_time" content="2019-07-14T03:29:47.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux&#x2F;mac安装及使用最新版tmux">
 <meta name="twitter:description" content="实际问题场景日常的编程开发过程中，你是否遇到了如下的烦恼  终端一个界面分成多个窗口 公司的环境多样：dev环境，test环境，preview环境，每次调试各环境上的问题，都需要ssh xxx，还要输入各环境的密码，烦人的密码怎让人记得住，问题还没调呢，找密码花费一番周折 上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接  如果你有以上至少一种苦恼，那么">
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-14T11:02:41+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-14T11:29:47+08:00">
                 2019-07-14
               </time>
             
@@ -405,7 +405,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.3k
+                  2.5k
                 </span>
               
 
@@ -421,7 +421,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  9
+                  10
                 </span>
               
             </div>
@@ -449,6 +449,7 @@
 <li>上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接</li>
 </ul>
 <p>如果你有以上至少一种苦恼，那么tmux绝对给你惊艳，大大提高你工作的效率</p>
+<p>注：如果想一连永益，你需要一台24小时运行的机器，只要是不关机就行云机器</p>
 <h2 id="tmux介绍"><a href="#tmux介绍" class="headerlink" title="tmux介绍"></a>tmux介绍</h2><p>Terminal Multiplexer，简单的说：它是一个多终端进程管理器，主要用到的功能是终端界面分屏显示，后台运行终端进程。</p>
 <p>根据tmux的定义，在开启了tmux服务器后，会首先创建一个会话，而这个会话则会首先创建一个窗口，其中仅包含一个面板；也就是说，这里看到的所谓终端控制台应该称作tmux的一个面板，虽然其使用方法与终端控制台完全相同。</p>
 <p>tmux结合iTerm2更配，使用更流程，iTerm2安装和使用参见：<a href="https://yaoyuanyy.github.io/2019/07/12/mac%E4%B8%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8iTerm2/">mac下iTerm2安装和使用</a><br>tmux主要包括以下单元模块<br>| 单元模块| 描述|<br>| :– | :– |<br>|server 服务器|输入tmux命令时就开启了一个服务器|<br>|session 会话|一个服务器可以包含多个会话|<br>|window 窗口|一个会话可以包含多个窗口|<br>|panel 面板|一个窗口可以包含多个面板|</p>
@@ -475,6 +476,8 @@
 <h4 id="3-重新加载配置文件"><a href="#3-重新加载配置文件" class="headerlink" title="3. 重新加载配置文件"></a>3. 重新加载配置文件</h4><p>配置文件修改完成后，重新加载配置文件，三种方式：<br>$ tmux kill-server 重启所有 tmux 进程<br>$  tmux source-file ~/.tmux.conf<br>$  tmux 会话中使用 ⌃b进入控制台模式，输入 source-file ~/.tmux.conf</p>
 <h4 id="4-鼠标复制"><a href="#4-鼠标复制" class="headerlink" title="4. 鼠标复制"></a>4. 鼠标复制</h4><p>tmux 下开启鼠标滚屏后，复制文本有两种方式：<br>方法 1：使用 ⌃b z 进入窗格全屏模式，鼠标选择文本的同时按住 option 键 ⌥，然后使用 ⌘c 进行复制；<br>方法 2：开启 iTerm2 「在选择时复制」选项，即可实现选择即复制。如下图：<br><img src="/2019/07/12/mac-linux安装及使用最新版tmux/47-49.png" alt="47-49"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://stackoverflow.com/questions/16398850/create-new-tmux-session-from-inside-a-tmux-session" target="_blank" rel="noopener">https://stackoverflow.com/questions/16398850/create-new-tmux-session-from-inside-a-tmux-session</a><br><a href="https://segmentfault.com/a/1190000003001555" target="_blank" rel="noopener">https://segmentfault.com/a/1190000003001555</a><br><a href="https://www.cnblogs.com/kaiye/p/6275207.html" target="_blank" rel="noopener">https://www.cnblogs.com/kaiye/p/6275207.html</a><br><a href="http://mindonmind.github.io/notes/linux/tmux.html" target="_blank" rel="noopener">http://mindonmind.github.io/notes/linux/tmux.html</a><br><a href="https://blog.csdn.net/trochiluses/article/details/9773103" target="_blank" rel="noopener">https://blog.csdn.net/trochiluses/article/details/9773103</a><br><a href="https://harttle.land/2015/11/06/tmux-startup.html" target="_blank" rel="noopener">https://harttle.land/2015/11/06/tmux-startup.html</a><br><a href="https://segmentfault.com/a/1190000008188987" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008188987</a><br>扩展<br><a href="http://louiszhai.github.io/2017/09/30/tmux/#Tmux-Resurrect" target="_blank" rel="noopener">http://louiszhai.github.io/2017/09/30/tmux/#Tmux-Resurrect</a></p>
+<p>到这里，tmux你已经拥有了，开始你顺滑之旅吧。技术是没有止境的，在mac系统上，拥有着更简便的操作方式，那就是afred这款神器，他可以结合其插件实现一键连接远程多机器，顺滑的令人陶醉。具体参见：<a href="https://yaoyuanyy.github.io/2019/05/13/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E6%8F%90%E5%8D%87%E4%B9%8Balfred%E9%9B%86%E6%88%90ssh+iterm/">开发效率神提升之alfred集成ssh+iterm+tmux</a></p>
+<p>其实，技术就是这样的，一步一步的发展，在问题的驱动下，越来越专注，越来越方便，越来越智能。我们要做的只有不断的尝试，不断的前行，不断的应用</p>
 <h3 id="linux下安装tmux-1"><a href="#linux下安装tmux-1" class="headerlink" title="linux下安装tmux"></a>linux下安装tmux</h3><h4 id="方式一-yum安装"><a href="#方式一-yum安装" class="headerlink" title="方式一 yum安装"></a>方式一 yum安装</h4><p>$ yum install tmux 此安装的可能不是tmux最新版本<br>$ tmux ls 可能报下面错<br>tmux failed to connect to server<br>$ tmux 后退出再tmux ls就可以了</p>
 <h4 id="方式二-源码安装最新版"><a href="#方式二-源码安装最新版" class="headerlink" title="方式二 源码安装最新版"></a>方式二 源码安装最新版</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">step1</span><br><span class="line">INSTALL DEPS</span><br><span class="line">$ yum install gcc kernel-devel make ncurses-devel</span><br><span class="line"></span><br><span class="line">step2</span><br><span class="line">DOWNLOAD SOURCES FOR LIBEVENT AND MAKE AND INSTALL</span><br><span class="line">$ curl -OL https://github.com/libevent/libevent/releases/download/release-2.0.22-stable/libevent-2.0.22-stable.tar.gz</span><br><span class="line">$ tar -xvzf libevent-2.0.22-stable.tar.gz</span><br><span class="line">$ cd libevent-2.0.22-stable</span><br><span class="line">$ ./configure --prefix=/usr/local</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br><span class="line">$ cd ..</span><br><span class="line"></span><br><span class="line">step3</span><br><span class="line">DOWNLOAD SOURCES FOR TMUX AND MAKE AND INSTALL</span><br><span class="line">$ curl -OL https://github.com/tmux/tmux/releases/download/2.3/tmux-2.3.tar.gz</span><br><span class="line">$ tar -xvzf tmux-2.3.tar.gz</span><br><span class="line">$ cd tmux-2.3</span><br><span class="line">$ LDFLAGS=&quot;-L/usr/local/lib -Wl,-rpath=/usr/local/lib&quot; ./configure --prefix=/usr/local</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br><span class="line">$ cd ..</span><br><span class="line"></span><br><span class="line">step4</span><br><span class="line">PKILL TMUX</span><br><span class="line">$ sudo killall -9 tmux</span><br><span class="line">$ close your terminal window (flushes cached tmux executable)</span><br><span class="line">$ open new shell and check tmux version</span><br><span class="line">$ tmux -V</span><br></pre></td></tr></table></figure>
 <h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="https://gist.github.com/philipsd6/9576d313d577b57dd7c351ac801317f2" target="_blank" rel="noopener">https://gist.github.com/philipsd6/9576d313d577b57dd7c351ac801317f2</a><br><a href="http://witkowskibartosz.com/blog/update-your-tmux-to-latest-version.html#.W2bPQNgzaqD" target="_blank" rel="noopener">http://witkowskibartosz.com/blog/update-your-tmux-to-latest-version.html#.W2bPQNgzaqD</a></p>
