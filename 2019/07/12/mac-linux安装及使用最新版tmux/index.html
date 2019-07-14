@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/32-13.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/46-42.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/47-49.png">
-<meta property="og:updated_time" content="2019-07-14T02:57:29.078Z">
+<meta property="og:updated_time" content="2019-07-14T03:02:41.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux&#x2F;mac安装及使用最新版tmux">
 <meta name="twitter:description" content="实际问题场景日常的编程开发过程中，你是否遇到了如下的烦恼  终端一个界面分成多个窗口 公司的环境多样：dev环境，test环境，preview环境，每次调试各环境上的问题，都需要ssh xxx，还要输入各环境的密码，烦人的密码怎让人记得住，问题还没调呢，找密码花费一番周折 上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接  如果你有以上至少一种苦恼，那么">
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-14T10:57:29+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-14T11:02:41+08:00">
                 2019-07-14
               </time>
             
@@ -451,7 +451,7 @@
 <p>如果你有以上至少一种苦恼，那么tmux绝对给你惊艳，大大提高你工作的效率</p>
 <h2 id="tmux介绍"><a href="#tmux介绍" class="headerlink" title="tmux介绍"></a>tmux介绍</h2><p>Terminal Multiplexer，简单的说：它是一个多终端进程管理器，主要用到的功能是终端界面分屏显示，后台运行终端进程。</p>
 <p>根据tmux的定义，在开启了tmux服务器后，会首先创建一个会话，而这个会话则会首先创建一个窗口，其中仅包含一个面板；也就是说，这里看到的所谓终端控制台应该称作tmux的一个面板，虽然其使用方法与终端控制台完全相同。</p>
-<p>tmux结合iTerm2更配，使用更流程，iTerm2安装和使用参见：<a href="">mac下iTerm2安装和使用</a><br>tmux主要包括以下单元模块<br>| 单元模块| 描述|<br>| :– | :– |<br>|server 服务器|输入tmux命令时就开启了一个服务器|<br>|session 会话|一个服务器可以包含多个会话|<br>|window 窗口|一个会话可以包含多个窗口|<br>|panel 面板|一个窗口可以包含多个面板|</p>
+<p>tmux结合iTerm2更配，使用更流程，iTerm2安装和使用参见：<a href="https://yaoyuanyy.github.io/2019/07/12/mac%E4%B8%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8iTerm2/">mac下iTerm2安装和使用</a><br>tmux主要包括以下单元模块<br>| 单元模块| 描述|<br>| :– | :– |<br>|server 服务器|输入tmux命令时就开启了一个服务器|<br>|session 会话|一个服务器可以包含多个会话|<br>|window 窗口|一个会话可以包含多个窗口|<br>|panel 面板|一个窗口可以包含多个面板|</p>
 <p>server、session、window、panel之间的关系如下图<br><img src="/2019/07/12/mac-linux安装及使用最新版tmux/32-13.png" alt="32-13"></p>
 <h3 id="macOS下安装tmux"><a href="#macOS下安装tmux" class="headerlink" title="macOS下安装tmux"></a>macOS下安装tmux</h3><p>macOS 上使用 Homebrew 安装即可：</p>
 <blockquote>
