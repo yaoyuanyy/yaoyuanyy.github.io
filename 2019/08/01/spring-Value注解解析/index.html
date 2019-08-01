@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="spring,\@Value,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[TOC] spring @Value解析缘由​@Value是开发过程中使用比较频繁的注解之一，它的作用是将配置文件中key对应的值赋值给它标注的属性。对于常见的知识点，我们应该了解它功能实现的本质。对我们自己的技术提升很有帮助。 原理​在spring中是由AutowiredAnnotationBeanPostProcessor解析处理@Value注解。AutowiredAnnotationBea">
+<meta name="keywords" content="spring,\@Value">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring @Value注解解析">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="[TOC] spring @Value解析缘由​@Value是开发过程中使用比较频繁的注解之一，它的作用是将配置文件中key对应的值赋值给它标注的属性。对于常见的知识点，我们应该了解它功能实现的本质。对我们自己的技术提升很有帮助。 原理​在spring中是由AutowiredAnnotationBeanPostProcessor解析处理@Value注解。AutowiredAnnotationBea">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/![image-20190801201829017](Value注解解析/image-20190801201829017.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/19-48.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/20-55.png">
+<meta property="og:updated_time" content="2019-08-01T13:22:29.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring @Value注解解析">
+<meta name="twitter:description" content="[TOC] spring @Value解析缘由​@Value是开发过程中使用比较频繁的注解之一，它的作用是将配置文件中key对应的值赋值给它标注的属性。对于常见的知识点，我们应该了解它功能实现的本质。对我们自己的技术提升很有帮助。 原理​在spring中是由AutowiredAnnotationBeanPostProcessor解析处理@Value注解。AutowiredAnnotationBea">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/![image-20190801201829017](Value注解解析/image-20190801201829017.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/">
+
+
+
+
+
+  <title>spring @Value注解解析 | skyler-blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94ae7654e2dc1739de6dffa8904d5c82";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring @Value注解解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-01T21:11:03+08:00">
+                2019-08-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-08-01T21:22:29+08:00">
+                2019-08-01
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/01/spring-Value注解解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/01/spring-Value注解解析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/08/01/spring-Value注解解析/" class="leancloud_visitors" data-flag-title="spring @Value注解解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h1 id="spring-Value解析"><a href="#spring-Value解析" class="headerlink" title="spring @Value解析"></a>spring @Value解析</h1><h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>​@Value是开发过程中使用比较频繁的注解之一，它的作用是将配置文件中key对应的值赋值给它标注的属性。对于常见的知识点，我们应该了解它功能实现的本质。对我们自己的技术提升很有帮助。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>​在spring中是由<code>AutowiredAnnotationBeanPostProcessor</code>解析处理@Value注解。<code>AutowiredAnnotationBeanPostProcessor</code>是一个<code>BeanPostProcessor</code>，所以每个类的实例化都过经过<code>AutowiredAnnotationBeanPostProcessor</code>类。当<code>post-processor</code>处理bean时，会解析bean Class的所有属性，在解析时会判断属性上是否标有<code>@Value</code>注解，有就解析这个<code>@Value</code>的属性值，将解析后结果放入<code>AutowiredFieldElement</code>类型<code>InjectionMetaData.checkedElements</code>中，当给属性赋值时会使用<code>checkedElements</code>，从而得到<code>@Value</code>注解的<code>Filed</code>属性，调用<code>AutowiredFieldElement.inject()</code>方法进行解析，解析时会使用<code>DefaultListableBeanFactory</code>(用于解析${})和<code>TypeConverter</code>(用于类型转换)，从而得到<code>age</code>属性的值，最后调用<code>field.set(bean, value)</code>，从而获取的值赋给<code>bean的field</code>。</p>
+<p>​整个过程就是这样，有点抽象吧，下面我们一起debug源码，更清晰简明的了解@Value的原理。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p> debug源码是我觉得掌握其原理最好的方式</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>一个可以运行的spring boot project</li>
+<li>提供一个controller类，包含一个被@Value标注的属性：<code>int age</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;user.age:11&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">"age:&#123;&#125;"</span>, age)</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="一起debug解开神秘"><a href="#一起debug解开神秘" class="headerlink" title="一起debug解开神秘"></a>一起debug解开神秘</h2><h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>核心：存。将class的标注@Value的所有信息转存InjectionMetadata.InjectedElement集合中</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><code>@Value</code>同@<code>Autowired</code>一样，是由<code>AutowiredAnnotationBeanPostProcessor</code>解析处理，处理<code>@Value</code>的入口为<code>AutowiredAnnotationBeanPostProcessor.buildAutowiringMetadata(Class clazz)</code>。看代码内部</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">AutowiredAnnotationBeanPostProcessor class</span><br><span class="line">private InjectionMetadata buildAutowiringMetadata(final Class&lt;?&gt; clazz) &#123;</span><br><span class="line">		List&lt;InjectionMetadata.InjectedElement&gt; elements = new ArrayList&lt;&gt;();</span><br><span class="line">		Class&lt;?&gt; targetClass = clazz;</span><br><span class="line"></span><br><span class="line">		do &#123;</span><br><span class="line">			final List&lt;InjectionMetadata.InjectedElement&gt; currElements = new ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">      // 解析targetClass的所有属性</span><br><span class="line">			ReflectionUtils.doWithLocalFields(targetClass, field -&gt; &#123;</span><br><span class="line">				AnnotationAttributes ann = findAutowiredAnnotation(field);</span><br><span class="line">				if (ann != null) &#123;</span><br><span class="line">				  // 由此可知，static修改的属性无法使用@Value注解赋值</span><br><span class="line">					if (Modifier.isStatic(field.getModifiers())) &#123;</span><br><span class="line">						return;</span><br><span class="line">					&#125;</span><br><span class="line">					boolean required = determineRequiredStatus(ann);</span><br><span class="line">					currElements.add(new AutowiredFieldElement(field, required));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line">			ReflectionUtils.doWithLocalMethods(targetClass, method -&gt; &#123;</span><br><span class="line">				Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);</span><br><span class="line">				AnnotationAttributes ann = findAutowiredAnnotation(bridgedMethod);</span><br><span class="line">				if (ann != null &amp;&amp; method.equals(ClassUtils.getMostSpecificMethod(method, clazz))) &#123;</span><br><span class="line">					// 由此可知，static修改的方法无法使用@Value注解赋值</span><br><span class="line">					if (Modifier.isStatic(method.getModifiers())) &#123;</span><br><span class="line">						return;</span><br><span class="line">					&#125;</span><br><span class="line">					boolean required = determineRequiredStatus(ann);</span><br><span class="line">					PropertyDescriptor pd = BeanUtils.findPropertyForMethod(bridgedMethod, clazz);</span><br><span class="line">					currElements.add(new AutowiredMethodElement(method, required, pd));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line">			elements.addAll(0, currElements);</span><br><span class="line">			targetClass = targetClass.getSuperclass();</span><br><span class="line">		&#125;</span><br><span class="line">		while (targetClass != null &amp;&amp; targetClass != Object.class);</span><br><span class="line"></span><br><span class="line">		return new InjectionMetadata(clazz, elements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法用于遍历和解析clazz的所有filed和method，解析其上的<code>@Value</code>、<code>@Autowired</code>、<code>@Inject</code>注解，然后放入类型为<code>InjectionMetadata.InjectedElement</code>的<code>elements</code>中，<code>elements</code>再放入<code>metadata(=new InjectionMetadata(clazz, elements))</code>中。再将<code>metadata</code>放入缓存<code>injectionMetadataCache</code>中，后面会从缓存中取值</p>
+<p>下面，我们重点看属性的解析过程，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">AutowiredAnnotationBeanPostProcessor class</span><br><span class="line">private AnnotationAttributes findAutowiredAnnotation(AccessibleObject ao) &#123;</span><br><span class="line">		if (ao.getAnnotations().length &gt; 0) &#123;  // autowiring annotations have to be local</span><br><span class="line">			for (Class&lt;? extends Annotation&gt; type : this.autowiredAnnotationTypes) &#123;</span><br><span class="line">				AnnotationAttributes attributes = AnnotatedElementUtils.getMergedAnnotationAttributes(ao, type);</span><br><span class="line">				if (attributes != null) &#123;</span><br><span class="line">					return attributes;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>autowiredAnnotationTypes</code>包含了<code>@Value</code>、<code>@Autowired</code>、<code>@Inject</code>。如果属性解析到了响应注解，就将注解的信息返回给上层。解析注解过程这里不详细说了</p>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>核心：用。使用InjectionMetadata.InjectedElement，解析并赋值给clazz的属性，即赋值MyController.age</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>上面的逻辑主要为解析@Value的信息存入<code>InjectionMetadata.InjectedElement</code>集合，下面的逻辑为使用<code>InjectionMetadata.InjectedElement</code>，解析出真正的值，从而赋值给属性。下面看看怎么解析并赋值的</p>
+<p>首先，我们通过获取<code>InjectionMetadata.InjectedElement</code>对象数据，其实是从<code>injectionMetadataCache</code>缓存中获取的。获取的地点代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">AutowiredAnnotationBeanPostProcessor class</span><br><span class="line">public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) &#123;</span><br><span class="line">		// 获取，从injectionMetadataCache缓存获取</span><br><span class="line">		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);</span><br><span class="line">		// 使用</span><br><span class="line">		metadata.inject(bean, beanName, pvs);</span><br><span class="line">		return pvs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们重点看使用部分，即<code>metadata.inject(bean, beanName, pvs)</code>，看方法名就知道，要注入属性值。看代码内部</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">InjectionMetadata class</span><br><span class="line">public void inject(Object target, @Nullable String beanName, @Nullable PropertyValues pvs) &#123;</span><br><span class="line">		if (!checkedElements.isEmpty()) &#123;</span><br><span class="line">			for (InjectedElement element : checkedElements) &#123;</span><br><span class="line">				element.inject(target, beanName, pvs);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法逻辑很简单，遍历集合分别调用<code>inject()</code>方法。看其内部代码逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">InjectionMetadata.InjectedElement class</span><br><span class="line">protected void inject(Object bean, @Nullable String beanName, @Nullable PropertyValues pvs) &#123;</span><br><span class="line">			Field field = (Field) this.member;</span><br><span class="line">			Object value;</span><br><span class="line">			if (this.cached) &#123;</span><br><span class="line">				value = resolvedCachedArgument(beanName, this.cachedFieldValue);</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				DependencyDescriptor desc = new DependencyDescriptor(field, this.required);</span><br><span class="line">				desc.setContainingClass(bean.getClass());</span><br><span class="line">				Set&lt;String&gt; autowiredBeanNames = new LinkedHashSet&lt;&gt;(1);</span><br><span class="line"> 				// 获取类型转换器</span><br><span class="line">				TypeConverter typeConverter = beanFactory.getTypeConverter();</span><br><span class="line">			  // 核心逻辑：解析field注解</span><br><span class="line">				value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);</span><br><span class="line">				// ··· 值缓存起来 略</span><br><span class="line">			&#125;</span><br><span class="line">			if (value != null) &#123;</span><br><span class="line">				ReflectionUtils.makeAccessible(field);</span><br><span class="line">				field.set(bean, value);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>方法的核心为使用<code>DependencyDescriptor</code>包装field，使用<code>beanFactory</code>解析<code>DependencyDescriptor</code>从而得到属性值。下面看其<code>beanFactory.resolveDependency()</code>内部代码。(注：<code>beanFactory</code>是通过<code>BeanFactoryAware</code>注入的，我们可学习这种用法)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">DefaultListableBeanFactory class</span><br><span class="line">public Object resolveDependency(DependencyDescriptor descriptor, @Nullable String requestingBeanName,</span><br><span class="line">			@Nullable Set&lt;String&gt; autowiredBeanNames, @Nullable TypeConverter typeConverter) &#123;</span><br><span class="line"></span><br><span class="line">		descriptor.initParameterNameDiscovery(getParameterNameDiscoverer());</span><br><span class="line">		// 处理Optional类型的field，与@Value无关，暂略</span><br><span class="line">		if (Optional.class == descriptor.getDependencyType()) &#123;</span><br><span class="line">			return createOptionalDependency(descriptor, requestingBeanName);</span><br><span class="line">		&#125;</span><br><span class="line">		// 处理ObjectFactory和ObjectProvider类型的field，与@Value无关，暂略</span><br><span class="line">		else if (ObjectFactory.class == descriptor.getDependencyType() ||</span><br><span class="line">				ObjectProvider.class == descriptor.getDependencyType()) &#123;</span><br><span class="line">			return new DependencyObjectProvider(descriptor, requestingBeanName);</span><br><span class="line">		&#125;else &#123;</span><br><span class="line">		  // 核心: 真正解析field的方法</span><br><span class="line">			result = doResolveDependency(descriptor, requestingBeanName, autowiredBeanNames, typeConverter);</span><br><span class="line">			return result;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从方法的入参可以看到，这个类型转换器<code>TypeConverter</code>已经传进来了，需要类型转换时就使用<code>TypeConverter</code>它进行转换，<code>TypeConverter</code>是从<code>BeanFactory.getTypeConverter()</code>获取来的。</p>
+<p><font color="green"> <strong><em>doResolveDependency()解析@Value注解的大管家，它不负责具体解析，但它说明了解析的整个流程</em></strong> </font>。看<code>doResolveDependency()</code>方法代码逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">DefaultListableBeanFactory class</span><br><span class="line">public Object doResolveDependency(DependencyDescriptor descriptor, @Nullable String beanName,</span><br><span class="line">			@Nullable Set&lt;String&gt; autowiredBeanNames, @Nullable TypeConverter typeConverter) &#123;</span><br><span class="line"></span><br><span class="line">    InjectionPoint previousInjectionPoint = ConstructorResolver.setCurrentInjectionPoint(descriptor);</span><br><span class="line">    try &#123;</span><br><span class="line">        // field属性的类型</span><br><span class="line">        Class&lt;?&gt; type = descriptor.getDependencyType();</span><br><span class="line">        // 1. 获取(不只是)@Value注解的value方法的值 如此例中value方法值为: $&#123;test.age:11&#125;      (1)</span><br><span class="line">        Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);</span><br><span class="line">        if (value != null) &#123;</span><br><span class="line">            // 如果value是String类型，走这里。此例value为: $&#123;test.age:11&#125;字符串</span><br><span class="line">            if (value instanceof String) &#123;</span><br><span class="line">                // 2. 开始解析value的值 </span><br><span class="line">                String strVal = resolveEmbeddedValue((String) value);</span><br><span class="line">                BeanDefinition bd = (beanName != null &amp;&amp; containsBean(beanName) ?</span><br><span class="line">                        getMergedBeanDefinition(beanName) : null);</span><br><span class="line">                value = evaluateBeanDefinitionString(strVal, bd);</span><br><span class="line">            &#125;</span><br><span class="line">            TypeConverter converter = (typeConverter != null ? typeConverter : getTypeConverter());</span><br><span class="line">            try &#123;</span><br><span class="line">                // 3. 开始解析value的值 </span><br><span class="line">                return converter.convertIfNecessary(value, type, descriptor.getTypeDescriptor());</span><br><span class="line">            &#125;</span><br><span class="line">            catch (UnsupportedOperationException ex) &#123;</span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ... 省略解析@Autowired注解的逻辑</span><br><span class="line">    &#125;finally &#123;</span><br><span class="line">        ConstructorResolver.setCurrentInjectionPoint(previousInjectionPoint);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此方法为解析<code>@Value</code>注解属性值的核心方法了。逻辑分为四步：</p>
+<ol>
+<li>获取(不只是)<code>@Value</code>注解的value方法的值。通过<code>descriptor</code>解析出注解的<code>value方法</code>的值</li>
+<li>开始解析value的值</li>
+<li>如果值为String类型，会特殊的解析这个值，特殊解析的意思是如果值为<code>${test.age:11}</code>，会解析出值为: <code>&quot;11&quot;</code>，这个解析过程使用的是<code>PropertySourcesPlaceholderConfigurer.processProperties()</code>方法</li>
+</ol>
+<p>说的有点抽象，举个例子。如下，定义了一个@Value注解的变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Value(&quot;$&#123;user.age:11&#125;&quot;)</span><br><span class="line">private int age;</span><br><span class="line"></span><br><span class="line">第一步：通过descriptor得到$&#123;user.age:11&#125;</span><br><span class="line">第二步：拆解$&#123;user.age:11&#125;，得到user.age:11，获取值，没有获取到，以:或$&#123;&#125;为标准再拆解，最后得到值</span><br><span class="line">第三步：此时得到的值是String类型的，需要转换成目标变量声明的类型，此处类型为int</span><br></pre></td></tr></table></figure>
+<h4 id="one-step"><a href="#one-step" class="headerlink" title="one step"></a>one step</h4><p>首先详细了解下第一步。获取<code>@Value的value()</code>方法的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">QualifierAnnotationAutowireCandidateResolver class</span><br><span class="line">public Object getSuggestedValue(DependencyDescriptor descriptor) &#123;</span><br><span class="line">		Object value = findValue(descriptor.getAnnotations());</span><br><span class="line">    if (value == null) &#123;</span><br><span class="line">        MethodParameter methodParam = descriptor.getMethodParameter();</span><br><span class="line">        if (methodParam != null) &#123;</span><br><span class="line">            value = findValue(methodParam.getMethodAnnotations());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br><span class="line">protected Object findValue(Annotation[] annotationsToSearch) &#123;</span><br><span class="line">    if (annotationsToSearch.length &gt; 0) &#123;   // qualifier annotations have to be local</span><br><span class="line">        AnnotationAttributes attr = AnnotatedElementUtils.getMergedAnnotationAttributes(</span><br><span class="line">                AnnotatedElementUtils.forAnnotations(annotationsToSearch), this.valueAnnotationType);</span><br><span class="line">        if (attr != null) &#123;</span><br><span class="line">            return extractValue(attr);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上两个方法主要是解析<code>@Value</code>注解，再通过<code>AnnotatedElementUtils.getMergedAnnotationAttributes()</code>方法得到注解的属性集合，从而获取到<code>value()</code>方法的值</p>
+<h4 id="two-step"><a href="#two-step" class="headerlink" title="two step"></a>two step</h4><p>解析传入的${key:defaultValue}形式的字符串，从而得到key的实际的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public String resolveEmbeddedValue(@Nullable String value) &#123;</span><br><span class="line">    String result = value;</span><br><span class="line">    for (StringValueResolver resolver : this.embeddedValueResolvers) &#123;</span><br><span class="line">        result = resolver.resolveStringValue(result);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心方法为<code>resolver.resolveStringValue(result)</code>方法，resolver实际为<code>StringValueResolver类型的lambda表达式</code>，这个表示式定义在了<code>PropertySourcesPlaceHolderConfigurer.processProperties()</code>方法中，这里debug是需要注意下，如果你不了解lambda，可能会比较朦胧。代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">PropertySourcesPlaceHolderConfigurer class</span><br><span class="line">protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,</span><br><span class="line">			final ConfigurablePropertyResolver propertyResolver) throws BeansException &#123;</span><br><span class="line"></span><br><span class="line">    propertyResolver.setPlaceholderPrefix(this.placeholderPrefix);</span><br><span class="line">    propertyResolver.setPlaceholderSuffix(this.placeholderSuffix);</span><br><span class="line">    propertyResolver.setValueSeparator(this.valueSeparator);</span><br><span class="line"></span><br><span class="line">    StringValueResolver valueResolver = strVal -&gt; &#123;</span><br><span class="line">        String resolved = (this.ignoreUnresolvablePlaceholders ?</span><br><span class="line">                propertyResolver.resolvePlaceholders(strVal) :</span><br><span class="line">                propertyResolver.resolveRequiredPlaceholders(strVal));</span><br><span class="line">        if (this.trimValues) &#123;</span><br><span class="line">            resolved = resolved.trim();</span><br><span class="line">        &#125;</span><br><span class="line">        return (resolved.equals(this.nullValue) ? null : resolved);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    doProcessProperties(beanFactoryToProcess, valueResolver);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>lambda会扰乱你的调用栈展示，下面截图展示真实调用栈的信息</p>
+<p><img src="/2019/08/01/spring-Value注解解析/![image-20190801201829017](Value注解解析/image-20190801201829017.png" alt="image-20190801201829017.png)">.png)</p>
+<p>上面代码中<code>processProperties</code>方法会调用<code>PropertySourcesPropertyResolver.resolveRequiredPlaceholders()</code>方法来解析入参，而它又会调用<code>PropertySourcesPropertyResolver.getPropertyAsRawString()</code>和<code>PropertyPlaceholderHelper.replacePlaceholders()</code>。代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">AbstractPropertyResoler class</span><br><span class="line">public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException &#123;</span><br><span class="line">    if (this.strictHelper == null) &#123;</span><br><span class="line">        this.strictHelper = createPlaceholderHelper(false);</span><br><span class="line">    &#125;</span><br><span class="line">    return doResolvePlaceholders(text, this.strictHelper);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private String doResolvePlaceholders(String text, PropertyPlaceholderHelper helper) &#123;</span><br><span class="line">    return helper.replacePlaceholders(text, this::getPropertyAsRawString);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>PropertySourcesPropertyResolver.getPropertyAsRawString()方法逻辑</p>
+</blockquote>
+<p><code>PropertySourcesPropertyResolver.getPropertyAsRawString()</code>负责获取key的值，因为<code>PropertySourcesPropertyResolver.持有propertySources变量</code>，这个变量与<code>Environment的propertySources</code>变量是同步的，所以<code>propertySource.getProperty(key)</code>可以获取到配置文件中的值，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">PropertySourcesPropertyResolver class</span><br><span class="line">protected String getPropertyAsRawString(String key) &#123;</span><br><span class="line">    return getProperty(key, String.class, false);</span><br><span class="line">&#125;</span><br><span class="line">	</span><br><span class="line">protected &lt;T&gt; T getProperty(String key, Class&lt;T&gt; targetValueType, boolean resolveNestedPlaceholders) &#123;</span><br><span class="line">    if (this.propertySources != null) &#123;</span><br><span class="line">        for (PropertySource&lt;?&gt; propertySource : this.propertySources) &#123;</span><br><span class="line">            if (logger.isTraceEnabled()) &#123;</span><br><span class="line">                logger.trace(&quot;Searching for key &apos;&quot; + key + &quot;&apos; in PropertySource &apos;&quot; +</span><br><span class="line">                        propertySource.getName() + &quot;&apos;&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Object value = propertySource.getProperty(key);</span><br><span class="line">            if (value != null) &#123;</span><br><span class="line">                if (resolveNestedPlaceholders &amp;&amp; value instanceof String) &#123;</span><br><span class="line">                    value = resolveNestedPlaceholders((String) value);</span><br><span class="line">                &#125;</span><br><span class="line">                logKeyFound(key, propertySource, value);</span><br><span class="line">                return convertValueIfNecessary(value, targetValueType);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，最后<code>propertySource.getProperty(key)</code>获取值返回。</p>
+<blockquote>
+<p>PropertyPlaceholderHelper.replacePlaceholders()方法逻辑</p>
+</blockquote>
+<p><code>PropertyPlaceholderHelper.replacePlaceholders()</code>负责解析<code>${key: defaultValue}</code>，将它拆解以获取key，再用<code>propertySource.getProperty(key)</code>获取值。而具体的拆解逻辑在<code>parseStringValue()</code>方法中，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public String replacePlaceholders(String value, PlaceholderResolver placeholderResolver) &#123;</span><br><span class="line">    Assert.notNull(value, &quot;&apos;value&apos; must not be null&quot;);</span><br><span class="line">    return parseStringValue(value, placeholderResolver, null);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected String parseStringValue(</span><br><span class="line">			String value, PlaceholderResolver placeholderResolver, @Nullable Set&lt;String&gt; visitedPlaceholders) &#123;</span><br><span class="line"></span><br><span class="line">    int startIndex = value.indexOf(this.placeholderPrefix);</span><br><span class="line">    if (startIndex == -1) &#123;</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    StringBuilder result = new StringBuilder(value);</span><br><span class="line">    while (startIndex != -1) &#123;</span><br><span class="line">        ... 略 具体拆解$&#123;xx:yy&#125;,不展示了，自己来看吧，否则代码太多影响了要主要的逻辑</span><br><span class="line">            // 递归调用</span><br><span class="line">            placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);</span><br><span class="line">            // 获取placeholder实际为key，最终调用propertySource.getProperty(key)获取值</span><br><span class="line">            String propVal = placeholderResolver.resolvePlaceholder(placeholder);</span><br><span class="line">        ... 略 同上</span><br><span class="line">    &#125;	</span><br><span class="line">    return result.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这个key一个拆解一层得到一个新key，尝试调用<code>placeholderResolver.resolvePlaceholder(新key)</code>获取值，如果没有获取到，再拆解一层得到一个新key，再调用<code>placeholderResolver.resolvePlaceholder(新key)</code>获取值的循环过程，直到获取到获取不能拆解为止的过程(因为key的形式可以是${xx:${yy:zz}})。此时得到的值时String类型的。并不是我们赋值变量的类型，所以接下来进行类型转换。</p>
+<h3 id="Three-step"><a href="#Three-step" class="headerlink" title="Three step"></a>Three step</h3><p>将String类型的值转换成目标变量声明的类型。</p>
+<p>我们回到<code>DefaultListableBeanFactory.doResolveDependency()</code>方法，此时代码来到了<code>converter.convertIfNecessary</code>方法处，即类型转换。看方法代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">TypeConverterSupport class</span><br><span class="line">public &lt;T&gt; T convertIfNecessary(@Nullable Object value, @Nullable Class&lt;T&gt; requiredType,</span><br><span class="line">        @Nullable TypeDescriptor typeDescriptor) throws TypeMismatchException &#123;</span><br><span class="line">    return this.typeConverterDelegate.convertIfNecessary(null, null, value, requiredType, typeDescriptor);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TypeConverterDelegate class</span><br><span class="line">public &lt;T&gt; T convertIfNecessary(@Nullable String propertyName, @Nullable Object oldValue, @Nullable Object newValue,</span><br><span class="line">			@Nullable Class&lt;T&gt; requiredType, @Nullable TypeDescriptor typeDescriptor)  &#123;</span><br><span class="line">    // conversionService包含着所有的转换器，如下图</span><br><span class="line">    ConversionService conversionService = this.propertyEditorRegistry.getConversionService();</span><br><span class="line">    TypeDescriptor sourceTypeDesc = TypeDescriptor.forObject(newValue);</span><br><span class="line">    if (conversionService.canConvert(sourceTypeDesc, typeDescriptor)) &#123;</span><br><span class="line">        return (T) conversionService.convert(newValue, sourceTypeDesc, typeDescriptor);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/08/01/spring-Value注解解析/19-48.png" alt="19-48"></p>
+<p>方法首先找到能转换(string -&gt; int)的转换器，然后开始转换。怎么找到能转换的转换器这里不说了，自己跟下吧。开始转换的核心是确定对应的<code>xxxtoyyyConverter</code>, <code>xxxtoyyyConverter</code>内部调用的是本质的工具类。如String转int，工具类为: <code>NumberUtils.parseNumber(source, this.targetType)</code>，这个工具类方法比较熟悉和亲切吧，所以spring很多功能最终都是调用最本质的java工具类。<code>xxxtoyyyConverter</code>是一大堆的，如下图</p>
+<p><img src="/2019/08/01/spring-Value注解解析/20-55.png" alt="20-55"></p>
+<p>以上就是将<code>@Value</code>修饰的变量赋值的整个过程了，从解析注解的<code>value()</code>方法的值key，再到解析key为新key，再到配置文件获取key(新key)的值，最后对获取的值进行类型转换，最最后通过<code>field.set(bean, value)</code>赋值给目标变量</p>
+<p>下面将整个解析过程的调用栈罗列下</p>
+<h3 id="整体调用栈"><a href="#整体调用栈" class="headerlink" title="整体调用栈"></a>整体调用栈</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">AbstractAutowireCapableBeanFactory.createBean()                                    </span><br><span class="line">-AbstractAutowireCapableBeanFactory.doCreateBean()                               </span><br><span class="line">--AbstractAutowireCapableBeanFactory.applyMergedBeanDefinitionPostProcessors()   </span><br><span class="line">---AutowiredAnnotationBeanPostProcessor.postProcessMergedBeanDefinition()        </span><br><span class="line">----AutowiredAnnotationBeanPostProcessor.findAutowiringMetadata()                </span><br><span class="line">-----AutowiredAnnotationBeanPostProcessor.buildAutowiringMetadata() </span><br><span class="line">========以上是存逻辑，以下是用逻辑========</span><br><span class="line">--AbstractAutowireCapableBeanFactory.populateBean()                               </span><br><span class="line">---AutowiredAnnotationBeanPostProcessor.postProcessProperties()                  </span><br><span class="line">----AutowiredAnnotationBeanPostProcessor.findAutowiringMetadata()                </span><br><span class="line">-----InjectionMetadata.inject()                                                  </span><br><span class="line">------(InjectionMetadata.InjectedElement)AutowiredFieldElement.inject()</span><br><span class="line">-------DefaultListableBeanFactory.resolveDependency()</span><br><span class="line">--------DefaultListableBeanFactory.doResolveDependency() ---核心</span><br><span class="line">---------AbstractBeanFactory.resolveEmbeddedValue()</span><br><span class="line">----------StringValueResolver lambda子类.resolveStringValue()</span><br><span class="line">-----------PropertySourcesPropertyResolver.resolveRequiredPlaceholders()</span><br><span class="line">------------AbstractPropertyResolver.getPropertyAsRawString()</span><br><span class="line">-------------PropertyPlaceholderHelper.replacePlaceholders()</span><br><span class="line">--------------PropertySource.getProperty()</span><br><span class="line">-----------PropertyPlaceholderHelper.parseStringValue() 递归</span><br><span class="line">------------AbstractPropertyResolver.resolvePlaceholder()</span><br><span class="line">-------------PropertySource.getProperty()</span><br><span class="line">---------SimpleTypeConverter.convertIfNecessary()</span><br><span class="line">----------TypeConverterDelegate.convertIfNecessarT()</span><br><span class="line">-----------ConversionService.canConvert()</span><br><span class="line">-----------ConversionService.convert()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/" title="spring @Value注解解析">https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+            <a href="/tags/Value/" rel="tag"># \@Value</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/12/mac-linux安装及使用最新版tmux/" rel="next" title="linux/mac安装及使用最新版tmux">
+                <i class="fa fa-chevron-left"></i> linux/mac安装及使用最新版tmux
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/tao.jpg" alt="Skyler">
+            
+              <p class="site-author-name" itemprop="name">Skyler</p>
+              <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yaoyuanyy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yaoyihao1@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/585b94018d6d810065d34497/posts" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#spring-Value解析"><span class="nav-number">1.</span> <span class="nav-text">spring @Value解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由"><span class="nav-number">1.1.</span> <span class="nav-text">缘由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一起debug解开神秘"><span class="nav-number">1.4.</span> <span class="nav-text">一起debug解开神秘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#入口"><span class="nav-number">1.4.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析"><span class="nav-number">1.4.2.</span> <span class="nav-text">解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#one-step"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">one step</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#two-step"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">two step</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Three-step"><span class="nav-number">1.4.3.</span> <span class="nav-text">Three step</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整体调用栈"><span class="nav-number">1.4.4.</span> <span class="nav-text">整体调用栈</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2019/08/01/spring-Value注解解析/';
+          this.page.identifier = '2019/08/01/spring-Value注解解析/';
+          this.page.title = 'spring @Value注解解析';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("z1rh3HBfRJYf4gqQXC1RjVAC-gzGzoHsz", "cFSlIdGSSY8cjFbc0bTewxKq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
