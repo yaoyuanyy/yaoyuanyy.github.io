@@ -81,14 +81,15 @@
 
 
 
-<meta name="description" content="alfredalfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置前提：默认你的mac已经安装了Iterm场景：没有这个插件之前，我们要连接远程服务器，步骤如下：1231. 打开iterm2. ssh root@50.100">
+<meta name="description" content="前言做事情，好的开始是成功的一半。干开发，好的工具等于完成了一半。 实际工作中，在没有使用”alfred+ssh+iterm”以前，连接各个环境的机器时，每次要1234561. 打开终端2. ssh root@ip3. 输入密码4. ps -ef|grep server // 找到log dir5. cd log dir // 目标目录6. bala bala 看日志 即，在你真正开始看日志找问题">
 <meta name="keywords" content="mac,alfred">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开发效率神提升之alfred集成ssh+iterm">
+<meta property="og:title" content="开发效率神器之alfred集成ssh+iTerm2">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="alfredalfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置前提：默认你的mac已经安装了Iterm场景：没有这个插件之前，我们要连接远程服务器，步骤如下：1231. 打开iterm2. ssh root@50.100">
+<meta property="og:description" content="前言做事情，好的开始是成功的一半。干开发，好的工具等于完成了一半。 实际工作中，在没有使用”alfred+ssh+iterm”以前，连接各个环境的机器时，每次要1234561. 打开终端2. ssh root@ip3. 输入密码4. ps -ef|grep server // 找到log dir5. cd log dir // 目标目录6. bala bala 看日志 即，在你真正开始看日志找问题">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/9/16c75ff0e50552f5?w=1138&h=322&f=png&s=232016">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/24-08.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/25-19.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/26-03.png">
@@ -97,11 +98,11 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/27-48.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-13.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-36.png">
-<meta property="og:updated_time" content="2019-05-23T02:29:19.022Z">
+<meta property="og:updated_time" content="2019-08-09T15:24:21.612Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="开发效率神提升之alfred集成ssh+iterm">
-<meta name="twitter:description" content="alfredalfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置前提：默认你的mac已经安装了Iterm场景：没有这个插件之前，我们要连接远程服务器，步骤如下：1231. 打开iterm2. ssh root@50.100">
-<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/24-08.png">
+<meta name="twitter:title" content="开发效率神器之alfred集成ssh+iTerm2">
+<meta name="twitter:description" content="前言做事情，好的开始是成功的一半。干开发，好的工具等于完成了一半。 实际工作中，在没有使用”alfred+ssh+iterm”以前，连接各个环境的机器时，每次要1234561. 打开终端2. ssh root@ip3. 输入密码4. ps -ef|grep server // 找到log dir5. cd log dir // 目标目录6. bala bala 看日志 即，在你真正开始看日志找问题">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/8/9/16c75ff0e50552f5?w=1138&h=322&f=png&s=232016">
 
 
 
@@ -137,7 +138,7 @@
 
 
 
-  <title>开发效率神提升之alfred集成ssh+iterm | skyler-blog</title>
+  <title>开发效率神器之alfred集成ssh+iTerm2 | skyler-blog</title>
   
 
 
@@ -311,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">开发效率神提升之alfred集成ssh+iterm</h1>
+          <h1 class="post-title" itemprop="name headline">开发效率神器之alfred集成ssh+iTerm2</h1>
         
 
         <div class="post-meta">
@@ -339,8 +340,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-23T10:29:19+08:00">
-                2019-05-23
+              <time title="更新于" itemprop="dateModified" datetime="2019-08-09T23:24:21+08:00">
+                2019-08-09
               </time>
             
           </span>
@@ -385,7 +386,7 @@
 
           
           
-             <span id="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/" class="leancloud_visitors" data-flag-title="开发效率神提升之alfred集成ssh+iterm">
+             <span id="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/" class="leancloud_visitors" data-flag-title="开发效率神器之alfred集成ssh+iTerm2">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -410,7 +411,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  971
+                  1.3k
                 </span>
               
 
@@ -426,7 +427,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  4
                 </span>
               
             </div>
@@ -447,12 +448,19 @@
       
 
       
-        <h2 id="alfred"><a href="#alfred" class="headerlink" title="alfred"></a>alfred</h2><p>alfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。今天想要分享的是alfred插件中关于ssh的一款插件: alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置<br><code>前提</code>：默认你的mac已经安装了Iterm<br><code>场景</code>：<br>没有这个插件之前，我们要连接远程服务器，步骤如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 打开iterm</span><br><span class="line">2. ssh root@50.100.11.10</span><br><span class="line">3. 输入密码</span><br></pre></td></tr></table></figure></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>做事情，好的开始是成功的一半。干开发，好的工具等于完成了一半。</p>
+<p>实际工作中，在没有使用”alfred+ssh+iterm”以前，连接各个环境的机器时，每次要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 打开终端</span><br><span class="line">2. ssh root@ip</span><br><span class="line">3. 输入密码</span><br><span class="line">4. ps -ef|grep server // 找到log dir</span><br><span class="line">5. cd log dir // 目标目录</span><br><span class="line">6. bala bala 看日志</span><br></pre></td></tr></table></figure></p>
+<p>即，在你真正开始看日志找问题时，至少要经过5个步骤。不经意间，10min过去了，问题还没开始找呢</p>
+<p>在alfred+ssh+iterm的协助下，快感油然而生。你只需要”随便”一个动作(如下图), 直接进入第六步。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/9/16c75ff0e50552f5?w=1138&amp;h=322&amp;f=png&amp;s=232016" alt=""></p>
+<p>下面我们就具体说下如何实现这个极大提升效率和倍爽的操作。</p>
+<h2 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h2><p>先来个小菜，免密码登录机器。<br><code>前提</code>：默认你的mac已经安装了iTerm2<br><code>场景</code>：<br>平时，我们要连接远程服务器，步骤如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 打开iTerm2</span><br><span class="line">2. ssh root@50.100.11.10</span><br><span class="line">3. 输入密码</span><br></pre></td></tr></table></figure></p>
 <p>实际工作中有多个远程服务器，需要连接。每个都要如上操作一遍，实在繁琐。尤其是复杂密码的时候</p>
-<h2 id="使用ssh-config"><a href="#使用ssh-config" class="headerlink" title="使用ssh config"></a>使用ssh config</h2><p><code>配置</code>：<br>首先我们解决每次连接重复步骤1,2,3的问题。解决的方法是openssh 的ssh config的功能。具体为：<br><code>vim ~/.ssh/config</code>，如果不存在，可以新建一个<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host aliyun</span><br><span class="line">  HostName 50.100.11.10</span><br><span class="line">  User root</span><br><span class="line">  Port 22</span><br></pre></td></tr></table></figure></p>
-<p>保存退出。这时在<em>Iterm</em>中就可以输入<code>ssh aliyun</code>, 回车直接跳到了输入密码的操作。接着设置免密登录，方法是使用<code>ssh-copy-id</code>功能，原理是将本机的密钥复制到远程要连接的机器上，从而授权连接。iterm终端输入：</p>
+<h3 id="使用ssh-config"><a href="#使用ssh-config" class="headerlink" title="使用ssh config"></a>使用ssh config</h3><p>实现密码登录的方法是通过<code>openssh</code> 的<code>ssh config</code>的功能。具体操作为~/.ssh/config，如果不存在，可以新建一个<br>然后<code>vim ~/.ssh/config</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host aliyun</span><br><span class="line">  HostName 50.100.11.10</span><br><span class="line">  User root</span><br><span class="line">  Port 22</span><br></pre></td></tr></table></figure></p>
+<p>保存退出。这时在<em>iTerm2</em>中就可以输入<code>ssh aliyun</code>,回车 然后输入密码。注意，<font color="green">这时候已经不用输入ssh <a href="mailto:root@50.100.11.10" target="_blank" rel="noopener">root@50.100.11.10</a>，只要输入密码就登录上了</font></p>
+<h3 id="设置免密登录"><a href="#设置免密登录" class="headerlink" title="设置免密登录"></a>设置免密登录</h3><p>方法是使用<code>ssh-copy-id</code>功能，原理是将本机的密钥复制到远程要连接的机器上，从而授权连接。iterm终端输入：</p>
 <ul>
-<li>如果你的机器没有生成过ssh密钥则输入，如果已经存在，则忽略</li>
+<li>(可选)如果你的机器没有生成过ssh密钥则输入，如果已经存在，则忽略这步</li>
 </ul>
 <blockquote>
 <p>$ ssh-keygen</p>
@@ -461,17 +469,19 @@
 <li>复制密钥到远程目的服务器</li>
 </ul>
 <blockquote>
-<p>$ ssh-copy-id -i <a href="mailto:demouser@192.168.1.1" target="_blank" rel="noopener">demouser@192.168.1.1</a></p>
+<p>$ ssh-copy-id -i <a href="mailto:demouser@192.168.1.101" target="_blank" rel="noopener">demouser@192.168.1.101</a></p>
 </blockquote>
 <p>按提示输入一次密码，<code>ssh-copy-id</code>就会自动将刚才生成的公钥id_rsa.pub追加到远程主机的<code>~/.ssh/authorized_keys</code>后面了，这样以后的 ssh 连接都不用输入密码了。</p>
 <ul>
-<li>设置后，连接看看效果</li>
+<li>设置后，连接试试看看效果</li>
 </ul>
 <blockquote>
 <p>$ ssh aliyun</p>
 </blockquote>
-<p>你会发现一步命令直接链上了远程服务器，一劳永逸。</p>
-<p>到目前为止，你会发现也没有用到<code>alfred</code>啊，在<code>Iterm</code>上就搞定了呢。是的，但是我们通过<code>alfred</code>，还可以更简便的方式来连接远程服务器。这时就需要使用到alfred了。安装和使用<code>alfred</code>这里忽略，下面有破解版的下载连接，安装即可。</p>
+<p>你会发现<font color="green">可以<code>一步命令</code>直接等上远程服务器了。但是还是要打开终端iTerm2</font>。再方便一点的登录远程服务器就需要alfred了</p>
+<h2 id="安装alfred"><a href="#安装alfred" class="headerlink" title="安装alfred"></a>安装alfred</h2><p>alfred是mac提高工作效率软件排名第一位，可见其欢迎程度。大有一旦遇见，终生想念的情愫。alfred安装非常简单，不多说了，但是破解版比较难找，发挥你的search能力吧。</p>
+<p>下面要说的是alfred的插件。关于ssh的一款插件:alfred-ssh。对这个插件爱不释手形容不为过，下面说下具体使用场景和配置</p>
+<p>到目前为止，你会发现没有用到<code>alfred</code>，已经实现在<code>iTerm2</code>上一步搞定了。是的，但是我们通过<code>alfred</code>，可以用更简便的方式来连接远程服务器</p>
 <h2 id="安装alfred-ssh插件"><a href="#安装alfred-ssh插件" class="headerlink" title="安装alfred-ssh插件"></a>安装<code>alfred-ssh</code>插件</h2><p>连接如下：<a href="https://github.com/deanishe/alfred-ssh" target="_blank" rel="noopener">https://github.com/deanishe/alfred-ssh</a> 下载最新版：Secure-SHell-0.8.0.alfredworkflow，双击自动添加到alfred的workflow页，效果如下图<br><img src="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/24-08.png" alt="24-08"></p>
 <p>此时alfred-ssh就引入到alfred了，这时候你就可以使用alfred来打开远程服务器了，输入<code>ssh aliyun</code>,你会发现终端连接上了aliyun，够爽吧。但你会发现，这个终端显示的mac自带的终端，而我们早已喜欢上了Iterm2。</p>
 <h2 id="安装alfred集成Iterm2配置"><a href="#安装alfred集成Iterm2配置" class="headerlink" title="安装alfred集成Iterm2配置"></a>安装alfred集成Iterm2配置</h2><p>所以如果想使用Iterm2作为终端，需要接着配置，如下图<br><img src="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/25-19.png" alt="25-19"><br>从图中可以看到，有两步操作</p>
@@ -488,8 +498,10 @@
 <p>到此就全部配置完成了</p>
 <h2 id="爽不爽"><a href="#爽不爽" class="headerlink" title="爽不爽"></a>爽不爽</h2><p>验收效果<br><img src="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-13.png" alt="28-13"></p>
 <p>回车<br><img src="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-36.png" alt="28-36"></p>
-<p>可以看到，最终的效果是只需要在alfred中输入一个命令：<code>ssh 50.100.11.10</code>，就直接连接上了aliyun的远程服务器了，爽不爽</p>
+<p>可以看到，最终的效果是只需要在alfred中输入一个命令：<code>ssh aliyun</code>，就直接连接上了aliyun的远程服务器了，一步搞定。到这里，我们的目标就实现了。你可能会遇到这种情况,登录线上机器需要先登录堡垒机，才能登录线上机器，比较麻烦，如果想在alfred中一步搞定，实现这个目标，需要借助另一个神器:tmux，后文续说</p>
 <p>版权所属<a href="mailto:mxr_it@163.com" target="_blank" rel="noopener">mxr_it@163.com</a>，<a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a>，转载经标明原作链接</p>
+<p>原味地址：<a href="https://yaoyuanyy.github.io/2019/05/13/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E6%8F%90%E5%8D%87%E4%B9%8Balfred%E9%9B%86%E6%88%90ssh+iterm/">开发效率神提升之alfred集成ssh+iterm
+</a></p>
 
       
     </div>
@@ -534,7 +546,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/" title="开发效率神提升之alfred集成ssh+iterm">https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/</a>
+    <a href="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/" title="开发效率神器之alfred集成ssh+iTerm2">https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -750,7 +762,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#alfred"><span class="nav-number">1.</span> <span class="nav-text">alfred</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ssh-config"><span class="nav-number">2.</span> <span class="nav-text">使用ssh config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred-ssh插件"><span class="nav-number">3.</span> <span class="nav-text">安装alfred-ssh插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred集成Iterm2配置"><span class="nav-number">4.</span> <span class="nav-text">安装alfred集成Iterm2配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装alfred插件custom-iterm-applescripts-for-alfred"><span class="nav-number">4.1.</span> <span class="nav-text">安装alfred插件custom-iterm-applescripts-for-alfred</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itermURL-Schemes配置"><span class="nav-number">4.2.</span> <span class="nav-text">itermURL Schemes配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爽不爽"><span class="nav-number">5.</span> <span class="nav-text">爽不爽</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#免密登录"><span class="nav-number">2.</span> <span class="nav-text">免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ssh-config"><span class="nav-number">2.1.</span> <span class="nav-text">使用ssh config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置免密登录"><span class="nav-number">2.2.</span> <span class="nav-text">设置免密登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred"><span class="nav-number">3.</span> <span class="nav-text">安装alfred</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred-ssh插件"><span class="nav-number">4.</span> <span class="nav-text">安装alfred-ssh插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred集成Iterm2配置"><span class="nav-number">5.</span> <span class="nav-text">安装alfred集成Iterm2配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装alfred插件custom-iterm-applescripts-for-alfred"><span class="nav-number">5.1.</span> <span class="nav-text">安装alfred插件custom-iterm-applescripts-for-alfred</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itermURL-Schemes配置"><span class="nav-number">5.2.</span> <span class="nav-text">itermURL Schemes配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爽不爽"><span class="nav-number">6.</span> <span class="nav-text">爽不爽</span></a></li></ol></div>
             
 
           </div>
@@ -915,7 +927,7 @@
         var disqus_config = function () {
           this.page.url = 'https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/';
           this.page.identifier = '2019/05/13/开发效率神提升之alfred集成ssh+iterm/';
-          this.page.title = '开发效率神提升之alfred集成ssh+iterm';
+          this.page.title = '开发效率神器之alfred集成ssh+iTerm2';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';
