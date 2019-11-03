@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景 远程调用技术实现中, spring cloud openfeign可以说是入门简单，使用方便。作为spring cloud家族成员，它的使用量绝对广泛。了解spring framework, spring boot, spring cloud本身就是一件技术人分内的事。进阶路上，这是必须做的。    debug源码，可以学习标准的代码风格，编码思想，实现方法和技巧，从而提升自身的能力   使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring cloud feign扩展点及原理(源码)分析">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/10/23/springcloud feign扩展点及原理(源码)分析/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="背景 远程调用技术实现中, spring cloud openfeign可以说是入门简单，使用方便。作为spring cloud家族成员，它的使用量绝对广泛。了解spring framework, spring boot, spring cloud本身就是一件技术人分内的事。进阶路上，这是必须做的。    debug源码，可以学习标准的代码风格，编码思想，实现方法和技巧，从而提升自身的能力   使">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191102190916.png">
+<meta property="og:updated_time" content="2019-11-03T10:17:00.503Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring cloud feign扩展点及原理(源码)分析">
+<meta name="twitter:description" content="背景 远程调用技术实现中, spring cloud openfeign可以说是入门简单，使用方便。作为spring cloud家族成员，它的使用量绝对广泛。了解spring framework, spring boot, spring cloud本身就是一件技术人分内的事。进阶路上，这是必须做的。    debug源码，可以学习标准的代码风格，编码思想，实现方法和技巧，从而提升自身的能力   使">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191102190916.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/10/23/springcloud feign扩展点及原理(源码)分析/">
+
+
+
+
+
+  <title>spring cloud feign扩展点及原理(源码)分析 | skyler-blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94ae7654e2dc1739de6dffa8904d5c82";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/10/23/springcloud feign扩展点及原理(源码)分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring cloud feign扩展点及原理(源码)分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-23T17:34:23+08:00">
+                2019-10-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-11-03T18:17:00+08:00">
+                2019-11-03
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/23/springcloud feign扩展点及原理(源码)分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/23/springcloud feign扩展点及原理(源码)分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/10/23/springcloud feign扩展点及原理(源码)分析/" class="leancloud_visitors" data-flag-title="spring cloud feign扩展点及原理(源码)分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote>
+<p>远程调用技术实现中, spring cloud openfeign可以说是入门简单，使用方便。作为spring cloud家族成员，它的使用量绝对广泛。了解spring framework, spring boot, spring cloud本身就是一件技术人分内的事。进阶路上，这是必须做的。</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>debug源码，可以学习标准的代码风格，编码思想，实现方法和技巧，从而提升自身的能力</p>
+</blockquote>
+</blockquote>
+<h2 id="使用实例展现"><a href="#使用实例展现" class="headerlink" title="使用实例展现"></a>使用实例展现</h2><p>下面撸出最简单的feign使用案例。分别定义一个启动类、controller、feign接口。如下，我们将这个作为素材进行feign源码分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">@EnableFeignClients(&quot;com.skyler.manager&quot;)</span><br><span class="line">@EnableDiscoveryClient</span><br><span class="line">public class SkylerApplication &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(SkylerApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@RestController</span><br><span class="line">@Validated</span><br><span class="line">@RequestMapping(&quot;/brand&quot;)</span><br><span class="line">@Slf4j</span><br><span class="line">public class BrandController &#123;</span><br><span class="line">    @Autowired private BrandFeignService brandFeignService;</span><br><span class="line"></span><br><span class="line">    @PostMapping(value = &quot;/create&quot;, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)</span><br><span class="line">    public ResultVO create(@RequestBody BrandParam param) &#123;</span><br><span class="line">        return brandFeignService.create(param);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@FeignClient(value = &quot;$&#123;provider.application:serverB&#125;&quot;, contextId = &quot;BrandFeignService&quot;)</span><br><span class="line">@Validated</span><br><span class="line">public interface BrandFeignService &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param param</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    @PostMapping(value = &quot;api/brand/create&quot;, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)</span><br><span class="line">    ResultDTO create(@RequestBody BrandParam param);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="feign关键类"><a href="#feign关键类" class="headerlink" title="feign关键类"></a>feign关键类</h2><p>我先列出关键的地方，你有个大概印象，进行源码分析时希望你能有意识的加深印象。<br>@EnableFeignClients：声明引入feign组件，使用feign一系列功能<br>@FeignClient：声明一个远程调用的接口<br>FeignClientsRegistrar：初始化项目，加载feign相关的所有.class文件，生成beanDefinitioin和beanInstance放入spring容器<br>FeignClientFactoryBean：<br>FeignAutoConfiguration： AutoConfiguration的子类，定义@Bean FeignContext、@Bean xxxHttpClient等<br>FeignClientsConfiguration： “Feign configuration”的默认配置值，@EnableFeignClients.defaultConfiguration如果没有设置值，默认就是FeignClientsConfiguration。</p>
+<h2 id="代码加载原理"><a href="#代码加载原理" class="headerlink" title="代码加载原理"></a>代码加载原理</h2><h3 id="class转化为BeanDefinition"><a href="#class转化为BeanDefinition" class="headerlink" title=".class转化为BeanDefinition"></a>.class转化为BeanDefinition</h3><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191102190916.png" alt="图一"><br>上图是spring boot所有项目加载@Configuration的类时都要走的路径。当然，除了FeignClientsRegistrar类，但是他是BeanDefinitionRegistrar子类，而BeanDefinitionRegistrar确实很实用的公共接口</p>
+<p>关于加载@Configuration的.class文件加载过程点击todo</p>
+<h4 id="feign组件的加载："><a href="#feign组件的加载：" class="headerlink" title="feign组件的加载："></a>feign组件的加载：</h4><p>feign组件的加载可以分成两部分：FeignAutoConfiguration类和FeignClientsConfiguration类等，@EnableFeignClients和@FeignClient。<br>前者加载过程同spring boot所有组件加载一样的逻辑，正如图一所示；而后者是feign自己的加载方式。当然两者加载过程头一段是一样的。从springApplication.run()到<br>ConfigurationClassPostProcessor.processConfigBeanDefinitions()这一段是相同的，也是所有spring boot项目启动加载公共的逻辑。但是从这个方法内开始变得不同了。FeignAutoConfiguration类和FeignClientsConfiguration类的加载开始于<code>315行的parser.parse(candidates)</code>,而@EnableFeignClients和@FeignClient的加载开始于<code>327行的this.reader.loadBeanDefinitions(configClasses)</code>。其实，可以说FeignAutoConfiguration类和FeignClientsConfiguration类的加载是通用的，@EnableFeignClients和@FeignClient的加载是特殊的，是从通用的某一个点上出去的分支。所以特殊的是在通用的基础上进行的。从两个不同点进入到具体的.class–&gt;BeanDefinition的加载过程。同样的目的，不同的方式。下面我们详细说下两种加载的源码和原理</p>
+<p>值得注意的是，这两种加载方式都是<font color="green">我们实际开发过程中的扩展点：重写他们实际我们自己的逻辑</font></p>
+<ol>
+<li>FeignAutoConfiguration类和FeignClientsConfiguration类等<br>前面说到，加载开始于ConfigurationClassPostProcessor.processConfigBeanDefinitions()方法的<code>315行: 的parser.parse(candidates)</code>。我们就从这里说起<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) &#123;</span><br><span class="line">    String[] candidateNames = registry.getBeanDefinitionNames();</span><br><span class="line">    for (String beanName : candidateNames) &#123;</span><br><span class="line">        BeanDefinition beanDef = registry.getBeanDefinition(beanName);</span><br><span class="line">        if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) &#123;</span><br><span class="line">            configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // Sort by previously determined @Order value, if applicable</span><br><span class="line">    configCandidates.sort((bd1, bd2) -&gt; &#123;</span><br><span class="line">        int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());</span><br><span class="line">        int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());</span><br><span class="line">        return Integer.compare(i1, i2);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    // Parse each @Configuration class</span><br><span class="line">    ConfigurationClassParser parser = new ConfigurationClassParser(</span><br><span class="line">            this.metadataReaderFactory, this.problemReporter, this.environment,</span><br><span class="line">            this.resourceLoader, this.componentScanBeanNameGenerator, registry);</span><br><span class="line"></span><br><span class="line">    Set&lt;BeanDefinitionHolder&gt; candidates = new LinkedHashSet&lt;&gt;(configCandidates);</span><br><span class="line">    do &#123;</span><br><span class="line">        // FeignAutoConfiguration类和FeignClientsConfiguration类等通过组件的加载开始处</span><br><span class="line">        parser.parse(candidates);</span><br><span class="line">        parser.validate();</span><br><span class="line"></span><br><span class="line">        Set&lt;ConfigurationClass&gt; configClasses = new LinkedHashSet&lt;&gt;(parser.getConfigurationClasses());</span><br><span class="line">        // Read the model and create bean definitions based on its content</span><br><span class="line">        if (this.reader == null) &#123;</span><br><span class="line">            this.reader = new ConfigurationClassBeanDefinitionReader(</span><br><span class="line">                    registry, this.sourceExtractor, this.resourceLoader, this.environment,</span><br><span class="line">                    this.importBeanNameGenerator, parser.getImportRegistry());</span><br><span class="line">        &#125;</span><br><span class="line">        // @EnableFeignClients和@FeignClient的加载处，当然通用的加载也会走这里</span><br><span class="line">        this.reader.loadBeanDefinitions(configClasses);</span><br><span class="line"></span><br><span class="line">        candidates.clear();</span><br><span class="line">        if (registry.getBeanDefinitionCount() &gt; candidateNames.length) &#123;</span><br><span class="line">            String[] newCandidateNames = registry.getBeanDefinitionNames();</span><br><span class="line">            for (String candidateName : newCandidateNames) &#123;</span><br><span class="line">                    BeanDefinition bd = registry.getBeanDefinition(candidateName);</span><br><span class="line">                    if (ConfigurationClassUtils.checkConfigurationClassCandidate(bd, this.metadataReaderFactory)) &#123;</span><br><span class="line">                        candidates.add(new BeanDefinitionHolder(bd, candidateName));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            candidateNames = newCandidateNames;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    while (!candidates.isEmpty());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>详细的通过的组件的加载始于parser.parse(candidates)行，详细参见todo。这里我们主要说feign加载。到这里，FeignAutoConfiguration类和FeignClientsConfiguration类的加载和解析就完成了。目前是将两个类中@Bean方法(如feignEncoder()、feignDecoder()、feignBuilder()等)加载成BeanDefinition放入spring beanFactory容器中，为BeanDefinition转化为BeanInstance做准备</p>
+<ol start="2">
+<li>@EnableFeignClients和@FeignClient<br>同FeignAutoConfiguration类和FeignClientsConfiguration类比较，加载是从ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass()开始的。</li>
+</ol>
+<p>@EnableFeignClients标注在引入了@SpringBootApplication(内含@Configuration)注解的SkylerApplication类上,即SkylerApplication类带有@Configuration注解，且@EnableFeignClients内含@Import注解，所以ConfigurationClassPostProcessor解析SkylerApplication的ConfigurationClass对象时，会加载到@EnableFeignClients内嵌注解@Import的FeignClientsRegistrar类，又FeignClientsRegistrar是ImportBeanDefinitionRegistrar子类，所以ConfigurationClassBeanDefinitionReader在处理ImportBeanDefinitionRegistrar类型时，会处理FeignClientsRegistrar对象。到这，Feign相关组件解析和加载就开始了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring boot项目的加载是一个大工程，后面会整体阐述。feign组件的加载原理秉承了spring boot的加载套路。套路为会使用beanFactoryPostProcessor处理.class文件转化为BeanDefinition的部分，然后接着使用BeanPostProcessor处理BeanDefinition转化BeanInstance的逻辑。具体为beanFactoryPostProcessor处理.class文件时，</span><br><span class="line"></span><br><span class="line">具体为beanFactoryPostProcessor处理.class文件时， fein而beanFactoryPostProcessor处理的逻辑，然后接着使用BeanPostProcessor再处理。而      BeanDefinitionRegistryPostProcessor 具体为spring boot会以main方法所在类的package包名为核心加载所有符合条件的.class文件，转化为beanDefinition，进而在转化成beanInstance。在加载.class文件过程中，在加载含有@Configuration的类时，会将其.class加载成ConfigurationClass类，过程中判断是否有(间接也算)@Import等注解，如果有就解析@Import并将其解析并放入ConfigurationClass.importBeanDefinitionRegistrars属性</span><br><span class="line">项目加载过程中，</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">feign组件的加载依据这个套路来的。@EnableFeignClients标注在引入了@SpringBootApplication注解的SkylerApplication类上，即SkylerApplication类带有@Configuration注解，那么在BeanFactoryPostProcessor的优先子类BeanDefinitionRegistryPostProcessor的子类ConfigurationClassPostProcessor解析带有@Configuration的类时，会看看有没有@Import注解(当然，所有的注解都会解析)，如果有进而解析@Import，最后将@Configuration的类解析的结果都转化为ConfigurationClass对象。其中@Import的结果FeignClientsRegistrar(ImportBeanDefinitionRegistrar的子类)放入ConfigurationClass.importBeanDefinitionRegistrars中，这个属性用于存放ImportBeanDefinitionRegistrar类型对象。现在SkylerApplication类转化成了ConfigurationClass对象，这个过程是ConfigurationClassParser类完成的。接着就是解析ConfigurationClass对象，这个过程是ConfigurationClassBeanDefinitionReader类完成。涉及feign的部分为操作ConfigurationClass.importBeanDefinitionRegistrars属性值：BeanDefinitionRegistrar类型对象，</span><br></pre></td></tr></table></figure>
+<p>上面说到，FeignClientsRegistrar是ImportBeanDefinitionRegistrar类型，所以，他会重载registerBeanDefinitions()方法来实现解析@FeignClient的功能，这也是FeignClientsRegistrar类的核心作用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void registerBeanDefinitions(AnnotationMetadata metadata,</span><br><span class="line">        BeanDefinitionRegistry registry) &#123;</span><br><span class="line"></span><br><span class="line">    // 解析@EnableFeignClients的defaultConfiguration属性，用于feign的全局设置       </span><br><span class="line">    registerDefaultConfiguration(metadata, registry);</span><br><span class="line">    // 解析@FeignClient注解</span><br><span class="line">    registerFeignClients(metadata, registry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>方法的入参：metadata是ConfigurationClass的元注解信息，即SkylerApplication类的注解信息；registry是DefaultListableBeanFactory对象。解析生成的beanDefinition都放入spring 的beanFactory容器内。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private void registerDefaultConfiguration(AnnotationMetadata metadata,</span><br><span class="line">        BeanDefinitionRegistry registry) &#123;</span><br><span class="line">    // 获取EnableFeignClients注解的属性及值        </span><br><span class="line">    Map&lt;String, Object&gt; defaultAttrs = metadata</span><br><span class="line">            .getAnnotationAttributes(EnableFeignClients.class.getName(), true);</span><br><span class="line">    // 获取的属性及name存入spring的BeanFactory容器内</span><br><span class="line">    registerClientConfiguration(registry, name,</span><br><span class="line">            defaultAttrs.get(&quot;defaultConfiguration&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><font color="green">这里对我们实际开发中的扩展点为:</font>引入@EnableFeignClients时，可以自定义defaultConfiguration，从而实现我们自己意愿的配置。具体为定义带有@Configuration的类，类class赋值给defaultConfiguration即可。</p>
+<p>我们重点看registerFeignClients()方法的逻辑，这是核心：解析引入@FeignClient的类，得到符合条件下的@FeignClient的类，生成BeanDefinition，放入spring beanFactory容器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">public void registerFeignClients(AnnotationMetadata metadata,</span><br><span class="line">        BeanDefinitionRegistry registry) &#123;</span><br><span class="line">            // 实例化对象</span><br><span class="line">    ClassPathScanningCandidateComponentProvider scanner = getScanner();</span><br><span class="line">    scanner.setResourceLoader(this.resourceLoader);</span><br><span class="line"></span><br><span class="line">    Set&lt;String&gt; basePackages;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, Object&gt; attrs = metadata</span><br><span class="line">            .getAnnotationAttributes(EnableFeignClients.class.getName());</span><br><span class="line">    AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(</span><br><span class="line">            FeignClient.class);</span><br><span class="line">    final Class&lt;?&gt;[] clients = attrs == null ? null</span><br><span class="line">            : (Class&lt;?&gt;[]) attrs.get(&quot;clients&quot;);</span><br><span class="line">            // 确定要搜索的package</span><br><span class="line">    if (clients == null || clients.length == 0) &#123;</span><br><span class="line">        scanner.addIncludeFilter(annotationTypeFilter);</span><br><span class="line">        basePackages = getBasePackages(metadata);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        final Set&lt;String&gt; clientClasses = new HashSet&lt;&gt;();</span><br><span class="line">        basePackages = new HashSet&lt;&gt;();</span><br><span class="line">        for (Class&lt;?&gt; clazz : clients) &#123;</span><br><span class="line">            basePackages.add(ClassUtils.getPackageName(clazz));</span><br><span class="line">            clientClasses.add(clazz.getCanonicalName());</span><br><span class="line">        &#125;</span><br><span class="line">        AbstractClassTestingTypeFilter filter = new AbstractClassTestingTypeFilter() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            protected boolean match(ClassMetadata metadata) &#123;</span><br><span class="line">                String cleaned = metadata.getClassName().replaceAll(&quot;\\$&quot;, &quot;.&quot;);</span><br><span class="line">                return clientClasses.contains(cleaned);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        scanner.addIncludeFilter(</span><br><span class="line">                new AllTypeFilter(Arrays.asList(filter, annotationTypeFilter)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 加载package获取带有@FeignClient的.class，转化成BeanDefinition，放入spring BeanFactory容器</span><br><span class="line">    for (String basePackage : basePackages) &#123;</span><br><span class="line">        Set&lt;BeanDefinition&gt; candidateComponents = scanner</span><br><span class="line">                .findCandidateComponents(basePackage);</span><br><span class="line">        for (BeanDefinition candidateComponent : candidateComponents) &#123;</span><br><span class="line">            if (candidateComponent instanceof AnnotatedBeanDefinition) &#123;</span><br><span class="line">                // verify annotated class is an interface</span><br><span class="line">                AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) candidateComponent;</span><br><span class="line">                AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();</span><br><span class="line">                 </span><br><span class="line">                Map&lt;String, Object&gt; attributes = annotationMetadata</span><br><span class="line">                        .getAnnotationAttributes(FeignClient.class.getCanonicalName());</span><br><span class="line"></span><br><span class="line">                // 获取@FeignClient的configuration属性值，生成BeanDefinition放入spring BeanFactory容器</span><br><span class="line">                // 还记得@EnableFeignClient.defaultConfiguration的属性值吗，结合这里的@FeignClient.configuration，所以前者是全局使用，后者是局部优先使用，后者优先级高于前者</span><br><span class="line">                registerClientConfiguration(registry, getClientName(attributes), attributes.get(&quot;configuration&quot;));</span><br><span class="line">                // 将每个@FeignClient解析，生成BeanDefinition放入spring BeanFactory容器</span><br><span class="line">                registerFeignClient(registry, annotationMetadata, attributes);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>为搜索到符合条件的@FeignClient的类，方法分两步</p>
+<ol>
+<li>首先，得到从哪些package目录去搜索@FeignClient的类</li>
+<li>其次，加载解析这些package目录</li>
+</ol>
+<p>方法从三个情况来确定要搜索的package包目录：优先从@EnableFeignClient.clients获取属性值，解析属性值从而确定这些值的package目录；第二优先级从@EnableFeignClient.value、@EnableFeignClient.basePackages、@EnableFeignClient.basePackageClasses获取属性值，解析从而确定这些值的package目录；最后优先级从@EnableFeignClient注解所在的类，从而获取这个类的package。</p>
+<p>确定了package目录后，开始加载package转换成的包目录下带有@FeignClient的.class文件。加载.class文件使用的是ClassPathScanningCandidateComponentProvider类，这个类的resourceLoader变量提供classLoader来加载.class文件；同时includeFilters变量标识要将哪些类转化为BeanDefinition。最后将BeanDefinition放入spring BeanFactory容器。为了尽量不扰乱feign部分，加载.class及转化为BeanDefinition这里不阐述，详细代码见ClassPathScanningCandidateComponentProvider.scanCandidateComponents()方法</p>
+<p>这里加载指定的package目录下的.class文件的方式很关键，因为它是通用的，<font color="green">可以是我们实际开发中的扩展点:从一个指定的package目录中加载指定注解类型的.class文件们</font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">第一步：</span><br><span class="line">ClassPathScanningCandidateComponentProvider scanner = getScanner();</span><br><span class="line">scanner.setResourceLoader(this.resourceLoader);</span><br><span class="line">AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(FeignClient.class);</span><br><span class="line">scanner.addIncludeFilter(annotationTypeFilter);</span><br><span class="line">第二步：</span><br><span class="line">Set&lt;BeanDefinition&gt; candidateComponents = scanner.findCandidateComponents(basePackage);</span><br><span class="line">第三步：</span><br><span class="line">BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry); //registry为BeanDefinitionRegistry及子类或DefaultListableBeanFactory</span><br><span class="line"></span><br><span class="line">经过以上三步，就可以将指定package下的.class文件转化成BeanDefinition，进而放入spring 的BeanFactory容器中。</span><br></pre></td></tr></table></figure></p>
+<p>如你在实际开发中，需要加载com.yourcompany.projectName下的带有@LoginAccess注解的.class文件，直接使用上面的代码，稍加改动就ok了</p>
+<p>在将每个@FeignClient解析，生成BeanDefinition放入spring BeanFactory容器时，这里注意一点：生成的BeanDefinition的beanClass值为FeignClientFactoryBean类型(FeignClientFactoryBean是FactoryBean的子类，在beanDefinition生成beanInstance时发挥作用)。如下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private void registerFeignClient(BeanDefinitionRegistry registry,</span><br><span class="line">		AnnotationMetadata annotationMetadata, Map&lt;String, Object&gt; attributes) &#123;</span><br><span class="line">    String className = annotationMetadata.getClassName();</span><br><span class="line">    BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(FeignClientFactoryBean.class);</span><br><span class="line">    ···</span><br><span class="line">    BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className,new String[] &#123; alias &#125;);</span><br><span class="line">    BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在，feign相关组件的.class转化为BeanDefinition了，BeanDefinition都放入了spring beanFactory容器了，即DefaultListableBeanFactroy.beanDefinitionMap属性，这一阶段已经完成。下面到了下一阶段：BeanDefinition转化为BeanInstance</p>
+<h3 id="BeanDefinition转化为BeanInstance"><a href="#BeanDefinition转化为BeanInstance" class="headerlink" title="BeanDefinition转化为BeanInstance"></a>BeanDefinition转化为BeanInstance</h3><p>如果说AbstractApplicatonContext.invokeBeanFactoryPostProcessors()负责加载.class到BeanDefinition的转化，那么AbstractApplicationContext.registerBeanPostProcessors()就负责BeanDefinition到BeanInstance的转化。这正好印证了我在<a href="https://yaoyuanyy.github.io/2019/03/12/BeanFactoryPostProcessory%E4%B8%8EBeanPostProcessor%E5%8C%BA%E5%88%AB/">BeanFactoryPostProcessory与BeanPostProcessor区别
+</a>所阐述的那样。下面就开始理清feign组件相关的BeanDefinition转化为BeanInstance的过程。</p>
+<h2 id="请求处理分析"><a href="#请求处理分析" class="headerlink" title="请求处理分析"></a>请求处理分析</h2><h2 id="扩展点关注"><a href="#扩展点关注" class="headerlink" title="扩展点关注"></a>扩展点关注</h2><p><a href="https://segmentfault.com/a/1190000020656405" target="_blank" rel="noopener">https://segmentfault.com/a/1190000020656405</a><br><a href="https://juejin.im/post/5c6fb8b7518825629b42f572" target="_blank" rel="noopener">https://juejin.im/post/5c6fb8b7518825629b42f572</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2019/10/23/springcloud feign扩展点及原理(源码)分析/" title="spring cloud feign扩展点及原理(源码)分析">https://yaoyuanyy.github.io/2019/10/23/springcloud feign扩展点及原理(源码)分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/23/服务可用性的思考/" rel="next" title="服务可用性的思考">
+                <i class="fa fa-chevron-left"></i> 服务可用性的思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/tao.jpg" alt="Skyler">
+            
+              <p class="site-author-name" itemprop="name">Skyler</p>
+              <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yaoyuanyy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yaoyihao1@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/585b94018d6d810065d34497/posts" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用实例展现"><span class="nav-number">2.</span> <span class="nav-text">使用实例展现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feign关键类"><span class="nav-number">3.</span> <span class="nav-text">feign关键类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码加载原理"><span class="nav-number">4.</span> <span class="nav-text">代码加载原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class转化为BeanDefinition"><span class="nav-number">4.1.</span> <span class="nav-text">.class转化为BeanDefinition</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#feign组件的加载："><span class="nav-number">4.1.1.</span> <span class="nav-text">feign组件的加载：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanDefinition转化为BeanInstance"><span class="nav-number">4.2.</span> <span class="nav-text">BeanDefinition转化为BeanInstance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请求处理分析"><span class="nav-number">5.</span> <span class="nav-text">请求处理分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展点关注"><span class="nav-number">6.</span> <span class="nav-text">扩展点关注</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2019/10/23/springcloud feign扩展点及原理(源码)分析/';
+          this.page.identifier = '2019/10/23/springcloud feign扩展点及原理(源码)分析/';
+          this.page.title = 'spring cloud feign扩展点及原理(源码)分析';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("z1rh3HBfRJYf4gqQXC1RjVAC-gzGzoHsz", "cFSlIdGSSY8cjFbc0bTewxKq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
