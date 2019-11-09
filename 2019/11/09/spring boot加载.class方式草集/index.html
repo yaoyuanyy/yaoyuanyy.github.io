@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="todo [toc] 服务本身的可用性服务多活参考：http://blogxin.cn/2019/03/02/multi-datacenter/ 服务发布方式灰度发布原理灰度发布（又名金丝雀发布）是指在黑与白之间，能够平滑过渡的一种发布方式。在其上可以进行A/B testing，即让一部分用户继续用产品特性A，一部分用户开始用产品特性B，如果用户对B没有什么反对意见，那么逐步扩大范围，把所有用户都">
+<meta name="description" content="加载.class方式spring这个庞大的家族给了我们很大便利的同时，也给了我们很多的眼界。使得我们可以模仿它，有个能模仿它的框架，有的能模仿它的某个知识点。 现在，我们来对spring, spring boot, spring cloud中的涉及加载.class文件方式进行一次摸底，形成一个草集。 方式一 加载指定package目录下的.class文件spring cloud openfeign">
 <meta property="og:type" content="article">
-<meta property="og:title" content="服务可用性的思考">
-<meta property="og:url" content="https://yaoyuanyy.github.io/2019/10/23/服务可用性的思考/index.html">
+<meta property="og:title" content="spring boot加载.class方式草集">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/11/09/spring boot加载.class方式草集/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="todo [toc] 服务本身的可用性服务多活参考：http://blogxin.cn/2019/03/02/multi-datacenter/ 服务发布方式灰度发布原理灰度发布（又名金丝雀发布）是指在黑与白之间，能够平滑过渡的一种发布方式。在其上可以进行A/B testing，即让一部分用户继续用产品特性A，一部分用户开始用产品特性B，如果用户对B没有什么反对意见，那么逐步扩大范围，把所有用户都">
+<meta property="og:description" content="加载.class方式spring这个庞大的家族给了我们很大便利的同时，也给了我们很多的眼界。使得我们可以模仿它，有个能模仿它的框架，有的能模仿它的某个知识点。 现在，我们来对spring, spring boot, spring cloud中的涉及加载.class文件方式进行一次摸底，形成一个草集。 方式一 加载指定package目录下的.class文件spring cloud openfeign">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-23T09:56:20.880Z">
+<meta property="og:updated_time" content="2019-11-09T11:15:52.887Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="服务可用性的思考">
-<meta name="twitter:description" content="todo [toc] 服务本身的可用性服务多活参考：http://blogxin.cn/2019/03/02/multi-datacenter/ 服务发布方式灰度发布原理灰度发布（又名金丝雀发布）是指在黑与白之间，能够平滑过渡的一种发布方式。在其上可以进行A/B testing，即让一部分用户继续用产品特性A，一部分用户开始用产品特性B，如果用户对B没有什么反对意见，那么逐步扩大范围，把所有用户都">
+<meta name="twitter:title" content="spring boot加载.class方式草集">
+<meta name="twitter:description" content="加载.class方式spring这个庞大的家族给了我们很大便利的同时，也给了我们很多的眼界。使得我们可以模仿它，有个能模仿它的框架，有的能模仿它的某个知识点。 现在，我们来对spring, spring boot, spring cloud中的涉及加载.class文件方式进行一次摸底，形成一个草集。 方式一 加载指定package目录下的.class文件spring cloud openfeign">
 
 
 
@@ -121,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/10/23/服务可用性的思考/">
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/11/09/spring boot加载.class方式草集/">
 
 
 
 
 
-  <title>服务可用性的思考 | skyler-blog</title>
+  <title>spring boot加载.class方式草集 | skyler-blog</title>
   
 
 
@@ -284,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/10/23/服务可用性的思考/">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/11/09/spring boot加载.class方式草集/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Skyler">
@@ -301,7 +301,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">服务可用性的思考</h1>
+          <h1 class="post-title" itemprop="name headline">spring boot加载.class方式草集</h1>
         
 
         <div class="post-meta">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-23T17:05:32+08:00">
-                2019-10-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-09T14:05:22+08:00">
+                2019-11-09
               </time>
             
 
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-10-23T17:56:20+08:00">
-                2019-10-23
+              <time title="更新于" itemprop="dateModified" datetime="2019-11-09T19:15:52+08:00">
+                2019-11-09
               </time>
             
           </span>
@@ -344,8 +344,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/10/23/服务可用性的思考/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/23/服务可用性的思考/" itemprop="commentCount"></span>
+                <a href="/2019/11/09/spring boot加载.class方式草集/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/09/spring boot加载.class方式草集/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -353,7 +353,7 @@
 
           
           
-             <span id="/2019/10/23/服务可用性的思考/" class="leancloud_visitors" data-flag-title="服务可用性的思考">
+             <span id="/2019/11/09/spring boot加载.class方式草集/" class="leancloud_visitors" data-flag-title="spring boot加载.class方式草集">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -378,7 +378,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  362
+                  617
                 </span>
               
 
@@ -394,7 +394,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
@@ -415,15 +415,15 @@
       
 
       
-        <p>todo</p>
-<p>[toc]</p>
-<h2 id="服务本身的可用性"><a href="#服务本身的可用性" class="headerlink" title="服务本身的可用性"></a>服务本身的可用性</h2><h3 id="服务多活"><a href="#服务多活" class="headerlink" title="服务多活"></a>服务多活</h3><p>参考：<a href="http://blogxin.cn/2019/03/02/multi-datacenter/" target="_blank" rel="noopener">http://blogxin.cn/2019/03/02/multi-datacenter/</a></p>
-<h3 id="服务发布方式"><a href="#服务发布方式" class="headerlink" title="服务发布方式"></a>服务发布方式</h3><h4 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h4><h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p>灰度发布（又名金丝雀发布）是指在黑与白之间，能够平滑过渡的一种发布方式。在其上可以进行A/B testing，即让一部分用户继续用产品特性A，一部分用户开始用产品特性B，如果用户对B没有什么反对意见，那么逐步扩大范围，把所有用户都迁移到B上面来。灰度发布可以保证整体系统的稳定，在初始灰度的时候就可以发现、调整问题，以保证其影响度。</p>
-<p>通俗的讲： 为了保证服务升级过程的平滑过渡提高客户体验，会一部分用户 一部分用户递进更新，这样生产中会同时出现多个版本的客户端，为了保证多个版本客户端的可用需要对应的多个版本的服务端版本。灰度发布就是通过一定策略保证 多个版本客户端、服务端间能够正确对应。</p>
-<p>链接：<a href="https://juejin.im/post/5d2445f0e51d4550723b147b" target="_blank" rel="noopener">https://juejin.im/post/5d2445f0e51d4550723b147b</a></p>
-<h5 id="技术实现方式"><a href="#技术实现方式" class="headerlink" title="技术实现方式"></a>技术实现方式</h5><h4 id="蓝绿发布"><a href="#蓝绿发布" class="headerlink" title="蓝绿发布"></a>蓝绿发布</h4><h4 id="滚动发布"><a href="#滚动发布" class="headerlink" title="滚动发布"></a>滚动发布</h4><h2 id="依赖服务的可用性"><a href="#依赖服务的可用性" class="headerlink" title="依赖服务的可用性"></a>依赖服务的可用性</h2><h2 id="mysql可用性"><a href="#mysql可用性" class="headerlink" title="mysql可用性"></a>mysql可用性</h2><h3 id="主从"><a href="#主从" class="headerlink" title="主从"></a>主从</h3><h4 id="服务多活-1"><a href="#服务多活-1" class="headerlink" title="服务多活"></a>服务多活</h4><blockquote>
-<p>服务多活过程中的难点：服务级故障转移、流量管控、数据同步</p>
-</blockquote>
+        <h1 id="加载-class方式"><a href="#加载-class方式" class="headerlink" title="加载.class方式"></a>加载.class方式</h1><p>spring这个庞大的家族给了我们很大便利的同时，也给了我们很多的眼界。使得我们可以模仿它，有个能模仿它的框架，有的能模仿它的某个知识点。</p>
+<p>现在，我们来对spring, spring boot, spring cloud中的涉及加载.class文件方式进行一次摸底，形成一个草集。</p>
+<h2 id="方式一-加载指定package目录下的-class文件"><a href="#方式一-加载指定package目录下的-class文件" class="headerlink" title="方式一 加载指定package目录下的.class文件"></a>方式一 加载指定package目录下的.class文件</h2><p>spring cloud openfeign作为RPC调用组件，在加载feign组件的.class时，它自己实现了一套加载逻辑，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">FeignClientsRegistrar class</span><br><span class="line">public void registerFeignClients(AnnotationMetadata metadata, BeanDefinitionRegistry registry) &#123;</span><br><span class="line">    ClassPathScanningCandidateComponentProvider scanner = getScanner();</span><br><span class="line">    scanner.setResourceLoader(this.resourceLoader);</span><br><span class="line">    scanner.addIncludeFilter(new AnnotationTypeFilter(FeignClient.class));</span><br><span class="line"></span><br><span class="line">    Set&lt;String&gt; basePackages = getBasePackages(metadata);</span><br><span class="line">    for (String basePackage : basePackages) &#123;</span><br><span class="line">        Set&lt;BeanDefinition&gt; candidateComponents = scanner.findCandidateComponents(basePackage);</span><br><span class="line">        for (BeanDefinition candidateComponent : candidateComponents) &#123;</span><br><span class="line">            if (candidateComponent instanceof AnnotatedBeanDefinition) &#123;</span><br><span class="line">                // verify annotated class is an interface</span><br><span class="line">                AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) candidateComponent;</span><br><span class="line">                AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();</span><br><span class="line">                </span><br><span class="line">                Map&lt;String, Object&gt; attributes = annotationMetadata</span><br><span class="line">                        .getAnnotationAttributes(FeignClient.class.getCanonicalName());</span><br><span class="line">             </span><br><span class="line">                registerFeignClient(registry, annotationMetadata, attributes);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如方法所示，通过<code>ClassPathScanningCandidateComponentProvider</code>对象，赋值类加载器，目标类型。从给定的package目录加载其下的.class文件，然后生成BeanDefinition放入spring beanFactory容器。</p>
+<h2 id="方式二-项目下所有jar包中的META-INF-spring-factories加载指定的class类型对象集合"><a href="#方式二-项目下所有jar包中的META-INF-spring-factories加载指定的class类型对象集合" class="headerlink" title="方式二 项目下所有jar包中的META-INF/spring.factories加载指定的class类型对象集合"></a>方式二 项目下所有jar包中的META-INF/spring.factories加载指定的class类型对象集合</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">private void onApplicationEnvironmentPreparedEvent(ApplicationEnvironmentPreparedEvent event) &#123;</span><br><span class="line">    List&lt;EnvironmentPostProcessor&gt; postProcessors = loadPostProcessors();</span><br><span class="line">    AnnotationAwareOrderComparator.sort(postProcessors);</span><br><span class="line">    for (EnvironmentPostProcessor postProcessor : postProcessors) &#123;</span><br><span class="line">        postProcessor.postProcessEnvironment(event.getEnvironment(), event.getSpringApplication());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">List&lt;EnvironmentPostProcessor&gt; loadPostProcessors() &#123;</span><br><span class="line">    return SpringFactoriesLoader.loadFactories(EnvironmentPostProcessor.class,</span><br><span class="line">            getClass().getClassLoader());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在项目下所有jar包中的META-INF/spring.factories加载指定的class类型对象集合。如上方法，加载EnvironmentPostProcessor类型的对象集合</p>
+<h2 id="方式三-从classpath下指定目录加载-class文件"><a href="#方式三-从classpath下指定目录加载-class文件" class="headerlink" title="方式三 从classpath下指定目录加载.class文件"></a>方式三 从classpath<em>下指定目录加载</em>.class文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">ComponentScanAnnotationParser class</span><br><span class="line">public Set&lt;BeanDefinitionHolder&gt; parse(AnnotationAttributes componentScan, final String declaringClass ) &#123;</span><br><span class="line">    ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,</span><br><span class="line">            componentScan.getBoolean(&quot;useDefaultFilters&quot;), this.environment, this.resourceLoader);</span><br><span class="line"></span><br><span class="line">    scanner.setBeanNameGenerator(this.beanNameGenerator);</span><br><span class="line">    scanner.setScopedProxyMode(scopedProxyMode);</span><br><span class="line">    scanner.setScopeMetadataResolver(BeanUtils.instantiateClass(resolverClass));</span><br><span class="line">    scanner.setResourcePattern(componentScan.getString(&quot;resourcePattern&quot;));</span><br><span class="line">    scanner.addIncludeFilter(typeFilter);</span><br><span class="line">    scanner.addExcludeFilter(typeFilter);</span><br><span class="line">    scanner.getBeanDefinitionDefaults().setLazyInit(true);</span><br><span class="line">    </span><br><span class="line">    Set&lt;String&gt; basePackages = new LinkedHashSet&lt;&gt;();</span><br><span class="line">    for (Class&lt;?&gt; clazz : componentScan.getClassArray(&quot;basePackageClasses&quot;)) &#123;</span><br><span class="line">        basePackages.add(ClassUtils.getPackageName(clazz));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return scanner.doScan(StringUtils.toStringArray(basePackages));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected Set&lt;BeanDefinitionHolder&gt; doScan(String... basePackages) &#123;</span><br><span class="line">    Set&lt;BeanDefinitionHolder&gt; beanDefinitions = new LinkedHashSet&lt;&gt;();</span><br><span class="line">    for (String basePackage : basePackages) &#123;</span><br><span class="line">        Set&lt;BeanDefinition&gt; candidates = findCandidateComponents(basePackage);</span><br><span class="line">        for (BeanDefinition candidate : candidates) &#123;</span><br><span class="line">            String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);</span><br><span class="line">            if (checkCandidate(beanName, candidate)) &#123;</span><br><span class="line">                BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);</span><br><span class="line">                beanDefinitions.add(definitionHolder);</span><br><span class="line">                registerBeanDefinition(definitionHolder, this.registry);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return beanDefinitions;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ClassPathScanningCandidateComponentProvider class</span><br><span class="line">private Set&lt;BeanDefinition&gt; scanCandidateComponents(String basePackage) &#123;</span><br><span class="line">    Set&lt;BeanDefinition&gt; candidates = new LinkedHashSet&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    // 如 classpath*:com/skyler/**/*.class</span><br><span class="line">    String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +</span><br><span class="line">            resolveBasePackage(basePackage) + &apos;/&apos; + this.resourcePattern;</span><br><span class="line">    Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);</span><br><span class="line">    for (Resource resource : resources) &#123;</span><br><span class="line">        MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);</span><br><span class="line">        if (isCandidateComponent(metadataReader)) &#123;</span><br><span class="line">            ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);</span><br><span class="line">            candidates.add(sbd);</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;</span><br><span class="line">    return candidates;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>待续···</p>
 
       
     </div>
@@ -468,7 +468,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/10/23/服务可用性的思考/" title="服务可用性的思考">https://yaoyuanyy.github.io/2019/10/23/服务可用性的思考/</a>
+    <a href="https://yaoyuanyy.github.io/2019/11/09/spring boot加载.class方式草集/" title="spring boot加载.class方式草集">https://yaoyuanyy.github.io/2019/11/09/spring boot加载.class方式草集/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -490,8 +490,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/23/linux常用命令草集/" rel="next" title="linux常用命令草集">
-                <i class="fa fa-chevron-left"></i> linux常用命令草集
+              <a href="/2019/10/23/springcloud feign扩展点及原理(源码)分析/" rel="next" title="spring cloud feign扩展点及原理(源码)分析">
+                <i class="fa fa-chevron-left"></i> spring cloud feign扩展点及原理(源码)分析
               </a>
             
           </div>
@@ -499,10 +499,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/23/springcloud feign扩展点及原理(源码)分析/" rel="prev" title="spring cloud feign扩展点及原理(源码)分析">
-                spring cloud feign扩展点及原理(源码)分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -676,7 +672,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务本身的可用性"><span class="nav-number">1.</span> <span class="nav-text">服务本身的可用性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务多活"><span class="nav-number">1.1.</span> <span class="nav-text">服务多活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务发布方式"><span class="nav-number">1.2.</span> <span class="nav-text">服务发布方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#灰度发布"><span class="nav-number">1.2.1.</span> <span class="nav-text">灰度发布</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#原理"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#技术实现方式"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">技术实现方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#蓝绿发布"><span class="nav-number">1.2.2.</span> <span class="nav-text">蓝绿发布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滚动发布"><span class="nav-number">1.2.3.</span> <span class="nav-text">滚动发布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖服务的可用性"><span class="nav-number">2.</span> <span class="nav-text">依赖服务的可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql可用性"><span class="nav-number">3.</span> <span class="nav-text">mysql可用性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主从"><span class="nav-number">3.1.</span> <span class="nav-text">主从</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#服务多活-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">服务多活</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#加载-class方式"><span class="nav-number">1.</span> <span class="nav-text">加载.class方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方式一-加载指定package目录下的-class文件"><span class="nav-number">1.1.</span> <span class="nav-text">方式一 加载指定package目录下的.class文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方式二-项目下所有jar包中的META-INF-spring-factories加载指定的class类型对象集合"><span class="nav-number">1.2.</span> <span class="nav-text">方式二 项目下所有jar包中的META-INF/spring.factories加载指定的class类型对象集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方式三-从classpath下指定目录加载-class文件"><span class="nav-number">1.3.</span> <span class="nav-text">方式三 从classpath下指定目录加载.class文件</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -839,9 +835,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://yaoyuanyy.github.io/2019/10/23/服务可用性的思考/';
-          this.page.identifier = '2019/10/23/服务可用性的思考/';
-          this.page.title = '服务可用性的思考';
+          this.page.url = 'https://yaoyuanyy.github.io/2019/11/09/spring boot加载.class方式草集/';
+          this.page.identifier = '2019/11/09/spring boot加载.class方式草集/';
+          this.page.title = 'spring boot加载.class方式草集';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';
