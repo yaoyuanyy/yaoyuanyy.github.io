@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yaoyuanyy.github.io/2019/10/23/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%8D%89%E9%9B%86/</loc>
+    <loc>https://yaoyuanyy.github.io/2019/03/22/springboot%20@Configuration%E5%8A%A0%E8%BD%BD0%E5%88%B01%E8%A7%A3%E6%9E%90/</loc>
     
-    <lastmod>2019-11-10T00:30:38.568Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yaoyuanyy.github.io/2019/10/13/linux%E4%B8%AD$%E7%AC%A6%E5%8F%B7%E7%9A%84%E7%94%A8%E6%B3%95%E8%8D%89%E9%9B%86/</loc>
-    
-    <lastmod>2019-11-10T00:30:23.740Z</lastmod>
+    <lastmod>2019-11-28T16:10:43.169Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yaoyuanyy.github.io/2019/11/09/spring%20boot%E5%8A%A0%E8%BD%BD.class%E6%96%B9%E5%BC%8F%E8%8D%89%E9%9B%86/</loc>
     
-    <lastmod>2019-11-09T11:15:52.887Z</lastmod>
+    <lastmod>2019-11-24T23:10:42.151Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yaoyuanyy.github.io/2019/10/13/linux%E4%B8%AD$%E7%AC%A6%E5%8F%B7%E7%9A%84%E7%94%A8%E6%B3%95%E8%8D%89%E9%9B%86/</loc>
+    
+    <lastmod>2019-11-10T00:53:18.091Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yaoyuanyy.github.io/2019/10/23/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%8D%89%E9%9B%86/</loc>
+    
+    <lastmod>2019-11-10T00:30:38.568Z</lastmod>
     
   </url>
   
@@ -47,13 +54,6 @@
     <loc>https://yaoyuanyy.github.io/2019/08/01/%E7%BB%86%E8%8A%82%E7%9F%A5%E5%A4%9A%E5%B0%91%20-%20spring%20boot%20@Value%E6%B3%A8%E8%A7%A3%E8%A7%A3%E6%9E%90/</loc>
     
     <lastmod>2019-11-03T06:35:55.295Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yaoyuanyy.github.io/2019/03/22/springboot%20@Configuration%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%BA%90%E7%A0%81%E5%92%8C%E6%89%A9%E5%B1%95%E7%82%B9%E8%A7%A3%E6%9E%90/</loc>
-    
-    <lastmod>2019-11-03T06:34:27.046Z</lastmod>
     
   </url>
   
