@@ -89,16 +89,17 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="知识点收获通过本文，你能收获什么？  @Configuration的.class文件如何被spring加载的？ @Configuration的.class文件如何被转化为ConfigurationClassBeanDefinition放入spring容器的？ @Configuration的.class文件如何被转化为ConfigurationClass对象的 ConfigurationClass对">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191129002132.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125072356.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125075119.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191126082030.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191128000838.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191127235053.png">
-<meta property="og:updated_time" content="2019-11-28T16:10:43.169Z">
+<meta property="og:updated_time" content="2019-11-28T16:21:54.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot @Configuration加载0到1解析">
 <meta name="twitter:description" content="知识点收获通过本文，你能收获什么？  @Configuration的.class文件如何被spring加载的？ @Configuration的.class文件如何被转化为ConfigurationClassBeanDefinition放入spring容器的？ @Configuration的.class文件如何被转化为ConfigurationClass对象的 ConfigurationClass对">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125072356.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191129002132.png">
 
 
 
@@ -336,7 +337,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-11-29T00:10:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-11-29T00:21:54+08:00">
                 2019-11-29
               </time>
             
@@ -455,6 +456,7 @@
 <blockquote>
 <p>》本文力求专注和精简，希望你有所收获和想法</p>
 </blockquote>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191129002132.png" alt="20191129002132.png"></p>
 <h2 id="Configuration注解作用"><a href="#Configuration注解作用" class="headerlink" title="@Configuration注解作用"></a>@Configuration注解作用</h2><p>@Configuration标识的类有这些特性：可以声明多个@Bean方法，且在运行时被spring容器处理来生成BeanDefinition。@Configuration类是被AnnotationConfigWebApplicationContext启动(bootstrap)处理流程的。声明方式如下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> @Configuration</span><br><span class="line"> public class AppConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public MyBean myBean() &#123;</span><br><span class="line">        // instantiate, configure and return bean ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>@Configuration class存在如下约束，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125072356.png" alt="20191125072356.png"></p>
 <h2 id="Configuration-class源码加载分析"><a href="#Configuration-class源码加载分析" class="headerlink" title="@Configuration class源码加载分析"></a>@Configuration class源码加载分析</h2><h3 id="Configuration相关的类"><a href="#Configuration相关的类" class="headerlink" title="@Configuration相关的类"></a>@Configuration相关的类</h3><p>如果IDE你使用的Idea，double Shift键，输入<code>ConfigurationClass</code>，会出现一长列的类，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125075119.png" alt="20191125075119.png"><br>这些类分工协作，从加载标识@Configuration的.class文件，到生成BeanDefinition，再到生成ConfigurationClass对象，再到解析ConfigurationClass对象，即解析@ConfigurationClass class类中@Bean、@Import、@ImportResource等注解<br>|class|作用|<br>|  – | – |<br>| ConfigurationClass | 专门表示@Configuration class。存储解析@Configuration class的信息 |<br>| ConfigurationClassPostProcessor | 专门用于处理@Configuration class的BeanDefinitoinRegistryPostProcessor（BeanFactoryPostProcessor子类) |<br>| AnnotationConfigUtils | 专门注册BeanPostProcessor和BeanFactoryPostProcessor到spring容器 | </p>
