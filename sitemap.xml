@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yaoyuanyy.github.io/2019/04/12/springboot%20beanDefinition%E8%BD%AC%E5%8C%96%E4%B8%BAbeanInstance%E8%BF%87%E7%A8%8B%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%92%8C%E6%89%A9%E5%B1%95%E7%82%B9/</loc>
+    
+    <lastmod>2019-12-01T03:51:28.462Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yaoyuanyy.github.io/2019/03/22/springboot%20@Configuration%E5%8A%A0%E8%BD%BD0%E5%88%B01%E8%A7%A3%E6%9E%90/</loc>
     
-    <lastmod>2019-11-28T16:21:54.292Z</lastmod>
+    <lastmod>2019-11-28T16:23:16.218Z</lastmod>
     
   </url>
   
@@ -33,13 +40,6 @@
     <loc>https://yaoyuanyy.github.io/2019/10/23/springcloud%20feign%E6%89%A9%E5%B1%95%E7%82%B9%E5%8F%8A%E5%8E%9F%E7%90%86(%E6%BA%90%E7%A0%81)%E5%88%86%E6%9E%90/</loc>
     
     <lastmod>2019-11-09T06:02:41.024Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yaoyuanyy.github.io/2019/04/12/springboot%20beanDefinition%E8%BD%AC%E5%8C%96%E4%B8%BAbeanInstance%E8%BF%87%E7%A8%8B%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%92%8C%E6%89%A9%E5%B1%95%E7%82%B9/</loc>
-    
-    <lastmod>2019-11-04T00:49:44.393Z</lastmod>
     
   </url>
   

@@ -81,18 +81,21 @@
 
 
 
-<meta name="description" content="todo 待完善 前提两部分：.class–&amp;gt;BeanDefinition,BeanDefinition–&amp;gt;BeanInstance spring创建bean是通过bean definition完成 核心类AbstractAutowireCapableBeanFactory123456789101112131415161718192021222324252627282930313233">
+<meta name="description" content="前提如果你已经很了解spring framework中bean生成的原理和过程，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间 名词解析 入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间  知识点收获通过本文，你能收获什么？  .class文件生成beanDefinition的入口 bean">
 <meta name="keywords" content="java,github">
 <meta property="og:type" content="article">
-<meta property="og:title" content="springboot beanDefinition转化为beanInstance过程源码分析和扩展点">
+<meta property="og:title" content="springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="todo 待完善 前提两部分：.class–&amp;gt;BeanDefinition,BeanDefinition–&amp;gt;BeanInstance spring创建bean是通过bean definition完成 核心类AbstractAutowireCapableBeanFactory123456789101112131415161718192021222324252627282930313233">
+<meta property="og:description" content="前提如果你已经很了解spring framework中bean生成的原理和过程，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间 名词解析 入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间  知识点收获通过本文，你能收获什么？  .class文件生成beanDefinition的入口 bean">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-04T00:49:44.393Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191201103033.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/%E9%A3%9E%E7%8C%AB.png">
+<meta property="og:updated_time" content="2019-12-01T03:51:28.462Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="springboot beanDefinition转化为beanInstance过程源码分析和扩展点">
-<meta name="twitter:description" content="todo 待完善 前提两部分：.class–&amp;gt;BeanDefinition,BeanDefinition–&amp;gt;BeanInstance spring创建bean是通过bean definition完成 核心类AbstractAutowireCapableBeanFactory123456789101112131415161718192021222324252627282930313233">
+<meta name="twitter:title" content="springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点">
+<meta name="twitter:description" content="前提如果你已经很了解spring framework中bean生成的原理和过程，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间 名词解析 入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间  知识点收获通过本文，你能收获什么？  .class文件生成beanDefinition的入口 bean">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191201103033.png">
 
 
 
@@ -128,7 +131,7 @@
 
 
 
-  <title>springboot beanDefinition转化为beanInstance过程源码分析和扩展点 | skyler-blog</title>
+  <title>springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点 | skyler-blog</title>
   
 
 
@@ -302,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">springboot beanDefinition转化为beanInstance过程源码分析和扩展点</h1>
+          <h1 class="post-title" itemprop="name headline">springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点</h1>
         
 
         <div class="post-meta">
@@ -330,8 +333,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-11-04T08:49:44+08:00">
-                2019-11-04
+              <time title="更新于" itemprop="dateModified" datetime="2019-12-01T11:51:28+08:00">
+                2019-12-01
               </time>
             
           </span>
@@ -376,7 +379,7 @@
 
           
           
-             <span id="/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" class="leancloud_visitors" data-flag-title="springboot beanDefinition转化为beanInstance过程源码分析和扩展点">
+             <span id="/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" class="leancloud_visitors" data-flag-title="springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -401,7 +404,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  659
+                  793
                 </span>
               
 
@@ -417,7 +420,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4
+                  2
                 </span>
               
             </div>
@@ -438,11 +441,40 @@
       
 
       
-        <p>todo 待完善</p>
-<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>两部分：.class–&gt;BeanDefinition,BeanDefinition–&gt;BeanInstance</p>
-<p>spring创建bean是通过bean definition完成</p>
-<h4 id="核心类AbstractAutowireCapableBeanFactory"><a href="#核心类AbstractAutowireCapableBeanFactory" class="headerlink" title="核心类AbstractAutowireCapableBeanFactory"></a>核心类AbstractAutowireCapableBeanFactory</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException &#123;</span><br><span class="line">	if (logger.isDebugEnabled()) &#123;</span><br><span class="line">		logger.debug(&quot;Creating instance of bean &apos;&quot; + beanName + &quot;&apos;&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	RootBeanDefinition mbdToUse = mbd;</span><br><span class="line"></span><br><span class="line">	// Make sure bean class is actually resolved at this point, and</span><br><span class="line">	// clone the bean definition in case of a dynamically resolved Class</span><br><span class="line">	// which cannot be stored in the shared merged bean definition.</span><br><span class="line">	Class&lt;?&gt; resolvedClass = resolveBeanClass(mbd, beanName);</span><br><span class="line">	if (resolvedClass != null &amp;&amp; !mbd.hasBeanClass() &amp;&amp; mbd.getBeanClassName() != null) &#123;</span><br><span class="line">		mbdToUse = new RootBeanDefinition(mbd);</span><br><span class="line">		mbdToUse.setBeanClass(resolvedClass);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Prepare method overrides.</span><br><span class="line">	try &#123;</span><br><span class="line">		mbdToUse.prepareMethodOverrides();</span><br><span class="line">	&#125;</span><br><span class="line">	catch (BeanDefinitionValidationException ex) &#123;</span><br><span class="line">		throw new BeanDefinitionStoreException(mbdToUse.getResourceDescription(),</span><br><span class="line">				beanName, &quot;Validation of method overrides failed&quot;, ex);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	try &#123;</span><br><span class="line">		// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.</span><br><span class="line">		Object bean = resolveBeforeInstantiation(beanName, mbdToUse);</span><br><span class="line">		if (bean != null) &#123;</span><br><span class="line">			return bean;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	catch (Throwable ex) &#123;</span><br><span class="line">		throw new BeanCreationException(mbdToUse.getResourceDescription(), beanName,</span><br><span class="line">				&quot;BeanPostProcessor before instantiation of bean failed&quot;, ex);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Object beanInstance = doCreateBean(beanName, mbdToUse, args);</span><br><span class="line">	if (logger.isDebugEnabled()) &#123;</span><br><span class="line">		logger.debug(&quot;Finished creating instance of bean &apos;&quot; + beanName + &quot;&apos;&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	return beanInstance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final Object[] args)</span><br><span class="line">		throws BeanCreationException &#123;</span><br><span class="line"></span><br><span class="line">	// Instantiate the bean.</span><br><span class="line">	BeanWrapper instanceWrapper = null;</span><br><span class="line">	if (mbd.isSingleton()) &#123;</span><br><span class="line">		instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);</span><br><span class="line">	&#125;</span><br><span class="line">	if (instanceWrapper == null) &#123;</span><br><span class="line">		instanceWrapper = createBeanInstance(beanName, mbd, args);</span><br><span class="line">	&#125;</span><br><span class="line">	final Object bean = (instanceWrapper != null ? instanceWrapper.getWrappedInstance() : null);</span><br><span class="line">	Class&lt;?&gt; beanType = (instanceWrapper != null ? instanceWrapper.getWrappedClass() : null);</span><br><span class="line">	mbd.resolvedTargetType = beanType;</span><br><span class="line"></span><br><span class="line">	// Allow post-processors to modify the merged bean definition.</span><br><span class="line">	synchronized (mbd.postProcessingLock) &#123;</span><br><span class="line">		if (!mbd.postProcessed) &#123;</span><br><span class="line">			try &#123;</span><br><span class="line">				applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);</span><br><span class="line">			&#125;</span><br><span class="line">			catch (Throwable ex) &#123;</span><br><span class="line">				throw new BeanCreationException(mbd.getResourceDescription(), beanName,</span><br><span class="line">						&quot;Post-processing of merged bean definition failed&quot;, ex);</span><br><span class="line">			&#125;</span><br><span class="line">			mbd.postProcessed = true;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Eagerly cache singletons to be able to resolve circular references</span><br><span class="line">	// even when triggered by lifecycle interfaces like BeanFactoryAware.</span><br><span class="line">	boolean earlySingletonExposure = (mbd.isSingleton() &amp;&amp; this.allowCircularReferences &amp;&amp;</span><br><span class="line">			isSingletonCurrentlyInCreation(beanName));</span><br><span class="line">	if (earlySingletonExposure) &#123;</span><br><span class="line">		if (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(&quot;Eagerly caching bean &apos;&quot; + beanName +</span><br><span class="line">					&quot;&apos; to allow for resolving potential circular references&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		addSingletonFactory(beanName, new ObjectFactory&lt;Object&gt;() &#123;</span><br><span class="line">			@Override</span><br><span class="line">			public Object getObject() throws BeansException &#123;</span><br><span class="line">				return getEarlyBeanReference(beanName, mbd, bean);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Initialize the bean instance.</span><br><span class="line">	Object exposedObject = bean;</span><br><span class="line">	try &#123;</span><br><span class="line">		populateBean(beanName, mbd, instanceWrapper);</span><br><span class="line">		if (exposedObject != null) &#123;</span><br><span class="line">			exposedObject = initializeBean(beanName, exposedObject, mbd);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	catch (Throwable ex) &#123;</span><br><span class="line">		if (ex instanceof BeanCreationException &amp;&amp; beanName.equals(((BeanCreationException) ex).getBeanName())) &#123;</span><br><span class="line">			throw (BeanCreationException) ex;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			throw new BeanCreationException(</span><br><span class="line">					mbd.getResourceDescription(), beanName, &quot;Initialization of bean failed&quot;, ex);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if (earlySingletonExposure) &#123;</span><br><span class="line">		Object earlySingletonReference = getSingleton(beanName, false);</span><br><span class="line">		if (earlySingletonReference != null) &#123;</span><br><span class="line">			if (exposedObject == bean) &#123;</span><br><span class="line">				exposedObject = earlySingletonReference;</span><br><span class="line">			&#125;</span><br><span class="line">			else if (!this.allowRawInjectionDespiteWrapping &amp;&amp; hasDependentBean(beanName)) &#123;</span><br><span class="line">				String[] dependentBeans = getDependentBeans(beanName);</span><br><span class="line">				Set&lt;String&gt; actualDependentBeans = new LinkedHashSet&lt;String&gt;(dependentBeans.length);</span><br><span class="line">				for (String dependentBean : dependentBeans) &#123;</span><br><span class="line">					if (!removeSingletonIfCreatedForTypeCheckOnly(dependentBean)) &#123;</span><br><span class="line">						actualDependentBeans.add(dependentBean);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				if (!actualDependentBeans.isEmpty()) &#123;</span><br><span class="line">					throw new BeanCurrentlyInCreationException(beanName,</span><br><span class="line">							&quot;Bean with name &apos;&quot; + beanName + &quot;&apos; has been injected into other beans [&quot; +</span><br><span class="line">							StringUtils.collectionToCommaDelimitedString(actualDependentBeans) +</span><br><span class="line">							&quot;] in its raw version as part of a circular reference, but has eventually been &quot; +</span><br><span class="line">							&quot;wrapped. This means that said other beans do not use the final version of the &quot; +</span><br><span class="line">							&quot;bean. This is often the result of over-eager type matching - consider using &quot; +</span><br><span class="line">							&quot;&apos;getBeanNamesOfType&apos; with the &apos;allowEagerInit&apos; flag turned off, for example.&quot;);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Register bean as disposable.</span><br><span class="line">	try &#123;</span><br><span class="line">		registerDisposableBeanIfNecessary(beanName, bean, mbd);</span><br><span class="line">	&#125;</span><br><span class="line">	catch (BeanDefinitionValidationException ex) &#123;</span><br><span class="line">		throw new BeanCreationException(</span><br><span class="line">				mbd.getResourceDescription(), beanName, &quot;Invalid destruction signature&quot;, ex);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return exposedObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>如果你已经很了解<code>spring framework中bean生成的原理和过程</code>，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间</p>
+<h2 id="名词解析"><a href="#名词解析" class="headerlink" title="名词解析"></a>名词解析</h2><ol>
+<li>入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间</li>
+</ol>
+<h2 id="知识点收获"><a href="#知识点收获" class="headerlink" title="知识点收获"></a>知识点收获</h2><p>通过本文，你能收获什么？</p>
+<ol>
+<li>.class文件生成beanDefinition的入口</li>
+<li>beanDefinition生成beanInstance的入口</li>
+<li>beanInstance生成proxy代理类的入口</li>
+<li>如何直接debug指定bean的创建流程</li>
+</ol>
+<blockquote>
+<p>》本文力求专注和精简，希望你有所收获和想法</p>
+</blockquote>
+<p>我们都知道，<code>spring framework</code>震架之宝之一:IOC，将bean的创建和销毁交由spring容器，那么bean在创建的路上都要经过哪些路途呢，又是怎么放入spring容器的呢。我们顺着下面的轴线开始</p>
+<blockquote>
+<p><code>.class--&gt;beanDefinition--&gt;beanInstance--&gt;proxy类</code></p>
+</blockquote>
+<p>首先看一张图，下图展示了<code>.class文件生成beanDefinition 与 beanDefinition生成beanInstance 与 beanInstance生成proxy代理类的入口</code>，有了此图，走源码时可以结合debug直接定位你要关注的细节。节省你和你寻找的知识点见面的时间</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191201103033.png" alt="20191201103033.png"></p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>为了我们定义一个简单的Service接口和实现类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class UserServiceImpl implements IUserService &#123;</span><br><span class="line">	@Override</span><br><span class="line">	public int insert(User user) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>开始看到<code>spring容器中bean创建分成4个节点，三个阶段</code>。如上轴线所示</p>
+<h3 id="bean在-class–-gt-beanDefinition阶段"><a href="#bean在-class–-gt-beanDefinition阶段" class="headerlink" title="bean在.class–&gt;beanDefinition阶段"></a>bean在.class–&gt;beanDefinition阶段</h3><p>如果bean是我们项目中定义的<code>@Component</code>类，如示例<code>UserServiceImpl</code>类。它的加载和生成beanDefinition要感谢<code>@ComponentScan</code>这个注解，当然更要感谢真正发挥作用的<code>ClassPathBeanDefinitionParser</code>类它的<code>doScan(basePackages)</code>承担了这个阶段的功能实现。</p>
+<h3 id="bean在beanDefinition–-gt-beanInstance阶段"><a href="#bean在beanDefinition–-gt-beanInstance阶段" class="headerlink" title="bean在beanDefinition–&gt;beanInstance阶段"></a>bean在beanDefinition–&gt;beanInstance阶段</h3><p>这个阶段的功能实现一定要感谢<code>AbstractAutowireCapableBeanFactory</code>，记住这个常常的名字，因为每个bean的实例化都是他的功劳。它的<code>createBean(beanName, RootBeanDefinition,args)</code>方法如这个阶段的入口。入口内做了三件事</p>
+<ol>
+<li>生成beanInstance，即bean对象本尊<br>此功能由<code>createBeanInstance(beanName, RootBeanDefinition,args)</code>负责</li>
+<li>向bean的beanDefinition赋属性和值<br>此功能由<code>populateBean(beanName, RootBeanDefinition,BeanWrapper)</code>负责</li>
+<li>如果满足条件，beanInstance生成Proxy代理类<br>此功能由<code>AbstractAutoProxyCreator.postProcessAfterInitialization(Object bean, beanName)</code>，原理是应用<code>BeanPostProcessor的post-processor模式</code>完成</li>
+</ol>
+<h3 id="bean在beanInstance–-gt-proxy代理类"><a href="#bean在beanInstance–-gt-proxy代理类" class="headerlink" title="bean在beanInstance–&gt;proxy代理类"></a>bean在beanInstance–&gt;proxy代理类</h3><p>正如第二阶段第三件事做的事情</p>
+<h2 id="it-s-time-to-summary"><a href="#it-s-time-to-summary" class="headerlink" title="it`s time to summary"></a>it`s time to summary</h2><p>到这里，本文就说完了。篇幅很短，深度不深，细节不细。这正是本文的目的：剥离繁杂，直击目标。通过本文，你能清晰的知道: <code>spring容器创建bean</code>的道路上，有哪些关键节点，节点处发生了什么，何时发生的。到这你会问，怎么发生的你咋没说啊。是的，这里没说，原因是它会篇幅很长，对你整体把握<code>spring容器创建bean</code>不利。我想像剥洋葱一样一层一层深入，扎实清晰。</p>
+<p>如果本文带给你兴趣了，那么深入剥洋葱这个事儿，你也可以开始了</p>
+<p>一个飞猫relax<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/%E9%A3%9E%E7%8C%AB.png" alt="飞猫.png"></p>
+
       
     </div>
     
@@ -486,7 +518,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" title="springboot beanDefinition转化为beanInstance过程源码分析和扩展点">https://yaoyuanyy.github.io/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/</a>
+    <a href="https://yaoyuanyy.github.io/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" title="springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点">https://yaoyuanyy.github.io/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -702,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#核心类AbstractAutowireCapableBeanFactory"><span class="nav-number">1.0.1.</span> <span class="nav-text">核心类AbstractAutowireCapableBeanFactory</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#名词解析"><span class="nav-number">2.</span> <span class="nav-text">名词解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点收获"><span class="nav-number">3.</span> <span class="nav-text">知识点收获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">4.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">5.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bean在-class–-gt-beanDefinition阶段"><span class="nav-number">5.1.</span> <span class="nav-text">bean在.class–&gt;beanDefinition阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bean在beanDefinition–-gt-beanInstance阶段"><span class="nav-number">5.2.</span> <span class="nav-text">bean在beanDefinition–&gt;beanInstance阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bean在beanInstance–-gt-proxy代理类"><span class="nav-number">5.3.</span> <span class="nav-text">bean在beanInstance–&gt;proxy代理类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#it-s-time-to-summary"><span class="nav-number">6.</span> <span class="nav-text">it`s time to summary</span></a></li></ol></div>
             
 
           </div>
@@ -867,7 +899,7 @@
         var disqus_config = function () {
           this.page.url = 'https://yaoyuanyy.github.io/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/';
           this.page.identifier = '2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/';
-          this.page.title = 'springboot beanDefinition转化为beanInstance过程源码分析和扩展点';
+          this.page.title = 'springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';

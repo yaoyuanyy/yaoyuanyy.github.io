@@ -303,7 +303,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" itemprop="url">springboot beanDefinition转化为beanInstance过程源码分析和扩展点</a></h1>
+                <a class="post-title-link" href="/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" itemprop="url">springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点</a></h1>
         
 
         <div class="post-meta">
@@ -331,8 +331,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-11-04T08:49:44+08:00">
-                2019-11-04
+              <time title="更新于" itemprop="dateModified" datetime="2019-12-01T11:51:28+08:00">
+                2019-12-01
               </time>
             
           </span>
@@ -377,7 +377,7 @@
 
           
           
-             <span id="/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" class="leancloud_visitors" data-flag-title="springboot beanDefinition转化为beanInstance过程源码分析和扩展点">
+             <span id="/2019/04/12/springboot beanDefinition转化为beanInstance过程源码分析和扩展点/" class="leancloud_visitors" data-flag-title="springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  659
+                  793
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4
+                  2
                 </span>
               
             </div>
@@ -441,10 +441,11 @@
       
         
           
-          todo 待完善
-前提两部分：.class–&gt;BeanDefinition,BeanDefinition–&gt;BeanInstance
-spring创建bean是通过bean definition完成
-核心类AbstractAutowireCapableBeanFactory1234567
+          前提如果你已经很了解spring framework中bean生成的原理和过程，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间
+名词解析
+入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间
+
+知
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -2047,7 +2048,7 @@ spring XXXUtils类的使用例子
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-11-29T00:21:54+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-11-29T00:23:16+08:00">
                 2019-11-29
               </time>
             
