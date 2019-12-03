@@ -90,8 +90,9 @@
 <meta property="og:description" content="前提如果你已经很了解spring framework中bean生成的原理和过程，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间 名词解析 入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间  知识点收获通过本文，你能收获什么？  .class文件生成beanDefinition的入口 bean">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191201103033.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191201231917.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/%E9%A3%9E%E7%8C%AB.png">
-<meta property="og:updated_time" content="2019-12-01T03:51:28.462Z">
+<meta property="og:updated_time" content="2019-12-01T15:20:14.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot beanDefinition转化为beanInstance再到proxy类过程源码分析和扩展点">
 <meta name="twitter:description" content="前提如果你已经很了解spring framework中bean生成的原理和过程，本文向你展示了一个精简版和可视化图谱；如果你很想了解bean生成的过程，本文提供你梯子快速的走入bean生成的原理和实现细节。减少你花费的时间 名词解析 入口：直接定位到一个功能实现的开始处，节省寻找定位花费的时间  知识点收获通过本文，你能收获什么？  .class文件生成beanDefinition的入口 bean">
@@ -333,7 +334,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-12-01T11:51:28+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-12-01T23:20:14+08:00">
                 2019-12-01
               </time>
             
@@ -404,7 +405,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  793
+                  814
                 </span>
               
 
@@ -473,7 +474,8 @@
 <h3 id="bean在beanInstance–-gt-proxy代理类"><a href="#bean在beanInstance–-gt-proxy代理类" class="headerlink" title="bean在beanInstance–&gt;proxy代理类"></a>bean在beanInstance–&gt;proxy代理类</h3><p>正如第二阶段第三件事做的事情</p>
 <h2 id="it-s-time-to-summary"><a href="#it-s-time-to-summary" class="headerlink" title="it`s time to summary"></a>it`s time to summary</h2><p>到这里，本文就说完了。篇幅很短，深度不深，细节不细。这正是本文的目的：剥离繁杂，直击目标。通过本文，你能清晰的知道: <code>spring容器创建bean</code>的道路上，有哪些关键节点，节点处发生了什么，何时发生的。到这你会问，怎么发生的你咋没说啊。是的，这里没说，原因是它会篇幅很长，对你整体把握<code>spring容器创建bean</code>不利。我想像剥洋葱一样一层一层深入，扎实清晰。</p>
 <p>如果本文带给你兴趣了，那么深入剥洋葱这个事儿，你也可以开始了</p>
-<p>一个飞猫relax<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/%E9%A3%9E%E7%8C%AB.png" alt="飞猫.png"></p>
+<p>最后附上spring容器管理bean的生命周期图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191201231917.png" alt="20191201231917.png"></p>
+<p>最后的最后，一个飞猫 relax us<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/%E9%A3%9E%E7%8C%AB.png" alt="飞猫.png"></p>
 
       
     </div>
@@ -649,7 +651,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -660,7 +662,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
