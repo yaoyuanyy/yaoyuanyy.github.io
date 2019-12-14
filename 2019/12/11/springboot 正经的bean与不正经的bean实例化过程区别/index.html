@@ -81,17 +81,25 @@
 
 
 
-<meta name="description" content="个人技术博客">
+<meta name="description" content="概述从bean的类型上看，spring将bean分成了normal bean和 FactoryBean两种；从bean的声明方式来看也有两种：@Component和@Bean。那么，我们就来看看这几种bean的实例化方式的相同点和不同点。这里我们称normal bean和@Component为正经的bean，因为他们的实例化方式是大众的，而FactoryBean和@Bean是不正经的，因为他们的实">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring boot 正经的bean与不正经的bean实例化过程区别">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2019/12/11/springboot 正经的bean与不正经的bean实例化过程区别/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="个人技术博客">
+<meta property="og:description" content="概述从bean的类型上看，spring将bean分成了normal bean和 FactoryBean两种；从bean的声明方式来看也有两种：@Component和@Bean。那么，我们就来看看这几种bean的实例化方式的相同点和不同点。这里我们称normal bean和@Component为正经的bean，因为他们的实例化方式是大众的，而FactoryBean和@Bean是不正经的，因为他们的实">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-11T16:32:46.534Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191212091057.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214073018.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214144005.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214143554.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214144157.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214153155.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214154439.png">
+<meta property="og:updated_time" content="2019-12-14T07:46:04.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring boot 正经的bean与不正经的bean实例化过程区别">
-<meta name="twitter:description" content="个人技术博客">
+<meta name="twitter:description" content="概述从bean的类型上看，spring将bean分成了normal bean和 FactoryBean两种；从bean的声明方式来看也有两种：@Component和@Bean。那么，我们就来看看这几种bean的实例化方式的相同点和不同点。这里我们称normal bean和@Component为正经的bean，因为他们的实例化方式是大众的，而FactoryBean和@Bean是不正经的，因为他们的实">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191212091057.png">
 
 
 
@@ -329,8 +337,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-12-12T00:32:46+08:00">
-                2019-12-12
+              <time title="更新于" itemprop="dateModified" datetime="2019-12-14T15:46:04+08:00">
+                2019-12-14
               </time>
             
           </span>
@@ -378,7 +386,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  1.7k
                 </span>
               
 
@@ -394,7 +402,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  6
                 </span>
               
             </div>
@@ -415,7 +423,51 @@
       
 
       
-        
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>从bean的类型上看，spring将bean分成了normal bean和 FactoryBean两种；从bean的声明方式来看也有两种：@Component和@Bean。那么，我们就来看看这几种bean的实例化方式的相同点和不同点。这里我们称normal bean和@Component为正经的bean，因为他们的实例化方式是大众的，而FactoryBean和@Bean是不正经的，因为他们的实例化方式有那么一点小众。正经和不正经我认为没有好坏之分，就像人一样，你喜欢的才是好的。</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191212091057.png" alt="20191212091057.png"></p>
+<h2 id="你的收获"><a href="#你的收获" class="headerlink" title="你的收获"></a>你的收获</h2><p>通过本文，你能收获什么？</p>
+<ol>
+<li>normal bean和@Component生成beanDefinition的入口</li>
+<li>normal bean和@Component的beanDefinition如何生成bean instance并放入spring容器的</li>
+<li>@Bean生成beanDefinition的入口</li>
+<li>@Bean的beanDefinition如何生成bean instance并放入spring容器的,这里的instance可能是proxy代理类</li>
+<li>FactoryBean生成beanDefinition的入口</li>
+<li>FactoryBean的beanDefinition如何生成bean instance并放入spring容器的,这里的instance可能是proxy代理类</li>
+<li>这些不同类型的bean生成bean instance过程的联系和区别</li>
+</ol>
+<blockquote>
+<p>》本文力求专注和精简，希望你有所收获和想法</p>
+</blockquote>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>如下，我们列举了实际工作中常用的类，不同类型的bean都拿出来一个，便于我们对齐思路<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import com.skyler.project</span><br><span class="line">// normal bean</span><br><span class="line">@Service</span><br><span class="line">public class UserServiceImpl implements IUserService &#123;</span><br><span class="line">	@Override</span><br><span class="line">	public int insert(User user) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// @Bean方式声明的类</span><br><span class="line">@Configuration</span><br><span class="line">public class MapperAutoConfiguration &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public SqlSessionFactory sqlSessionFactory(DataSource dataSource)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>先上图，有图好说话<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214073018.png" alt="20191214073018.png"></p>
+<p>图展示了不同类型的类的.class文件生成beanDefinition的入口，以及通用的beanDefinition生成bean instance或proxy代理类的大框过程和入口</p>
+<h2 id="normal-bean和-Component类型的bean"><a href="#normal-bean和-Component类型的bean" class="headerlink" title="normal bean和@Component类型的bean"></a>normal bean和@Component类型的bean</h2><h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>如上图</p>
+<h3 id="具体的BeanDefinition"><a href="#具体的BeanDefinition" class="headerlink" title="具体的BeanDefinition"></a>具体的BeanDefinition</h3><p>normal bean和@Component类型的bean生成的BeanDefinition为RootBeanDefinition。此时的关键属性有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolvedTargetType=com.skyler.project.UserServiceImpl</span><br><span class="line">resolvedConstructorOrFactoryMethod=com.skyler.project.UserServiceImpl</span><br><span class="line">beanClass=com.skyler.project.UserServiceImpl</span><br><span class="line">autowireMode=0</span><br><span class="line">attributes</span><br><span class="line">extenallyManagedConfigMembers=存的是bean的成员属性</span><br></pre></td></tr></table></figure></p>
+<p>详细参见文章结尾贴出了@Component声明的bean、@Bean声明的bean、FactoryBean类型的bean三者BeanDefinition的对象属性对比图</p>
+<h3 id="beanDefinition如何生成bean-instance"><a href="#beanDefinition如何生成bean-instance" class="headerlink" title="beanDefinition如何生成bean instance"></a>beanDefinition如何生成bean instance</h3><p>beanDefinition如何生成bean instance的轨迹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UserServiceImpl:</span><br><span class="line">AbstractBeanFactory.getBean</span><br><span class="line">AbstractBeanFactory.doGetBean</span><br><span class="line">DefaultSingletonBeanRegistry.getSingleton</span><br><span class="line">AbstractAutowireCapableBeanFactory.createBean</span><br><span class="line">AbstractAutowireCapableBeanFactory.doCreateBean</span><br><span class="line">--this.createBeanInstance</span><br><span class="line">----resolveBeanClass</span><br><span class="line">----instantiateBean</span><br><span class="line">AbstractAutowireCapableBeanFactory.populateBean</span><br><span class="line">--AutowiredAnnotationBeanPostProcessor.postProcessProperties for BeanPostProcessor.postProcessProperties</span><br><span class="line">----InjectionMetadata.inject</span><br><span class="line">AbstractAutowireCapableBeanFactory.initializeBean //使用AbstractAdvisor生成proxy代理类</span><br></pre></td></tr></table></figure></p>
+<h2 id="Bean类型的bean"><a href="#Bean类型的bean" class="headerlink" title="@Bean类型的bean"></a>@Bean类型的bean</h2><h3 id="入口-1"><a href="#入口-1" class="headerlink" title="入口"></a>入口</h3><p>如上图</p>
+<h3 id="具体的BeanDefinition-1"><a href="#具体的BeanDefinition-1" class="headerlink" title="具体的BeanDefinition"></a>具体的BeanDefinition</h3><p>此时的BeanDefinition类型为ConfigurationClassBeanDefinition。以<code>@Bean SqlSessionFactory</code>为例，此时比较关键的属性有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">factoryMethodMetadata</span><br><span class="line">autowireMode=3</span><br><span class="line">factoryBeanName=tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration</span><br><span class="line">factoryMethodName=sqlSessionFactory</span><br><span class="line">factoryMethodReturnType</span><br></pre></td></tr></table></figure></p>
+<p>详细参见文章结尾贴出了@Component声明的bean、@Bean声明的bean、FactoryBean类型的bean三者BeanDefinition的对象属性对比图</p>
+<h3 id="beanDefinition如何生成bean-instance-1"><a href="#beanDefinition如何生成bean-instance-1" class="headerlink" title="beanDefinition如何生成bean instance"></a>beanDefinition如何生成bean instance</h3><p>beanDefinition如何生成bean instance的轨迹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">AbstractBeanFactory.getBean</span><br><span class="line">AbstractBeanFactory.doGetBean</span><br><span class="line">DefaultSingletonBeanRegistry.getSingleton</span><br><span class="line">AbstractAutowireCapableBeanFactory.createBean</span><br><span class="line">AbstractAutowireCapableBeanFactory.doCreateBean</span><br><span class="line">--this.createBeanInstance</span><br><span class="line">----this.instantiateUsingFactoryMethod</span><br><span class="line">------ConstructorResolver.instantiateUsingFactoryMethod</span><br><span class="line">--------ConfigurationClassEnhancer$BeanMethdoInterceptor</span><br></pre></td></tr></table></figure></p>
+<p>从debug运行轨迹可以更清晰的观察<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214144005.png" alt="20191214144005.png"></p>
+<h2 id="Configuration类型的bean"><a href="#Configuration类型的bean" class="headerlink" title="@Configuration类型的bean"></a>@Configuration类型的bean</h2><h3 id="入口-2"><a href="#入口-2" class="headerlink" title="入口"></a>入口</h3><p>如上图</p>
+<h3 id="具体的BeanDefinition-2"><a href="#具体的BeanDefinition-2" class="headerlink" title="具体的BeanDefinition"></a>具体的BeanDefinition</h3><p>此时的BeanDefinition类型为ConfigurationClassBeanDefinition。@Configuration类型的bean生成BeanDefinition的过程比较特殊，如下图所示<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214143554.png" alt="20191214143554.png"></p>
+<h3 id="beanDefinition如何生成bean-instance-2"><a href="#beanDefinition如何生成bean-instance-2" class="headerlink" title="beanDefinition如何生成bean instance"></a>beanDefinition如何生成bean instance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AbstractBeanFactory.getBean</span><br><span class="line">AbstractBeanFactory.doGetBean</span><br><span class="line">DefaultSingletonBeanRegistry.getSingleton</span><br><span class="line">AbstractAutowireCapableBeanFactory.createBean</span><br><span class="line">AbstractAutowireCapableBeanFactory.doCreateBean</span><br><span class="line">--AbstractAutowireCapableBeanFactory.autowireConstructor 如果有构造函数</span><br></pre></td></tr></table></figure>
+<p>从debug运行轨迹可以更清晰的观察。这样我们以MapperAutoConfiguration为例<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214144157.png" alt="20191214144157.png"></p>
+<h2 id="FactoryBean类型的bean"><a href="#FactoryBean类型的bean" class="headerlink" title="FactoryBean类型的bean"></a>FactoryBean类型的bean</h2><h3 id="入口-3"><a href="#入口-3" class="headerlink" title="入口"></a>入口</h3><p>上图没有展示FactoryBean的.class文件生成beanDefinition的入口。因为FactoryBean是个特殊的bean。看下它的用法和适用场景。<br>FactoryBean首先是一个bean，其次，它是一个factory bean：工厂bean，干什么的？生产bean的啊。怎么生产？通过FactoryBean.getObject()方法生产，这么生产有什么好处？或者说FactoryBean的意义是什么？</p>
+<p>FactoryBean生产的产品，不是FactoryBean本身。即FactoryBean返回的对象不是指定类的一个实例，其返回的是该FactoryBean的getObject方法所返回的对象。FactoryBean的特殊之处在于它可以向容器中注册两个Bean，一个是它本身，一个是FactoryBean.getObject()方法返回值所代表的Bean。在Spring框架内部，有很多地方有FactoryBean的实现类，它们在很多应用如(Spring的AOP、ORM、事务管理)</p>
+<p>所以，FactoryBean接口是Spring IoC容器实例化逻辑的扩展点。假如初始化代码非常复杂，这种场景中，就可以自定义FactoryBean,在类中撰写复杂的初始化程序，并将其作为插件加入到容器中。spring cloud openFeign和mybatis Mapper都应用了这个技术，上实际工作的代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//spring cloud openFeign 声明一个FeignClient</span><br><span class="line">@FeignClient(value = &quot;$&#123;provider.application:skyler-base&#125;&quot;, contextId = &quot;SkylerComboFeignService&quot;)</span><br><span class="line">public interface SkylerComboFeignService &#123;</span><br><span class="line"></span><br><span class="line">    @PostMapping(value = &quot;api/skyler/combo/create&quot;, produces = MediaType.APPLICATION_JSON_VALUE)</span><br><span class="line">    ResultDTO create(@RequestBody ComboParam param);</span><br><span class="line"></span><br><span class="line">    @GetMapping(value = &quot;api/skyler/combo/list&quot;)</span><br><span class="line">    ResultDTO&lt;Page&lt;ComboDTO&gt;&gt; listCombo(Long comboId, Integer currentPage,Integer pageSize);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// mybatis声明一个Mapper，操作数据库，进行curd操作</span><br><span class="line">@Repository</span><br><span class="line">public interface ComboMapper &#123;</span><br><span class="line">    int insert(Combo record);</span><br><span class="line"></span><br><span class="line">    List&lt;Combo&gt; selectByExample(ComboExample example);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这两段代码相信你一定很熟悉，都是开发中常用的。只要我们这样声明了/定义了，我们就可以使用feign就行远程调用了，就可以调用数据库了，这一切的背后都是通过FactoryBean实现的。</p>
+<p>所以，openFeign的入口在FeignClientsRegistrar；mybatis Mapper的入口在MapperScannerRegistrar。</p>
+<h3 id="具体的BeanDefinition-3"><a href="#具体的BeanDefinition-3" class="headerlink" title="具体的BeanDefinition"></a>具体的BeanDefinition</h3><p>此时的BeanDefinition类型为RootBeanDefinition。以<code>@FeignClient</code>为例，此时比较关键的属性有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">propertyValues=MutablePropertyValues </span><br><span class="line">resolvedTargetType=org.springframework.cloud.openfeign.FeignClientFactoryBean</span><br><span class="line">resolvedConstructorOrFactoryMethod=org.springframework.cloud.openfeign.FeignClientFactoryBean</span><br><span class="line">beanClass=org.springframework.cloud.openfeign.FeignClientFactoryBean</span><br><span class="line">autowireMode=2</span><br></pre></td></tr></table></figure></p>
+<p>详细参见文章结尾贴出了@Component声明的bean、@Bean声明的bean、FactoryBean类型的bean三者BeanDefinition的对象属性对比图</p>
+<h3 id="beanDefinition如何生成bean-instance-3"><a href="#beanDefinition如何生成bean-instance-3" class="headerlink" title="beanDefinition如何生成bean instance"></a>beanDefinition如何生成bean instance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AbstractBeanFactory.getBean</span><br><span class="line">AbstractBeanFactory.doGetBean</span><br><span class="line">AbstractBeanFactory.getObjectForBeanInstance</span><br><span class="line">FactoryBeanRegistrySupport.getObjectFromFactoryBean</span><br><span class="line">FactoryBeanRegistrySupport.doGetObjectFromFactoryBean</span><br><span class="line">object = factory.getObject(); //factory为FactoryBean类型</span><br></pre></td></tr></table></figure>
+<h2 id="不同类型BeanDefinition对象属性对比图"><a href="#不同类型BeanDefinition对象属性对比图" class="headerlink" title="不同类型BeanDefinition对象属性对比图"></a>不同类型BeanDefinition对象属性对比图</h2><p>图有点不清晰，后面我找个大屏幕截个图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214153155.png" alt="20191214153155.png"></p>
+<h2 id="it-s-time-to-summary"><a href="#it-s-time-to-summary" class="headerlink" title="it`s time to summary"></a>it`s time to summary</h2><p>本文意在理清不同类型的bean在生成beanDefinition的入口在哪，为你提供一个梯子。有了这个梯子，你就可以快速定位指定位置，从而更详细的去追踪代码，薄丝细节。要想彻底真正的弄清技术的原理，看文章远远不够，必须你自己亲自动手。所以，本文的目的意在缩短你学习技术原理的路径，节省宝贵的时间做更重要的事情。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>我们薄丝去皮后发现，<code>beanDefinition如何生成bean instance</code>的过程，我们从源码中可以发现，所有类型bean的实例化最终都会调用getObjectForBeanInstance()方法。在getObjectForBeanInstance()方法中会先判断bean是不是FactoryBean，如果不是，就直接返回Bean。如果是FactoryBean，且name是以&amp;符号开头，那么表示的是获取FactoryBean的原生对象，也会直接返回。如果name不是以&amp;符号开头，那么表示要获取FactoryBean中getObject()方法返回的对象。薄丝去皮后代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">AbstractBeanFactory class</span><br><span class="line">protected &lt;T&gt; T doGetBean(final String name, @Nullable final Class&lt;T&gt; requiredType,</span><br><span class="line">			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException &#123;</span><br><span class="line">	final String beanName = transformedBeanName(name);</span><br><span class="line">	Object bean;</span><br><span class="line"></span><br><span class="line">	Object sharedInstance = getSingleton(beanName);</span><br><span class="line">	if (sharedInstance != null &amp;&amp; args == null) &#123;</span><br><span class="line">		bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		if (mbd.isSingleton()) &#123;</span><br><span class="line">			</span><br><span class="line">			bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);</span><br><span class="line">		&#125;</span><br><span class="line">		else if (mbd.isPrototype()) &#123;</span><br><span class="line">			bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	return (T) bean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一张<img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191214154439.png" alt="20191214154439.png">relax你的思绪</p>
+
       
     </div>
     
@@ -555,8 +607,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -648,6 +709,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#你的收获"><span class="nav-number">2.</span> <span class="nav-text">你的收获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#normal-bean和-Component类型的bean"><span class="nav-number">4.</span> <span class="nav-text">normal bean和@Component类型的bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#入口"><span class="nav-number">4.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体的BeanDefinition"><span class="nav-number">4.2.</span> <span class="nav-text">具体的BeanDefinition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beanDefinition如何生成bean-instance"><span class="nav-number">4.3.</span> <span class="nav-text">beanDefinition如何生成bean instance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bean类型的bean"><span class="nav-number">5.</span> <span class="nav-text">@Bean类型的bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#入口-1"><span class="nav-number">5.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体的BeanDefinition-1"><span class="nav-number">5.2.</span> <span class="nav-text">具体的BeanDefinition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beanDefinition如何生成bean-instance-1"><span class="nav-number">5.3.</span> <span class="nav-text">beanDefinition如何生成bean instance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration类型的bean"><span class="nav-number">6.</span> <span class="nav-text">@Configuration类型的bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#入口-2"><span class="nav-number">6.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体的BeanDefinition-2"><span class="nav-number">6.2.</span> <span class="nav-text">具体的BeanDefinition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beanDefinition如何生成bean-instance-2"><span class="nav-number">6.3.</span> <span class="nav-text">beanDefinition如何生成bean instance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FactoryBean类型的bean"><span class="nav-number">7.</span> <span class="nav-text">FactoryBean类型的bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#入口-3"><span class="nav-number">7.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体的BeanDefinition-3"><span class="nav-number">7.2.</span> <span class="nav-text">具体的BeanDefinition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beanDefinition如何生成bean-instance-3"><span class="nav-number">7.3.</span> <span class="nav-text">beanDefinition如何生成bean instance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同类型BeanDefinition对象属性对比图"><span class="nav-number">8.</span> <span class="nav-text">不同类型BeanDefinition对象属性对比图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#it-s-time-to-summary"><span class="nav-number">9.</span> <span class="nav-text">it`s time to summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">10.</span> <span class="nav-text">扩展</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
