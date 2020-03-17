@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java微服务调用,spring cloud微服务调用,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言微服务已经在越来越多的企业开花。企业在享受微服务优势的同时，会产生一些问题。如随着企业的业务发展，相依的服务数量不断增加，服务调用关系越来越错综复杂。 以下对话是软件开发人员经常遇到的。场景一：我的接口都谁在调用呢12345小张：小王，user服务的获取getById()接口被哪些服务使用呢？小王：原来业务不多的时候，我还知道。现在业务太复杂了，调用方太多，我已经记不清了。小张：那么办，我接了">
+<meta name="keywords" content="java微服务调用,spring cloud微服务调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务:我的restful接口都谁在调用呢？">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="前言微服务已经在越来越多的企业开花。企业在享受微服务优势的同时，会产生一些问题。如随着企业的业务发展，相依的服务数量不断增加，服务调用关系越来越错综复杂。 以下对话是软件开发人员经常遇到的。场景一：我的接口都谁在调用呢12345小张：小王，user服务的获取getById()接口被哪些服务使用呢？小王：原来业务不多的时候，我还知道。现在业务太复杂了，调用方太多，我已经记不清了。小张：那么办，我接了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200116114413.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200315002513.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200315002437.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200314235524.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200314235605.png">
+<meta property="og:updated_time" content="2020-03-17T14:36:35.849Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微服务:我的restful接口都谁在调用呢？">
+<meta name="twitter:description" content="前言微服务已经在越来越多的企业开花。企业在享受微服务优势的同时，会产生一些问题。如随着企业的业务发展，相依的服务数量不断增加，服务调用关系越来越错综复杂。 以下对话是软件开发人员经常遇到的。场景一：我的接口都谁在调用呢12345小张：小王，user服务的获取getById()接口被哪些服务使用呢？小王：原来业务不多的时候，我还知道。现在业务太复杂了，调用方太多，我已经记不清了。小张：那么办，我接了">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200116114413.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/">
+
+
+
+
+
+  <title>微服务:我的restful接口都谁在调用呢？ | skyler-blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94ae7654e2dc1739de6dffa8904d5c82";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微服务:我的restful接口都谁在调用呢？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-16T00:00:00+08:00">
+                2020-03-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-17T22:36:35+08:00">
+                2020-03-17
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/" class="leancloud_visitors" data-flag-title="微服务:我的restful接口都谁在调用呢？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>微服务已经在越来越多的企业开花。企业在享受微服务优势的同时，会产生一些问题。如随着企业的业务发展，相依的服务数量不断增加，服务调用关系越来越错综复杂。</p>
+<p>以下对话是软件开发人员经常遇到的。<br>场景一：我的接口都谁在调用呢<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">小张：小王，user服务的获取getById()接口被哪些服务使用呢？</span><br><span class="line">小王：原来业务不多的时候，我还知道。现在业务太复杂了，调用方太多，我已经记不清了。</span><br><span class="line">小张：那么办，我接了一个需求，涉及原接口逻辑的变动，这个接口的调用方都要评估下影响面</span><br><span class="line">小王：那你只能挨个负责服务的同事问下了</span><br><span class="line">小张：太麻烦了，时间都用在寻找调用方上了</span><br></pre></td></tr></table></figure></p>
+<p>RD每天的宝贵时间都浪费在了维护服务和接口的调用关系上，为此失去了专研更有价值的业务的精力</p>
+<p>场景二：我的服务都调了谁的服务的哪些接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">小姚：小修，我接手了一个product服务，为了尽量熟悉，我需要知道这个服务都依赖哪些服务，调了哪些接口？</span><br><span class="line">小修：这个···，服务有个wiki文档，你看看呢</span><br><span class="line">小姚：我看了，最新的更新时间是一年前</span><br><span class="line">小修：恐怕你只能翻代码了</span><br><span class="line">小姚：一行一行看代码!，我嚎哭</span><br></pre></td></tr></table></figure></p>
+<p>RD每天的宝贵时间都浪费在了维护服务和接口的调用关系上，为此失去了学习新技术的时间</p>
+<p>本项目产生的意义就是为了收集和展示服务的调用关系，特别是服务中接口的调用关系。带来的价值为很好的避免了以往只能通过开发人员头脑记忆，要知道记忆是会减退的。所以利于准备评估后续需求开发涉及的影响面。<br>从而维护项目上线的稳定，增强服务可用性。所以，项目name:<code>微服务梳子</code>。意在自动化理清微服务体系下的服务间关系调用</p>
+<h2 id="业务背景"><a href="#业务背景" class="headerlink" title="业务背景"></a>业务背景</h2><p>微服务架构的流行，在业务分隔，服务复用，敏捷开发等方面带来了很大的飞跃。随着业务场景越来越丰富，业务领域越来越广泛，服务数量越来越庞大。随之，服务间调用越来越错综复杂。</p>
+<h2 id="微服务带来的问题"><a href="#微服务带来的问题" class="headerlink" title="微服务带来的问题"></a>微服务带来的问题</h2><p>所以，当服务数量越来越庞大时，服务间调用越来越错综复杂。举一个很实际的例子：一个服务从诞生开始，随着业务的不断发展，服务接口数量和调用方都在不断增加，而开发人员又在不断变化。慢慢的，当前服务接口的被使用方有哪些就无人能说清了。<br>具体说，假设服务A有一个接口a(其实a被3个上游其他的服务调用)，但是当前维护a接口的人员可能是新来的，或是时间太过久远而不一定能准确的知道调用a接口的上游服务。这就带来了诸多不确定性风险</p>
+<h2 id="本项目能带来什么"><a href="#本项目能带来什么" class="headerlink" title="本项目能带来什么"></a>本项目能带来什么</h2><p>为了准确的知道服务及其接口的调用方信息，本项目为此而出现。通过本项目，你可以准确的、实时的获取服务及其接口的被调用(使用)情况，从而帮助你准备的评估迭代需求的工作量，及时统计出更改所影响的上游服务方，拔高说增强了服务的可维护性和稳定性，提高了可用性。</p>
+<h2 id="核心目标"><a href="#核心目标" class="headerlink" title="核心目标"></a>核心目标</h2><p>本项目意在提供简单快速的使用教程，真正的协助微服务架构模式下的服务维护成本，减少RD们对服务接口调动错乱的记忆，当然也告别前人留下的大坑。</p>
+<h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200116114413.png" alt="架构图"></p>
+<h2 id="组件依赖"><a href="#组件依赖" class="headerlink" title="组件依赖"></a>组件依赖</h2><p>本项目基于spring cloud openfeign(目前版本:2.1.0.RELEASE)实现</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>本项目分为三部分，一是调用信息收集及发送，二是接收并存储调用信息，三是图表展示微服务调用关系。调用信息的传递(发送和接收)采用的是<code>CQRS模型</code></p>
+<ol>
+<li><p>调用信息收集及发送<br>这部分功能由<code>microservice-comb-infrastructure</code>模块负责。具体原理为调用信息收集采用的是动态代理，通过代理<code>LoadBalancerFeignClient</code>类，使得有机会在服务调用时收集调用信息；并通过<code>kafka</code>发送调用信息给接收方。收集的逻辑通过自定义的<code>InvocationHandler：LoadBalancerFeignClientInvocationHandler</code>完成，发送调用信息通过<code>MessageSender</code>类完成。</p>
+</li>
+<li><p>接收并存储调用信息<br>这部分功能由<code>microservice-comb-server</code>模块负责。使用kafka接收调用信息，随之将信息持久化到硬盘，当前是保存到mysql数据库，后期会采用动态切换，支持mongodb等方式。</p>
+</li>
+<li><p>图表展示微服务调用关系<br>这部分功能由<code>microservice-comb-admin</code>模块负责。使用js等图表组件展示服务调用关系图，通过检索服务名/接口名可以知道：A服务的a接口的调用方信息，什么时间调的，一段时间内调用的次数等。但由于本人还不熟悉前端技术，暂时搁置这个模块。</p>
+</li>
+</ol>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><table>
+<thead>
+<tr>
+<th>module</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>microservice-comb-admin</td>
+<td>调用信息图表展示,核心组件</td>
+</tr>
+<tr>
+<td>microservice-comb-base</td>
+<td>基础工具包,核心组件</td>
+</tr>
+<tr>
+<td>microservice-comb-infrastructure</td>
+<td>调用信息收集及发送,超核心组件</td>
+</tr>
+<tr>
+<td>microservice-comb-server</td>
+<td>接收并保存调用信息,核心组件</td>
+</tr>
+<tr>
+<td>microservice-comb-example</td>
+<td>使用例子，模拟业务方服务</td>
+</tr>
+</tbody>
+</table>
+<p>特别说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">microservice-comb-example包含三个module。</span><br><span class="line">microservice-comb-server-a 模拟业务方服务，此模块引用microservice-comb-server-b-sdk</span><br><span class="line">microservice-comb-server-b 模拟业务方服务，此模块引用microservice-comb-server-b-sdk</span><br><span class="line">microservice-comb-server-b-sdk 模拟业务方服务sdk，此模块引用microservice-comb-infrastructure</span><br></pre></td></tr></table></figure></p>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>使用很简单</p>
+<p>总体分两步：</p>
+<ul>
+<li>资源准备 </li>
+<li>引用sdk</li>
+</ul>
+<h3 id="资源准备"><a href="#资源准备" class="headerlink" title="资源准备"></a>资源准备</h3><ol>
+<li><p>kafka。调用信息发送和接收采用的kafka，所以你需要准备好运行着的<code>kafka server</code>，并把<code>kafka</code>的配置信息换成你的`kafka server信息</p>
+</li>
+<li><p>mysql。你需要有<code>mysql数据库</code>。<code>database: server_info</code>，并建表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `server_invocation` (</span><br><span class="line">  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT &apos;id，自增&apos;,</span><br><span class="line">  `from_application` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;服务调用方&apos;,</span><br><span class="line">  `to_application` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;服务被调用方&apos;,</span><br><span class="line">  `from_path` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;服务调用方接口路径path&apos;,</span><br><span class="line">  `to_path` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;服务被调用方接口路径path&apos;,</span><br><span class="line">  `method` varchar(32) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;请求方式: GET POST&apos;,</span><br><span class="line">  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,</span><br><span class="line">  `utime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">  `creator_id` bigint(20) NOT NULL DEFAULT &apos;0&apos; COMMENT &apos;操作人id&apos;,</span><br><span class="line">  `create_name` varchar(32) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;操作人姓名&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&apos;服务调用信息表&apos;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>eureka<br>本项目是基于spring cloud体系，所以eureka是需要的</p>
+</li>
+</ol>
+<h3 id="引用sdk"><a href="#引用sdk" class="headerlink" title="引用sdk"></a>引用sdk</h3><p>import源码后，通过mvn将microservice-comb-infrastructure打jar包, 然后引入到应用project中。将原来引用<code>spring-cloud-starter-openfeign</code>的模块或服务换成引用<code>microservice-comb-infrastructure</code>，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.skyler.cobweb&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;microservice-comb-infrastructure&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="模拟实战"><a href="#模拟实战" class="headerlink" title="模拟实战"></a>模拟实战</h2><p>为方便使用和接入。microservice-comb-example模块提供了模拟实际公司中的微服务架构模式，microservice-comb-example包含三个子模块，整体关系为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">microservice-comb-server-a依赖microservice-comb-server-b-sdk，因为microservice-comb-server-a需要调用sdk的feign接口</span><br><span class="line">microservice-comb-server-b依赖microservice-comb-server-b-sdk，因为microservice-comb-server-b的controller实现sdk的feign接口</span><br><span class="line">microservice-comb-server-b-sdk依赖microservice-comb-infrastructure</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>运行服务</li>
+</ol>
+<p>依次运行如下服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">microservice-comb-server-a</span><br><span class="line">microservice-comb-server-b</span><br><span class="line">microservice-comb-server</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>访问microservice-comb-server-a接口</li>
+</ol>
+<p><code>skyler@192 ~  curl -X GET &#39;localhost:9090/combo/getById?id=10&#39;</code></p>
+<ol start="3">
+<li>查看数据库数据<br>如图所示</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200315002513.png" alt="20200315002513.png"></p>
+<h2 id="模拟企业实际应用"><a href="#模拟企业实际应用" class="headerlink" title="模拟企业实际应用"></a>模拟企业实际应用</h2><p>microservice-comb-admin的功能负责展示数据库的服务间调用关系图。由于本人没有学习前端技术。效果暂时通过查询sql展示</p>
+<h3 id="查看微服务下多个服务间调用关系"><a href="#查看微服务下多个服务间调用关系" class="headerlink" title="查看微服务下多个服务间调用关系"></a>查看微服务下多个服务间调用关系</h3><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200315002437.png" alt="20200315002437.png"></p>
+<ul>
+<li>查询microservice-comb-server-b调用了哪些服务及接口<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM server_invocation WHERE from_application = &apos;microservice-comb-server-b&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>结果如下图，<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200314235524.png" alt="20200314235524.png"></p>
+<p>Note: 支持展示精确到调用方法上，附加条件查询就好</p>
+<ul>
+<li>查询哪些服务及接口调用了microservice-comb-server-b<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM server_invocation WHERE to_application = &apos;microservice-comb-server-b&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>结果如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200314235605.png" alt="20200314235605.png"></p>
+<p>项目地址: <a href="https://github.com/yaoyuanyy/microservice-comb/" target="_blank" rel="noopener">microservice-comb</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/" title="微服务:我的restful接口都谁在调用呢？">https://yaoyuanyy.github.io/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java微服务调用/" rel="tag"># java微服务调用</a>
+          
+            <a href="/tags/spring-cloud微服务调用/" rel="tag"># spring cloud微服务调用</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/12/知道springboot-jar包可运行-debug告诉你怎么运行的/" rel="next" title="知道springboot jar包可运行,debug告诉你怎么运行的">
+                <i class="fa fa-chevron-left"></i> 知道springboot jar包可运行,debug告诉你怎么运行的
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/tao.jpg" alt="Skyler">
+            
+              <p class="site-author-name" itemprop="name">Skyler</p>
+              <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yaoyuanyy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yaoyihao1@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/585b94018d6d810065d34497/posts" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务背景"><span class="nav-number">2.</span> <span class="nav-text">业务背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务带来的问题"><span class="nav-number">3.</span> <span class="nav-text">微服务带来的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本项目能带来什么"><span class="nav-number">4.</span> <span class="nav-text">本项目能带来什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心目标"><span class="nav-number">5.</span> <span class="nav-text">核心目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图"><span class="nav-number">6.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件依赖"><span class="nav-number">7.</span> <span class="nav-text">组件依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">8.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目结构"><span class="nav-number">9.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用实例"><span class="nav-number">10.</span> <span class="nav-text">使用实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方式"><span class="nav-number">11.</span> <span class="nav-text">使用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#资源准备"><span class="nav-number">11.1.</span> <span class="nav-text">资源准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用sdk"><span class="nav-number">11.2.</span> <span class="nav-text">引用sdk</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟实战"><span class="nav-number">12.</span> <span class="nav-text">模拟实战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟企业实际应用"><span class="nav-number">13.</span> <span class="nav-text">模拟企业实际应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看微服务下多个服务间调用关系"><span class="nav-number">13.1.</span> <span class="nav-text">查看微服务下多个服务间调用关系</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/';
+          this.page.identifier = '2020/03/16/微服务间服务(接口)调用关系你还在手工记录吗/';
+          this.page.title = '微服务:我的restful接口都谁在调用呢？';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("z1rh3HBfRJYf4gqQXC1RjVAC-gzGzoHsz", "cFSlIdGSSY8cjFbc0bTewxKq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
