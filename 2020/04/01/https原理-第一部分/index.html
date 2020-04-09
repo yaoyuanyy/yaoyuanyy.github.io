@@ -81,12 +81,12 @@
 
 
 
-<meta name="description" content="数字签名是什么？今天，我读到一篇好文章。 它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。 原文网址：https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 1. 鲍勃有两把钥匙，一把是公钥，另一把是私钥。 2.">
+<meta name="description" content="数字签名是什么？今天，我读到一篇好文章。 它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。 1. 鲍勃有两把钥匙，一把是公钥，另一把是私钥。 2. 鲍勃把公钥送给他的朋友们—-帕蒂、道格、苏珊—-每人一把。 3. 苏珊要给鲍勃写一封保密的信。她写完后用鲍勃的公钥加密，就可以达到保密的效果。 4. 鲍勃收">
 <meta property="og:type" content="article">
 <meta property="og:title" content="https原理-第一部分">
 <meta property="og:url" content="https://yaoyuanyy.github.io/2020/04/01/https原理-第一部分/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="数字签名是什么？今天，我读到一篇好文章。 它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。 原文网址：https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 1. 鲍勃有两把钥匙，一把是公钥，另一把是私钥。 2.">
+<meta property="og:description" content="数字签名是什么？今天，我读到一篇好文章。 它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。 1. 鲍勃有两把钥匙，一把是公钥，另一把是私钥。 2. 鲍勃把公钥送给他的朋友们—-帕蒂、道格、苏珊—-每人一把。 3. 苏珊要给鲍勃写一封保密的信。她写完后用鲍勃的公钥加密，就可以达到保密的效果。 4. 鲍勃收">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093145.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093215.png">
@@ -108,10 +108,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093453.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093502.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093516.png">
-<meta property="og:updated_time" content="2020-04-01T01:38:02.650Z">
+<meta property="og:updated_time" content="2020-04-07T02:22:00.512Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="https原理-第一部分">
-<meta name="twitter:description" content="数字签名是什么？今天，我读到一篇好文章。 它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。 原文网址：https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html 1. 鲍勃有两把钥匙，一把是公钥，另一把是私钥。 2.">
+<meta name="twitter:description" content="数字签名是什么？今天，我读到一篇好文章。 它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。 1. 鲍勃有两把钥匙，一把是公钥，另一把是私钥。 2. 鲍勃把公钥送给他的朋友们—-帕蒂、道格、苏珊—-每人一把。 3. 苏珊要给鲍勃写一封保密的信。她写完后用鲍勃的公钥加密，就可以达到保密的效果。 4. 鲍勃收">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093145.png">
 
 
@@ -350,8 +350,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-01T09:38:02+08:00">
-                2020-04-01
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T10:22:00+08:00">
+                2020-04-07
               </time>
             
           </span>
@@ -438,7 +438,6 @@
       
         <h2 id="数字签名是什么？"><a href="#数字签名是什么？" class="headerlink" title="数字签名是什么？"></a>数字签名是什么？</h2><p>今天，我读到一篇<a href="http://www.youdzone.com/signature.html" target="_blank" rel="noopener">好文章</a>。</p>
 <p>它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。</p>
-<p>原文网址：<a href="https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></p>
 <p>1.<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093145.png" alt="20200401093145.png"></p>
 <p>鲍勃有两把钥匙，一把是公钥，另一把是私钥。</p>
 <p>2.<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093215.png" alt="20200401093215.png"></p>
@@ -480,6 +479,7 @@
 <p>20.<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200401093516.png" alt="20200401093516.png"></p>
 <p>如果数字证书是可靠的，客户端就可以使用证书中的服务器公钥，对信息进行加密，然后与服务器交换加密信息。</p>
 <p><code>https</code>如何应用这个原理的呢，请看<code>https原理-第二部分</code></p>
+<p>原文网址：<a href="https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></p>
 
       
     </div>
