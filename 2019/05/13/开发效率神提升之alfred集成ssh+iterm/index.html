@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/27-48.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-13.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-36.png">
-<meta property="og:updated_time" content="2019-08-09T15:26:00.838Z">
+<meta property="og:updated_time" content="2020-05-25T09:21:37.598Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发效率神器之alfred集成ssh+iTerm2实现一步登录服务器">
 <meta name="twitter:description" content="前言做事情，好的开始是成功的一半。干开发，好的工具等于完成了一半。 实际工作中，在没有使用”alfred+ssh+iterm”以前，连接各个环境的机器时，每次要1234561. 打开终端2. ssh root@ip3. 输入密码4. ps -ef|grep server // 找到log dir5. cd log dir // 目标目录6. bala bala 看日志 即，在你真正开始看日志找问题">
@@ -340,8 +340,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-08-09T23:26:00+08:00">
-                2019-08-09
+              <time title="更新于" itemprop="dateModified" datetime="2020-05-25T17:21:37+08:00">
+                2020-05-25
               </time>
             
           </span>
@@ -498,7 +498,8 @@
 <p>到此就全部配置完成了</p>
 <h2 id="爽不爽"><a href="#爽不爽" class="headerlink" title="爽不爽"></a>爽不爽</h2><p>验收效果<br><img src="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-13.png" alt="28-13"></p>
 <p>回车<br><img src="/2019/05/13/开发效率神提升之alfred集成ssh+iterm/28-36.png" alt="28-36"></p>
-<p>可以看到，最终的效果是只需要在alfred中输入一个命令：<code>ssh aliyun</code>，就直接连接上了aliyun的远程服务器了，一步搞定。到这里，我们的目标就实现了。你可能会遇到这种情况,登录线上机器需要先登录堡垒机，才能登录线上机器，比较麻烦，如果想在alfred中一步搞定，实现这个目标，需要借助另一个神器:tmux，后文续说</p>
+<p>可以看到，最终的效果是只需要在alfred中输入一个命令：<code>ssh aliyun</code>，就直接连接上了aliyun的远程服务器了，一步搞定。到这里，我们的目标就实现了。</p>
+<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p>实际工作中，线上机器都是要通过堡垒机才能访问的,首先要获取验证码，还有口令，步骤比较麻烦。这时，神器还在发挥威力，还是一步搞定：现在，需要借助另一个神器:<code>tmux</code>，<code>tmux</code>结合<code>alfred</code>，无敌模式。tmux使用参见：<a href="https://yaoyuanyy.github.io/2019/07/12/mac-linux%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%9C%80%E6%96%B0%E7%89%88tmux/">远程终端神器-tmux</a></p>
 <p>版权所属<a href="mailto:mxr_it@163.com" target="_blank" rel="noopener">mxr_it@163.com</a>，<a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a>，转载经标明原作链接</p>
 <p>原味地址：<a href="https://yaoyuanyy.github.io/2019/05/13/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E6%8F%90%E5%8D%87%E4%B9%8Balfred%E9%9B%86%E6%88%90ssh+iterm/">开发效率神提升之alfred集成ssh+iterm
 </a></p>
@@ -677,7 +678,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -688,7 +689,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -699,7 +700,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -762,7 +763,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#免密登录"><span class="nav-number">2.</span> <span class="nav-text">免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ssh-config"><span class="nav-number">2.1.</span> <span class="nav-text">使用ssh config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置免密登录"><span class="nav-number">2.2.</span> <span class="nav-text">设置免密登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred"><span class="nav-number">3.</span> <span class="nav-text">安装alfred</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred-ssh插件"><span class="nav-number">4.</span> <span class="nav-text">安装alfred-ssh插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred集成Iterm2配置"><span class="nav-number">5.</span> <span class="nav-text">安装alfred集成Iterm2配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装alfred插件custom-iterm-applescripts-for-alfred"><span class="nav-number">5.1.</span> <span class="nav-text">安装alfred插件custom-iterm-applescripts-for-alfred</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itermURL-Schemes配置"><span class="nav-number">5.2.</span> <span class="nav-text">itermURL Schemes配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爽不爽"><span class="nav-number">6.</span> <span class="nav-text">爽不爽</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#免密登录"><span class="nav-number">2.</span> <span class="nav-text">免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ssh-config"><span class="nav-number">2.1.</span> <span class="nav-text">使用ssh config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置免密登录"><span class="nav-number">2.2.</span> <span class="nav-text">设置免密登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred"><span class="nav-number">3.</span> <span class="nav-text">安装alfred</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred-ssh插件"><span class="nav-number">4.</span> <span class="nav-text">安装alfred-ssh插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装alfred集成Iterm2配置"><span class="nav-number">5.</span> <span class="nav-text">安装alfred集成Iterm2配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装alfred插件custom-iterm-applescripts-for-alfred"><span class="nav-number">5.1.</span> <span class="nav-text">安装alfred插件custom-iterm-applescripts-for-alfred</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#itermURL-Schemes配置"><span class="nav-number">5.2.</span> <span class="nav-text">itermURL Schemes配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爽不爽"><span class="nav-number">6.</span> <span class="nav-text">爽不爽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶"><span class="nav-number">7.</span> <span class="nav-text">进阶</span></a></li></ol></div>
             
 
           </div>
