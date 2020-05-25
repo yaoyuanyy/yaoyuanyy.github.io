@@ -84,19 +84,19 @@
 <meta name="description" content="实际问题场景日常的编程开发过程中，你是否遇到了如下的烦恼  终端一个界面分成多个窗口 公司的环境多样：dev环境，test环境，preview环境，每次调试各环境上的问题，都需要ssh xxx，还要输入各环境的密码，烦人的密码怎让人记得住，问题还没调呢，找密码花费一番周折 上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接  如果你有以上至少一种苦恼，那么">
 <meta name="keywords" content="linux,tmux,mac,开发效率工具">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux&#x2F;mac安装及使用最新版tmux">
-<meta property="og:url" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/index.html">
+<meta property="og:title" content="远程终端神器-tmux">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/index.html">
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="实际问题场景日常的编程开发过程中，你是否遇到了如下的烦恼  终端一个界面分成多个窗口 公司的环境多样：dev环境，test环境，preview环境，每次调试各环境上的问题，都需要ssh xxx，还要输入各环境的密码，烦人的密码怎让人记得住，问题还没调呢，找密码花费一番周折 上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接  如果你有以上至少一种苦恼，那么">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/32-13.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/46-42.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/47-49.png">
-<meta property="og:updated_time" content="2019-07-14T03:32:14.523Z">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/32-13.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/46-42.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/47-49.png">
+<meta property="og:updated_time" content="2020-05-25T09:24:27.887Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux&#x2F;mac安装及使用最新版tmux">
+<meta name="twitter:title" content="远程终端神器-tmux">
 <meta name="twitter:description" content="实际问题场景日常的编程开发过程中，你是否遇到了如下的烦恼  终端一个界面分成多个窗口 公司的环境多样：dev环境，test环境，preview环境，每次调试各环境上的问题，都需要ssh xxx，还要输入各环境的密码，烦人的密码怎让人记得住，问题还没调呢，找密码花费一番周折 上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接  如果你有以上至少一种苦恼，那么">
-<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/32-13.png">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/32-13.png">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/">
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/">
 
 
 
 
 
-  <title>linux/mac安装及使用最新版tmux | skyler-blog</title>
+  <title>远程终端神器-tmux | skyler-blog</title>
   
 
 
@@ -289,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Skyler">
@@ -306,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">linux/mac安装及使用最新版tmux</h1>
+          <h1 class="post-title" itemprop="name headline">远程终端神器-tmux</h1>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-14T11:32:14+08:00">
-                2019-07-14
+              <time title="更新于" itemprop="dateModified" datetime="2020-05-25T17:24:27+08:00">
+                2020-05-25
               </time>
             
           </span>
@@ -371,8 +371,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/12/mac-linux安装及使用最新版tmux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/12/mac-linux安装及使用最新版tmux/" itemprop="commentCount"></span>
+                <a href="/2019/07/12/远程终端神器-tmux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/12/远程终端神器-tmux/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -380,7 +380,7 @@
 
           
           
-             <span id="/2019/07/12/mac-linux安装及使用最新版tmux/" class="leancloud_visitors" data-flag-title="linux/mac安装及使用最新版tmux">
+             <span id="/2019/07/12/远程终端神器-tmux/" class="leancloud_visitors" data-flag-title="远程终端神器-tmux">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -453,7 +453,7 @@
 <h2 id="tmux介绍"><a href="#tmux介绍" class="headerlink" title="tmux介绍"></a>tmux介绍</h2><p>Terminal Multiplexer，简单的说：它是一个多终端进程管理器，主要用到的功能是终端界面分屏显示，后台运行终端进程。</p>
 <p>根据tmux的定义，在开启了tmux服务器后，会首先创建一个会话，而这个会话则会首先创建一个窗口，其中仅包含一个面板；也就是说，这里看到的所谓终端控制台应该称作tmux的一个面板，虽然其使用方法与终端控制台完全相同。</p>
 <p>tmux结合iTerm2更配，使用更流程，iTerm2安装和使用参见：<a href="https://yaoyuanyy.github.io/2019/07/12/mac%E4%B8%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8iTerm2/">mac下iTerm2安装和使用</a><br>tmux主要包括以下单元模块<br>| 单元模块| 描述|<br>| :– | :– |<br>|server 服务器|输入tmux命令时就开启了一个服务器|<br>|session 会话|一个服务器可以包含多个会话|<br>|window 窗口|一个会话可以包含多个窗口|<br>|panel 面板|一个窗口可以包含多个面板|</p>
-<p>server、session、window、panel之间的关系如下图<br><img src="/2019/07/12/mac-linux安装及使用最新版tmux/32-13.png" alt="32-13"></p>
+<p>server、session、window、panel之间的关系如下图<br><img src="/2019/07/12/远程终端神器-tmux/32-13.png" alt="32-13"></p>
 <h3 id="macOS下安装tmux"><a href="#macOS下安装tmux" class="headerlink" title="macOS下安装tmux"></a>macOS下安装tmux</h3><p>macOS 上使用 Homebrew 安装即可：</p>
 <blockquote>
 <p>$ brew install tmux</p>
@@ -470,11 +470,11 @@
 <h4 id="窗格panel操作"><a href="#窗格panel操作" class="headerlink" title="窗格panel操作"></a>窗格panel操作</h4><p>% 左右平分出两个窗格 –&gt;常用<br>“ 上下平分出两个窗格 –&gt;常用<br>z 最大化当前窗格，再次执行可恢复原来大小 –&gt;常用<br>x 关闭当前窗格 –&gt;常用<br>space 切换窗格布局，tmux 内置了五种窗格布局，也可以通过 ⌥1 至 ⌥5来切换 –&gt;常用<br>{ 当前窗格前移<br>} 当前窗格后移<br>; 选择上次使用的窗格<br>o 选择下一个窗格，也可以使用上下左右方向键来选择<br>q 显示所有窗格的序号，在序号出现期间按下对应的数字，即可跳转至对应的窗格</p>
 <p>down voteaccepte</p>
 <h3 id="必备配置"><a href="#必备配置" class="headerlink" title="必备配置"></a>必备配置</h3><h4 id="1-多窗格同步执行相同命令功能-Type-your-command-to-be-executed-in-all-panes-in-same-window"><a href="#1-多窗格同步执行相同命令功能-Type-your-command-to-be-executed-in-all-panes-in-same-window" class="headerlink" title="1. 多窗格同步执行相同命令功能(Type your command to be executed in all panes in same window)"></a>1. 多窗格同步执行相同命令功能(Type your command to be executed in all panes in same window)</h4><p>方法1 当前window有效<br>To turn on: Ctrl-b then :setw synchronize-panes<br>To turn off: Ctrl-b then :setw synchronize-panes off<br>方法2 全局有效<br>Actually, I bind a couple of keyboard shortcuts in ~/.tmux-conf to switch on/off panes synchronization:<br>bind e setw synchronize-panes on<br>bind E setw synchronize-panes off<br>方法3 全局有效<br>Just to note, you don’t need to set 2 keys, instead you can use one key to toggle synchronization option:<br>bind e set-window-option synchronize-panes<br>配置完需要重新加载~/.tmux-conf，见下文：重新加载配置文件</p>
-<p>实例：<br><img src="/2019/07/12/mac-linux安装及使用最新版tmux/46-42.png" alt="46-42"></p>
+<p>实例：<br><img src="/2019/07/12/远程终端神器-tmux/46-42.png" alt="46-42"></p>
 <h4 id="2-开启鼠标功能：点击选择窗格-窗口，拖动窗格大小，以及拖动鼠标滚屏复制文字"><a href="#2-开启鼠标功能：点击选择窗格-窗口，拖动窗格大小，以及拖动鼠标滚屏复制文字" class="headerlink" title="2. 开启鼠标功能：点击选择窗格/窗口，拖动窗格大小，以及拖动鼠标滚屏复制文字"></a>2. 开启鼠标功能：点击选择窗格/窗口，拖动窗格大小，以及拖动鼠标滚屏复制文字</h4><p>tmux 默认配置中最糟糕的体验就是滚屏查看和文本复制（大家可以先试试看）。你需要先使用 ⌃b [ 快捷键进入 copy 模式，然后使用翻页、字符定位来选择需要的字符，效率远没有鼠标选择来的快。<br>因此 tmux 提供了一些个性化配置项来优化这些配置，在 shell 中编辑~/.tmux-conf 配置文件。在文件中增加以下内容：<br>开启了所有鼠标功能：点击选择窗格/窗口，拖动窗格大小，以及拖动鼠标滚屏复制文字。<br>$ set -g mouse on</p>
 <p>2.1 之前的版本(发布于 2015.10.18) 需要设置 mode-mouse, mouse-select-pane, mouse-resize-pane, mouse-select-window 等4 个选项来开启所有鼠标功能，现在只需要设置 mouse 选项了。 使用 tmux -V 可以查看当前安装的 tmux 版本，版本更新日志见 Tmux Changelog<br>保存后重新加载配置文件。见下文：重新加载配置文件)</p>
 <h4 id="3-重新加载配置文件"><a href="#3-重新加载配置文件" class="headerlink" title="3. 重新加载配置文件"></a>3. 重新加载配置文件</h4><p>配置文件修改完成后，重新加载配置文件，三种方式：<br>$ tmux kill-server 重启所有 tmux 进程<br>$  tmux source-file ~/.tmux.conf<br>$  tmux 会话中使用 ⌃b进入控制台模式，输入 source-file ~/.tmux.conf</p>
-<h4 id="4-鼠标复制"><a href="#4-鼠标复制" class="headerlink" title="4. 鼠标复制"></a>4. 鼠标复制</h4><p>tmux 下开启鼠标滚屏后，复制文本有两种方式：<br>方法 1：使用 ⌃b z 进入窗格全屏模式，鼠标选择文本的同时按住 option 键 ⌥，然后使用 ⌘c 进行复制；<br>方法 2：开启 iTerm2 「在选择时复制」选项，即可实现选择即复制。如下图：<br><img src="/2019/07/12/mac-linux安装及使用最新版tmux/47-49.png" alt="47-49"></p>
+<h4 id="4-鼠标复制"><a href="#4-鼠标复制" class="headerlink" title="4. 鼠标复制"></a>4. 鼠标复制</h4><p>tmux 下开启鼠标滚屏后，复制文本有两种方式：<br>方法 1：使用 ⌃b z 进入窗格全屏模式，鼠标选择文本的同时按住 option 键 ⌥，然后使用 ⌘c 进行复制；<br>方法 2：开启 iTerm2 「在选择时复制」选项，即可实现选择即复制。如下图：<br><img src="/2019/07/12/远程终端神器-tmux/47-49.png" alt="47-49"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://stackoverflow.com/questions/16398850/create-new-tmux-session-from-inside-a-tmux-session" target="_blank" rel="noopener">https://stackoverflow.com/questions/16398850/create-new-tmux-session-from-inside-a-tmux-session</a><br><a href="https://segmentfault.com/a/1190000003001555" target="_blank" rel="noopener">https://segmentfault.com/a/1190000003001555</a><br><a href="https://www.cnblogs.com/kaiye/p/6275207.html" target="_blank" rel="noopener">https://www.cnblogs.com/kaiye/p/6275207.html</a><br><a href="http://mindonmind.github.io/notes/linux/tmux.html" target="_blank" rel="noopener">http://mindonmind.github.io/notes/linux/tmux.html</a><br><a href="https://blog.csdn.net/trochiluses/article/details/9773103" target="_blank" rel="noopener">https://blog.csdn.net/trochiluses/article/details/9773103</a><br><a href="https://harttle.land/2015/11/06/tmux-startup.html" target="_blank" rel="noopener">https://harttle.land/2015/11/06/tmux-startup.html</a><br><a href="https://segmentfault.com/a/1190000008188987" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008188987</a><br>扩展<br><a href="http://louiszhai.github.io/2017/09/30/tmux/#Tmux-Resurrect" target="_blank" rel="noopener">http://louiszhai.github.io/2017/09/30/tmux/#Tmux-Resurrect</a></p>
 <p>到这里，tmux你已经拥有了，开始你顺滑之旅吧。技术是没有止境的，在mac系统上，拥有着更简便的操作方式，那就是afred这款神器，他可以结合其插件实现一键连接远程多机器，顺滑的令人陶醉。具体参见：<a href="https://yaoyuanyy.github.io/2019/05/13/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E6%8F%90%E5%8D%87%E4%B9%8Balfred%E9%9B%86%E6%88%90ssh+iterm/">开发效率神提升之alfred集成ssh+iterm+tmux</a></p>
 <p>其实，技术就是这样的，一步一步的发展，在问题的驱动下，越来越专注，越来越方便，越来越智能。我们要做的只有不断的尝试，不断的前行，不断的应用</p>
@@ -526,7 +526,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/" title="linux/mac安装及使用最新版tmux">https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/</a>
+    <a href="https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/" title="远程终端神器-tmux">https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -560,8 +560,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/12/mac下安装及使用iTerm2/" rel="next" title="mac下安装及使用iTerm2">
-                <i class="fa fa-chevron-left"></i> mac下安装及使用iTerm2
+              <a href="/2019/06/04/细节知多少 - spring boot transaction解析之阶段一/" rel="next" title="细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段">
+                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段
               </a>
             
           </div>
@@ -570,8 +570,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/01/细节知多少 - spring boot @Value注解解析/" rel="prev" title="细节知多少 - spring @Value注解解析">
-                细节知多少 - spring @Value注解解析 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/12/mac下安装及使用iTerm2/" rel="prev" title="mac下安装及使用iTerm2">
+                mac下安装及使用iTerm2 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -909,9 +909,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://yaoyuanyy.github.io/2019/07/12/mac-linux安装及使用最新版tmux/';
-          this.page.identifier = '2019/07/12/mac-linux安装及使用最新版tmux/';
-          this.page.title = 'linux/mac安装及使用最新版tmux';
+          this.page.url = 'https://yaoyuanyy.github.io/2019/07/12/远程终端神器-tmux/';
+          this.page.identifier = '2019/07/12/远程终端神器-tmux/';
+          this.page.title = '远程终端神器-tmux';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';
