@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yaoyuanyy.github.io/2020/10/21/%E6%9F%A5%E7%9C%8B%E8%BF%9C%E7%A8%8Bjava%E6%9C%8D%E5%8A%A1%E7%9A%84system%20properties%E7%9A%84%E6%89%80%E6%9C%89%E6%96%B9%E5%BC%8F%E6%96%B9%E6%B3%95/</loc>
+    
+    <lastmod>2020-10-21T12:26:32.148Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yaoyuanyy.github.io/2019/05/13/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E6%8F%90%E5%8D%87%E4%B9%8Balfred%E9%9B%86%E6%88%90ssh+iterm/</loc>
     
     <lastmod>2020-09-16T15:56:22.410Z</lastmod>
@@ -23,16 +30,23 @@
   </url>
   
   <url>
-    <loc>https://yaoyuanyy.github.io/2020/09/09/5%E4%B8%AA%E9%9C%87%E6%92%BC%E4%BD%A0%E4%B8%96%E7%95%8C%E7%9A%84linux%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4/</loc>
+    <loc>https://yaoyuanyy.github.io/2019/11/09/spring%20boot%E5%8A%A0%E8%BD%BD.class%E6%96%B9%E5%BC%8F%E8%8D%89%E9%9B%86/</loc>
     
-    <lastmod>2020-09-09T03:26:29.972Z</lastmod>
+    <lastmod>2020-09-16T11:58:05.755Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yaoyuanyy.github.io/2020/09/05/netstat%E5%9C%A8mac%E4%B8%8A%E4%B8%8D%E5%A5%BD%E7%94%A8%E4%BA%86,%E8%AF%95%E8%AF%95lsof,%E9%A3%9E%E8%B5%B7/</loc>
     
-    <lastmod>2020-09-05T13:43:43.834Z</lastmod>
+    <lastmod>2020-09-16T07:13:45.795Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yaoyuanyy.github.io/2020/09/09/5%E4%B8%AA%E9%9C%87%E6%92%BC%E4%BD%A0%E4%B8%96%E7%95%8C%E7%9A%84linux%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4/</loc>
+    
+    <lastmod>2020-09-09T03:48:31.386Z</lastmod>
     
   </url>
   
@@ -173,13 +187,6 @@
     <loc>https://yaoyuanyy.github.io/2019/12/01/%E5%86%99%E4%BD%9C%E6%A1%86%E6%9E%B6/</loc>
     
     <lastmod>2019-12-01T12:01:57.101Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yaoyuanyy.github.io/2019/11/09/spring%20boot%E5%8A%A0%E8%BD%BD.class%E6%96%B9%E5%BC%8F%E8%8D%89%E9%9B%86/</loc>
-    
-    <lastmod>2019-11-24T23:10:42.151Z</lastmod>
     
   </url>
   
