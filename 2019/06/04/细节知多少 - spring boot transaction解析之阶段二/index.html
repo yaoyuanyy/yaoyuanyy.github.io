@@ -89,17 +89,18 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 笔者把spring boot transaction的整个过程分为两个阶段  带">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/18-57.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-25.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/50-03.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129090652.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091020.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091044.png">
 <meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/23-51.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/49-10.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/27-29.png">
-<meta property="og:updated_time" content="2019-06-16T08:21:51.241Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091218.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091326.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091348.png">
+<meta property="og:updated_time" content="2020-11-29T01:13:59.201Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring boot transaction解析之阶段二 访问service类的@Transactional方法实现事务的阶段">
 <meta name="twitter:description" content="概述spring boot transaction我们平时用着非常简单，只需要在service方法上声明@Transactional就可以了。但是要知道，简单的背后是不简单，只是很多东西spring框架帮我们做好了。如果想进阶，想进步，想弄懂，想学习，需要接近它，了解它，弄懂它，最好的方法莫过于debug它的源码了。 笔者把spring boot transaction的整个过程分为两个阶段  带">
-<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/06/04/细节知多少%20-%20spring%20boot%20transaction解析之阶段二/18-57.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129090652.png">
 
 
 
@@ -337,8 +338,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-06-16T16:21:51+08:00">
-                2019-06-16
+              <time title="更新于" itemprop="dateModified" datetime="2020-11-29T09:13:59+08:00">
+                2020-11-29
               </time>
             
           </span>
@@ -456,7 +457,7 @@
 <p>带着问题学习往往起到更好的效果</p>
 </blockquote>
 <p>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 平时总是spring默认的事务只有运行时异常才回滚，为什么</span><br><span class="line">2. 事务的savepoint是什么</span><br><span class="line">3. 如何做到多个数据操作的事务提交和回滚的</span><br></pre></td></tr></table></figure></p>
-<h2 id="调用流程图"><a href="#调用流程图" class="headerlink" title="调用流程图"></a>调用流程图</h2><p><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/18-57.png" alt="18-57"><br>这是spring官网doc上关于spring transaction的调用流程图。我们大致先有个印象，每个节点的细节正是本文的重点内容。随着本文细节的逐一阐述完成，再回来看下这个图，会有更深的理解和掌握</p>
+<h2 id="调用流程图"><a href="#调用流程图" class="headerlink" title="调用流程图"></a>调用流程图</h2><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129090652.png" alt="20201129090652"><br>这是spring官网doc上关于spring transaction的调用流程图。我们大致先有个印象，每个节点的细节正是本文的重点内容。随着本文细节的逐一阐述完成，再回来看下这个图，会有更深的理解和掌握</p>
 <h2 id="http-访问"><a href="#http-访问" class="headerlink" title="http 访问"></a>http 访问</h2><blockquote>
 <p><a href="http://localhost:2372/user/updateSchoolName?schoolName=vl&amp;studentId=3" target="_blank" rel="noopener">http://localhost:2372/user/updateSchoolName?schoolName=vl&amp;studentId=3</a></p>
 </blockquote>
@@ -499,13 +500,14 @@
 <p>我们平时可能会听到其他人说spring事务默认只有运行时已成RuntimeException才回滚，像非运行时异常不回滚，我看下这里回滚的逻辑，从而知道这个现象的本质原因，看代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">RuleBasedTransactionAttribute 类</span><br><span class="line">public boolean rollbackOn(Throwable ex) &#123;</span><br><span class="line">	RollbackRuleAttribute winner = null;</span><br><span class="line">	int deepest = Integer.MAX_VALUE;</span><br><span class="line"></span><br><span class="line">    // 只有我们业务方法中配置的@Transactional.rollbackfor的值，rollbackRules才只有这个值，否则rollbackRules为空</span><br><span class="line">	if (this.rollbackRules != null) &#123;</span><br><span class="line">		for (RollbackRuleAttribute rule : this.rollbackRules) &#123;</span><br><span class="line">			int depth = rule.getDepth(ex);</span><br><span class="line">			if (depth &gt;= 0 &amp;&amp; depth &lt; deepest) &#123;</span><br><span class="line">				deepest = depth;</span><br><span class="line">				winner = rule;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">    // 我们没有配置业务方法中的@Transactional.rollbackfor的值时，走这里的逻辑，即spring默认的回滚逻辑</span><br><span class="line">	if (winner == null) &#123;</span><br><span class="line">		return super.rollbackOn(ex);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return !(winner instanceof NoRollbackRuleAttribute);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这个方法的返回值决定了事务回滚，而返回值由两种情况决定</p>
 <ol>
-<li>情况一，业务方法中配置了@Transactional.rollbackfor的值<br>从而List<rollbackruleattribute>类型的属性rollbackRules有值，所以RollbackRuleAttribute.exceptionName属性有值，值为我们在业务方法上配置的@Transactional.rollbackfor的exception值，对比如下图，更清晰<br><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/49-25.png" alt="49-25"></rollbackruleattribute></li>
+<li><p>情况一，业务方法中配置了@Transactional.rollbackfor的值<br>从而List<rollbackruleattribute>类型的属性rollbackRules有值，所以RollbackRuleAttribute.exceptionName属性有值，值为我们在业务方法上配置的@Transactional.rollbackfor的exception值，对比如下图，更清晰<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091020.png" alt="20201129091020"></rollbackruleattribute></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091044.png" alt="20201129091044"></p>
+</li>
 </ol>
-<p><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/50-03.png" alt="50-03"></p>
 <p>我们看下整个RuleBasedTransactionAttribute.rollbackOn方法的逻辑为根据RollbackRuleAttribute.getDepth(ex)方法返回的int值决定winner属性的值，判断winner的类型是否为NoRollbackRuleAttribute，从而决定方法的返回值true or false，进而决定是否执行回滚操作。重点就在RollbackRuleAttribute.getDepth(ex)。我们看下这个方法的逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RollbackRuleAttribute 类</span><br><span class="line">private int getDepth(Class&lt;?&gt; exceptionClass, int depth) &#123;</span><br><span class="line">	if (exceptionClass.getName().contains(this.exceptionName)) &#123;</span><br><span class="line">		return depth;</span><br><span class="line">	&#125;</span><br><span class="line">	if (exceptionClass == Throwable.class) &#123;</span><br><span class="line">		return -1;</span><br><span class="line">	&#125;</span><br><span class="line">	return getDepth(exceptionClass.getSuperclass(), depth + 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这是一个递归方法，首先比较我们配置的ExceptionName和程序产生的异常name，如果直接包含，返回默认的depth值(默认为0，表示精准匹配)，如果产生的异常时Throwable，表示不匹配，两种情况都不符合，进入递归操作，拿到程序产生异常类的父类进行以上逻辑的判断。</p>
 <ol>
-<li>情况二 我们没有配置业务方法中的@Transactional.rollbackfor的值时，情形如下图。<br><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/23-51.png" alt="23-51"></li>
+<li>情况二 我们没有配置业务方法中的@Transactional.rollbackfor的值时，情形如下图。<br><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/23-51.png" alt="23-51"><br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091218.png" alt="20201129091218"></li>
 </ol>
 <p>没有配置@Transactional.rollbackfor的值，winner == null，所以程序走super.rollbackOn(ex)，即spring事务默认的回滚逻辑。看下这个代码逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DefaultTransactionAttribute 类</span><br><span class="line">public boolean rollbackOn(Throwable ex) &#123;</span><br><span class="line">	return (ex instanceof RuntimeException || ex instanceof Error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>方法逻辑为是RuntimeException才回滚。</p>
@@ -532,8 +534,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拥有PlatformTransactionManager,TransactionAttribute,TransactionStatus,oldTransactionInfo等属性</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>这几个对象间的关系通过图的方法<br><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/49-10.png" alt="49-10"></p>
-<h2 id="调用链图"><a href="#调用链图" class="headerlink" title="调用链图"></a>调用链图</h2><p><img src="/2019/06/04/细节知多少 - spring boot transaction解析之阶段二/27-29.png" alt="27-29"></p>
+<p>这几个对象间的关系通过图的方法<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091326.png" alt="20201129091326"></p>
+<h2 id="调用链图"><a href="#调用链图" class="headerlink" title="调用链图"></a>调用链图</h2><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129091348.png" alt="20201129091348"></p>
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ol>
 <li>Transaction Synchronization含义 (触发提交操作回调的)Trigger xxxCommit callbacks.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Transaction Synchronization. The Java Transaction API includes a javax.transaction.Synchronization interface, which issues notifications before and after a transaction is completed. ... After the transaction is committed or rolled back, the TransactionManager calls the Synchronization object&apos;s afterCompletion() method.</span><br></pre></td></tr></table></figure>
 </li>
@@ -612,8 +614,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/28/细节知多少 - spring boot aop动态代理解析之阶段三/" rel="next" title="细节知多少 - spring boot aop过程解析之阶段三 CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段">
-                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot aop过程解析之阶段三 CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段
+              <a href="/2019/06/04/细节知多少 - spring boot transaction解析之阶段一/" rel="next" title="细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段">
+                <i class="fa fa-chevron-left"></i> 细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段
               </a>
             
           </div>
@@ -622,8 +624,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/04/细节知多少 - spring boot transaction解析之阶段一/" rel="prev" title="细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段">
-                细节知多少 - spring boot transaction解析之阶段一 带有@Transactional方法的service类生成代理类的阶段 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/12/远程终端神器-tmux/" rel="prev" title="远程终端神器-tmux">
+                远程终端神器-tmux <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -713,7 +715,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -735,7 +737,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -818,7 +820,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -89,14 +89,14 @@
 <meta property="og:site_name" content="skyler-blog">
 <meta property="og:description" content="[TOC] 缘由​@Value是开发过程中使用比较频繁的注解之一，它的作用是将配置文件中key对应的值赋值给它标注的属性。对于常见的知识点，我们应该了解它功能实现的本质。对我们自己的技术提升很有帮助。 原理​在spring中是由AutowiredAnnotationBeanPostProcessor解析处理@Value注解。AutowiredAnnotationBeanPostProcessor是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/08/01/细节知多少%20-%20spring%20boot%20@Value注解解析/20-51.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/08/01/细节知多少%20-%20spring%20boot%20@Value注解解析/19-48.png">
-<meta property="og:image" content="https://yaoyuanyy.github.io/2019/08/01/细节知多少%20-%20spring%20boot%20@Value注解解析/20-55.png">
-<meta property="og:updated_time" content="2019-11-03T06:35:55.295Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029203940.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029204039.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029204117.png">
+<meta property="og:updated_time" content="2020-10-29T12:41:28.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="细节知多少 - spring @Value注解解析">
 <meta name="twitter:description" content="[TOC] 缘由​@Value是开发过程中使用比较频繁的注解之一，它的作用是将配置文件中key对应的值赋值给它标注的属性。对于常见的知识点，我们应该了解它功能实现的本质。对我们自己的技术提升很有帮助。 原理​在spring中是由AutowiredAnnotationBeanPostProcessor解析处理@Value注解。AutowiredAnnotationBeanPostProcessor是">
-<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/08/01/细节知多少%20-%20spring%20boot%20@Value注解解析/20-51.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029203940.png">
 
 
 
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-11-03T14:35:55+08:00">
-                2019-11-03
+              <time title="更新于" itemprop="dateModified" datetime="2020-10-29T20:41:28+08:00">
+                2020-10-29
               </time>
             
           </span>
@@ -524,7 +524,7 @@
 <p>核心方法为<code>resolver.resolveStringValue(result)</code>方法，resolver实际为<code>StringValueResolver类型的lambda表达式</code>，这个表示式定义在了<code>PropertySourcesPlaceHolderConfigurer.processProperties()</code>方法中，这里debug是需要注意下，如果你不了解lambda，可能会比较朦胧。代码如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">PropertySourcesPlaceHolderConfigurer class</span><br><span class="line">protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,</span><br><span class="line">			final ConfigurablePropertyResolver propertyResolver) throws BeansException &#123;</span><br><span class="line"></span><br><span class="line">    propertyResolver.setPlaceholderPrefix(this.placeholderPrefix);</span><br><span class="line">    propertyResolver.setPlaceholderSuffix(this.placeholderSuffix);</span><br><span class="line">    propertyResolver.setValueSeparator(this.valueSeparator);</span><br><span class="line"></span><br><span class="line">    StringValueResolver valueResolver = strVal -&gt; &#123;</span><br><span class="line">        String resolved = (this.ignoreUnresolvablePlaceholders ?</span><br><span class="line">                propertyResolver.resolvePlaceholders(strVal) :</span><br><span class="line">                propertyResolver.resolveRequiredPlaceholders(strVal));</span><br><span class="line">        if (this.trimValues) &#123;</span><br><span class="line">            resolved = resolved.trim();</span><br><span class="line">        &#125;</span><br><span class="line">        return (resolved.equals(this.nullValue) ? null : resolved);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    doProcessProperties(beanFactoryToProcess, valueResolver);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>lambda会扰乱你的调用栈展示，下面截图展示真实调用栈的信息</p>
-<p><img src="/2019/08/01/细节知多少 - spring boot @Value注解解析/20-51.png" alt="image-20190801201829017.png)"></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029203940.png" alt="20201029203940"></p>
 <p>上面代码中<code>processProperties</code>方法会调用<code>PropertySourcesPropertyResolver.resolveRequiredPlaceholders()</code>方法来解析入参，而它又会调用<code>PropertySourcesPropertyResolver.getPropertyAsRawString()</code>和<code>PropertyPlaceholderHelper.replacePlaceholders()</code>。代码如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">AbstractPropertyResoler class</span><br><span class="line">public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException &#123;</span><br><span class="line">    if (this.strictHelper == null) &#123;</span><br><span class="line">        this.strictHelper = createPlaceholderHelper(false);</span><br><span class="line">    &#125;</span><br><span class="line">    return doResolvePlaceholders(text, this.strictHelper);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private String doResolvePlaceholders(String text, PropertyPlaceholderHelper helper) &#123;</span><br><span class="line">    return helper.replacePlaceholders(text, this::getPropertyAsRawString);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -542,9 +542,9 @@
 <h3 id="Three-step"><a href="#Three-step" class="headerlink" title="Three step"></a>Three step</h3><p>将String类型的值转换成目标变量声明的类型。</p>
 <p>我们回到<code>DefaultListableBeanFactory.doResolveDependency()</code>方法，此时代码来到了<code>converter.convertIfNecessary</code>方法处，即类型转换。看方法代码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">TypeConverterSupport class</span><br><span class="line">public &lt;T&gt; T convertIfNecessary(@Nullable Object value, @Nullable Class&lt;T&gt; requiredType,</span><br><span class="line">        @Nullable TypeDescriptor typeDescriptor) throws TypeMismatchException &#123;</span><br><span class="line">    return this.typeConverterDelegate.convertIfNecessary(null, null, value, requiredType, typeDescriptor);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TypeConverterDelegate class</span><br><span class="line">public &lt;T&gt; T convertIfNecessary(@Nullable String propertyName, @Nullable Object oldValue, @Nullable Object newValue,</span><br><span class="line">			@Nullable Class&lt;T&gt; requiredType, @Nullable TypeDescriptor typeDescriptor)  &#123;</span><br><span class="line">    // conversionService包含着所有的转换器，如下图</span><br><span class="line">    ConversionService conversionService = this.propertyEditorRegistry.getConversionService();</span><br><span class="line">    TypeDescriptor sourceTypeDesc = TypeDescriptor.forObject(newValue);</span><br><span class="line">    if (conversionService.canConvert(sourceTypeDesc, typeDescriptor)) &#123;</span><br><span class="line">        return (T) conversionService.convert(newValue, sourceTypeDesc, typeDescriptor);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/08/01/细节知多少 - spring boot @Value注解解析/19-48.png" alt="19-48"></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029204039.png" alt="20201029204039"></p>
 <p>方法首先找到能转换(string -&gt; int)的转换器，然后开始转换。怎么找到能转换的转换器这里不说了，自己跟下吧。开始转换的核心是确定对应的<code>xxxtoyyyConverter</code>, <code>xxxtoyyyConverter</code>内部调用的是本质的工具类。如String转int，工具类为: <code>NumberUtils.parseNumber(source, this.targetType)</code>，这个工具类方法比较熟悉和亲切吧，所以spring很多功能最终都是调用最本质的java工具类。<code>xxxtoyyyConverter</code>是一大堆的，如下图</p>
-<p><img src="/2019/08/01/细节知多少 - spring boot @Value注解解析/20-55.png" alt="20-55"></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029204117.png" alt="20201029204117"></p>
 <p>以上就是将<code>@Value</code>修饰的变量赋值的整个过程了，从解析注解的<code>value()</code>方法的值key，再到解析key为新key，再到配置文件获取key(新key)的值，最后对获取的值进行类型转换，最最后通过<code>field.set(bean, value)</code>赋值给目标变量</p>
 <p>下面将整个解析过程的调用栈罗列下</p>
 <h3 id="整体调用栈"><a href="#整体调用栈" class="headerlink" title="整体调用栈"></a>整体调用栈</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">AbstractAutowireCapableBeanFactory.createBean()                                    </span><br><span class="line">-AbstractAutowireCapableBeanFactory.doCreateBean()                               </span><br><span class="line">--AbstractAutowireCapableBeanFactory.applyMergedBeanDefinitionPostProcessors()   </span><br><span class="line">---AutowiredAnnotationBeanPostProcessor.postProcessMergedBeanDefinition()        </span><br><span class="line">----AutowiredAnnotationBeanPostProcessor.findAutowiringMetadata()                </span><br><span class="line">-----AutowiredAnnotationBeanPostProcessor.buildAutowiringMetadata() </span><br><span class="line">========以上是存逻辑，以下是用逻辑========</span><br><span class="line">--AbstractAutowireCapableBeanFactory.populateBean()                               </span><br><span class="line">---AutowiredAnnotationBeanPostProcessor.postProcessProperties()                  </span><br><span class="line">----AutowiredAnnotationBeanPostProcessor.findAutowiringMetadata()                </span><br><span class="line">-----InjectionMetadata.inject()                                                  </span><br><span class="line">------(InjectionMetadata.InjectedElement)AutowiredFieldElement.inject()</span><br><span class="line">-------DefaultListableBeanFactory.resolveDependency()</span><br><span class="line">--------DefaultListableBeanFactory.doResolveDependency() ---核心</span><br><span class="line">---------AbstractBeanFactory.resolveEmbeddedValue()</span><br><span class="line">----------StringValueResolver lambda子类.resolveStringValue()</span><br><span class="line">-----------PropertySourcesPropertyResolver.resolveRequiredPlaceholders()</span><br><span class="line">------------AbstractPropertyResolver.getPropertyAsRawString()</span><br><span class="line">-------------PropertyPlaceholderHelper.replacePlaceholders()</span><br><span class="line">--------------PropertySource.getProperty()</span><br><span class="line">-----------PropertyPlaceholderHelper.parseStringValue() 递归</span><br><span class="line">------------AbstractPropertyResolver.resolvePlaceholder()</span><br><span class="line">-------------PropertySource.getProperty()</span><br><span class="line">---------SimpleTypeConverter.convertIfNecessary()</span><br><span class="line">----------TypeConverterDelegate.convertIfNecessarT()</span><br><span class="line">-----------ConversionService.canConvert()</span><br><span class="line">-----------ConversionService.convert()</span><br></pre></td></tr></table></figure>
@@ -723,7 +723,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -745,7 +745,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -828,7 +828,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
