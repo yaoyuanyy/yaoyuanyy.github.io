@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="iTerm2,mac,开发效率工具,">
+  <meta name="keywords" content="linux网络命令,mac网络命令,">
 
 
 
@@ -81,21 +81,26 @@
 
 
 
-<meta name="description" content="背景Mac OS自带的终端，虽然可以用，但是太单调和乏味，用起来虽然有些不太方便，终端利器iTerm2，非常强大也非常的好用，漂亮的视觉冲击，方便便捷的操作方式，支持zsh等插件实现更强大的功能。 安装方式一 brew直接使用Homebrew进行安装：  $ brew cask install iterm2  方式二 源码安装https://iterm2.com/下载可视化安装 两种方式都很简便">
-<meta name="keywords" content="iTerm2,mac,开发效率工具">
+<meta name="description" content="背景：端口明明在，但没搜索到作为从事web开发的人员，无论是mac linux windows，每天几乎都会操作一个场景：找到web服务的pid，然后看看它的服务端口是啥；还有一个场景你也时常会操作到：检查下某个端口是否开启。在实际场景中，你会遇到这种情况：“我根据pid搜到的信息怎么没有显示端口数字啊，或者，我没有搜到这个端口，为啥用这个端口启动时提示端口已被占用呢” 现场复现操作一波启动一个k">
+<meta name="keywords" content="linux网络命令,mac网络命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac下安装及使用iTerm2">
-<meta property="og:url" content="https://yaoyuanyy.github.io/2019/07/12/mac下安装及使用iTerm2/index.html">
+<meta property="og:title" content="mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2021/02/18/查看pid和服务端口的对应关系/index.html">
 <meta property="og:site_name" content="skyler-blog">
-<meta property="og:description" content="背景Mac OS自带的终端，虽然可以用，但是太单调和乏味，用起来虽然有些不太方便，终端利器iTerm2，非常强大也非常的好用，漂亮的视觉冲击，方便便捷的操作方式，支持zsh等插件实现更强大的功能。 安装方式一 brew直接使用Homebrew进行安装：  $ brew cask install iterm2  方式二 源码安装https://iterm2.com/下载可视化安装 两种方式都很简便">
+<meta property="og:description" content="背景：端口明明在，但没搜索到作为从事web开发的人员，无论是mac linux windows，每天几乎都会操作一个场景：找到web服务的pid，然后看看它的服务端口是啥；还有一个场景你也时常会操作到：检查下某个端口是否开启。在实际场景中，你会遇到这种情况：“我根据pid搜到的信息怎么没有显示端口数字啊，或者，我没有搜到这个端口，为啥用这个端口启动时提示端口已被占用呢” 现场复现操作一波启动一个k">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200916205756.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200916205933.png">
-<meta property="og:updated_time" content="2020-09-16T13:03:46.066Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218122300.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218121934.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218122706.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218214315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218214719.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218220050.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218220251.png">
+<meta property="og:updated_time" content="2021-02-18T14:05:27.362Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac下安装及使用iTerm2">
-<meta name="twitter:description" content="背景Mac OS自带的终端，虽然可以用，但是太单调和乏味，用起来虽然有些不太方便，终端利器iTerm2，非常强大也非常的好用，漂亮的视觉冲击，方便便捷的操作方式，支持zsh等插件实现更强大的功能。 安装方式一 brew直接使用Homebrew进行安装：  $ brew cask install iterm2  方式二 源码安装https://iterm2.com/下载可视化安装 两种方式都很简便">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200916205756.png">
+<meta name="twitter:title" content="mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到">
+<meta name="twitter:description" content="背景：端口明明在，但没搜索到作为从事web开发的人员，无论是mac linux windows，每天几乎都会操作一个场景：找到web服务的pid，然后看看它的服务端口是啥；还有一个场景你也时常会操作到：检查下某个端口是否开启。在实际场景中，你会遇到这种情况：“我根据pid搜到的信息怎么没有显示端口数字啊，或者，我没有搜到这个端口，为啥用这个端口启动时提示端口已被占用呢” 现场复现操作一波启动一个k">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218122300.png">
 
 
 
@@ -125,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/07/12/mac下安装及使用iTerm2/">
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2021/02/18/查看pid和服务端口的对应关系/">
 
 
 
 
 
-  <title>mac下安装及使用iTerm2 | skyler-blog</title>
+  <title>mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到 | skyler-blog</title>
   
 
 
@@ -288,7 +293,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2019/07/12/mac下安装及使用iTerm2/">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2021/02/18/查看pid和服务端口的对应关系/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Skyler">
@@ -305,7 +310,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mac下安装及使用iTerm2</h1>
+          <h1 class="post-title" itemprop="name headline">mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到</h1>
         
 
         <div class="post-meta">
@@ -317,8 +322,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-12T00:00:00+08:00">
-                2019-07-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-18T10:49:31+08:00">
+                2021-02-18
               </time>
             
 
@@ -333,8 +338,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-09-16T21:03:46+08:00">
-                2020-09-16
+              <time title="更新于" itemprop="dateModified" datetime="2021-02-18T22:05:27+08:00">
+                2021-02-18
               </time>
             
           </span>
@@ -352,8 +357,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/开发效率工具/" itemprop="url" rel="index">
-                    <span itemprop="name">开发效率工具</span>
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
                   </a>
                 </span>
 
@@ -370,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/12/mac下安装及使用iTerm2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/12/mac下安装及使用iTerm2/" itemprop="commentCount"></span>
+                <a href="/2021/02/18/查看pid和服务端口的对应关系/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/02/18/查看pid和服务端口的对应关系/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -379,7 +384,7 @@
 
           
           
-             <span id="/2019/07/12/mac下安装及使用iTerm2/" class="leancloud_visitors" data-flag-title="mac下安装及使用iTerm2">
+             <span id="/2021/02/18/查看pid和服务端口的对应关系/" class="leancloud_visitors" data-flag-title="mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -404,7 +409,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  958
+                  373
                 </span>
               
 
@@ -420,7 +425,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  1
                 </span>
               
             </div>
@@ -441,27 +446,28 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Mac OS自带的终端，虽然可以用，但是太单调和乏味，用起来虽然有些不太方便，终端利器iTerm2，非常强大也非常的好用，漂亮的视觉冲击，方便便捷的操作方式，支持zsh等插件实现更强大的功能。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>方式一 brew<br>直接使用Homebrew进行安装：</p>
-<blockquote>
-<p>$ brew cask install iterm2</p>
-</blockquote>
-<p>方式二 源码安装<br><a href="https://iterm2.com/下载可视化安装" target="_blank" rel="noopener">https://iterm2.com/下载可视化安装</a></p>
-<p>两种方式都很简便</p>
-<h2 id="配色"><a href="#配色" class="headerlink" title="配色"></a>配色</h2><p>当我们打开terminal或者iTerm2终端时，那些默认的黑白色让人感觉索然无味，在终端下使用vim也是一番死气沉沉的样子。这严重影响了我们使用终端进行开发的兴趣。本文则详细讲解如何启用其Color模式，并搜集了一些好用的配色方案供大家选择。</p>
-<h3 id="第一步：编辑-pash-profile文件"><a href="#第一步：编辑-pash-profile文件" class="headerlink" title="第一步：编辑.pash_profile文件"></a>第一步：编辑.pash_profile文件</h3><p>使用你最喜爱的编辑器打开.pash_profile文件。~/.bash_profile是bash shell中当前登录用户的配置文件。Bash是“终端”中默认的shell。<br>你可以使用下面的命令在terminal打开它：<br>$ vim ~/.bash_profile<br>然后将下面的代码拷贝到此文件中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#enables colorin the terminal bash shell export  </span><br><span class="line">export CLICOLOR=1  </span><br><span class="line">#sets up thecolor scheme for list export  </span><br><span class="line">export LSCOLORS=gxfxcxdxbxegedabagacad  </span><br><span class="line">#sets up theprompt color (currently a green similar to linux terminal)  </span><br><span class="line">export PS1=&apos;\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]\$ &apos;  </span><br><span class="line">#enables colorfor iTerm  </span><br><span class="line">export TERM=xterm-color</span><br></pre></td></tr></table></figure></p>
-<h3 id="第二步：为iTerm2设置喜爱的配色方案。"><a href="#第二步：为iTerm2设置喜爱的配色方案。" class="headerlink" title="第二步：为iTerm2设置喜爱的配色方案。"></a>第二步：为iTerm2设置喜爱的配色方案。</h3><p>打开iTerm2的使用偏好设置，选择profiles，然后选择Colors标签，然后进行颜色配置。用户也可以点击“Load Presets…”按钮加载一些经典的配色方案。<br>本人给大家推荐一个托管在github上的关于iterm2配色方案的项目。地址是<a href="https://github.com/baskerville/iTerm-2-Color-Themes。这个项目中包含了很多种配色方案，用户可以挑选喜欢的方案通过点击“Load" target="_blank" rel="noopener">https://github.com/baskerville/iTerm-2-Color-Themes。这个项目中包含了很多种配色方案，用户可以挑选喜欢的方案通过点击“Load</a> Presets…“按钮导入这些配色方案进行使用。</p>
-<p>通过简单的两步就设置起了iTerm2的颜色了。是不是看起来比以前爽多了？<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200916205756.png" alt="20200916205756"></p>
-<p>参考：<br><a href="http://blog.csdn.net/anningzhu/article/details/77774492" target="_blank" rel="noopener">http://blog.csdn.net/anningzhu/article/details/77774492</a><br><a href="https://www.cnblogs.com/weixuqin/p/7029177.html" target="_blank" rel="noopener">https://www.cnblogs.com/weixuqin/p/7029177.html</a></p>
-<p>现在就可以体验了，顺滑流畅，效果如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20200916205933.png" alt="20200916205933"></p>
-<h2 id="iTerm2-常用快捷键"><a href="#iTerm2-常用快捷键" class="headerlink" title="iTerm2 常用快捷键"></a>iTerm2 常用快捷键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">⌘ + t ： 新建tab标签页</span><br><span class="line">⌘ + 数字 ： 各tab标签切换</span><br><span class="line">⌘ + f ： 查找 ，所查找的内容会被自动复制 ,输入查找的部分字符，找到匹配的值按tab，即可复制</span><br><span class="line">⌘ + d ： 横着分屏(同一个窗口中分割出多个窗格) </span><br><span class="line">⌘ + shift + d ： 竖着分屏(同一个窗口中分割出多个窗格)</span><br><span class="line">⌘ + ⌥ + 方向键 ： 窗格间切换</span><br><span class="line">⌘ + r = clear ： 换到新一屏，而不是 类似clear ，会创建一个空屏</span><br><span class="line">ctrl + u ：清空当前行，无论光标在什么位置</span><br><span class="line">() + ⌘ + ; ： [() 输入的命令开头字符],会自动列出输入过的命令</span><br><span class="line">⌘ + shift + h ： 会列出剪切板历史</span><br><span class="line">⌘← / ⌘→ : 到一行命令最左边/最右边 </span><br><span class="line">⌘ + enter : 全屏</span><br></pre></td></tr></table></figure>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>在iTerm2的协助下，你已经可以方便的提高工作效率了，但是没有最好，还有更顺滑流程提高效率的工具。它就是tmux。日常的编程开发过程中，你是否遇到了如下的烦恼</p>
+        <h2 id="背景：端口明明在，但没搜索到"><a href="#背景：端口明明在，但没搜索到" class="headerlink" title="背景：端口明明在，但没搜索到"></a>背景：端口明明在，但没搜索到</h2><p>作为从事<code>web开发</code>的人员，无论是<code>mac linux windows</code>，每天几乎都会操作一个场景：找到web服务的<code>pid</code>，然后看看它的服务端口是啥；还有一个场景你也时常会操作到：检查下某个端口是否开启。在实际场景中，你会遇到这种情况：“我根据<code>pid</code>搜到的信息怎么没有显示端口数字啊，或者，我没有搜到这个端口，为啥用这个端口启动时提示端口已被占用呢”</p>
+<h2 id="现场复现"><a href="#现场复现" class="headerlink" title="现场复现"></a>现场复现</h2><p>操作一波<br>启动一个<code>kafka</code>服务(端口：<code>9092</code>)<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218122300.png" alt="20210218122300"></p>
+<p>使用<code>ss -ptl|grep 9092</code><br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218121934.png" alt="20210218121934"></p>
+<p>结果显示没有找到，那换个命令看看呢，使用<code>lsof</code>看看呢<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218122706.png" alt="20210218122706"></p>
+<p>很奇怪吧，服务是明明启动了，但是没有找到</p>
+<p>我们看看其他的角度<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218214315.png" alt="20210218214315"></p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>看看这个呢，出现了我们想要的结果<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218214719.png" alt="20210218214719"></p>
+<p>所以，要想真的找到我们的要找的端口，采取如下措施</p>
 <ul>
-<li>终端一个界面分成多个窗口</li>
-<li>公司的环境多样：dev环境，test环境，preview环境，每次调试各环境上的问题，都需要ssh xxx，还要输入各环境的密码，烦人的密码怎让人记得住，问题还没调呢，找密码花费一番周折</li>
-<li>上线的服务部署了3台以上机器，每次都要通过麻烦的跳板机，还有手机验证，还要一台一台ssh连接</li>
+<li>》1. 使用<code>ss</code>命令时，加上 <code>-n</code> 参数《</li>
+<li>》2. 使用<code>lsof</code>命令时，加上 <code>-P</code> 参数《</li>
 </ul>
-<p>tmux绝对可以成为神器，具体参见<a href="https://yaoyuanyy.github.io/2019/07/12/mac-linux%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%9C%80%E6%96%B0%E7%89%88tmux/">linux/mac安装及使用最新版tmux</a></p>
+<ol>
+<li><p><code>ss</code> 的<code>-n</code>参数的作用：Do not try to resolve service names (意思是不将ip的端口等解析为名称)</p>
+</li>
+<li><p><code>lsof</code> 的<code>-P</code>参数的作用：inhibits the conversion of port numbers to port ames for names (意思是抑制端口数字转化为端口名称)</p>
+</li>
+</ol>
+<h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218220050.png" alt="20210218220050"></p>
+<p>如下：<code>9092</code>与<code>XmlIpcRegSvc</code>的关系<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210218220251.png" alt="20210218220251"></p>
+<p>详细参考：<a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?skey=7&amp;page=83" target="_blank" rel="noopener">Service Name and Transport Protocol Port Number Registry
+</a></p>
 
       
     </div>
@@ -506,7 +512,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://yaoyuanyy.github.io/2019/07/12/mac下安装及使用iTerm2/" title="mac下安装及使用iTerm2">https://yaoyuanyy.github.io/2019/07/12/mac下安装及使用iTerm2/</a>
+    <a href="https://yaoyuanyy.github.io/2021/02/18/查看pid和服务端口的对应关系/" title="mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到">https://yaoyuanyy.github.io/2021/02/18/查看pid和服务端口的对应关系/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -521,11 +527,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/iTerm2/" rel="tag"># iTerm2</a>
+            <a href="/tags/linux网络命令/" rel="tag"># linux网络命令</a>
           
-            <a href="/tags/mac/" rel="tag"># mac</a>
-          
-            <a href="/tags/开发效率工具/" rel="tag"># 开发效率工具</a>
+            <a href="/tags/mac网络命令/" rel="tag"># mac网络命令</a>
           
         </div>
       
@@ -538,19 +542,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/12/远程终端神器-tmux/" rel="next" title="远程终端神器-tmux">
-                <i class="fa fa-chevron-left"></i> 远程终端神器-tmux
-              </a>
+              <a href="/2021/02/15/产业互联网-重新定义效率与消费-读后笔记/" rel="next" title="<产业互联网-重新定义效率与消费>读后笔记">
+                <i class="fa fa-chevron-left"></i> <产业互联网-重新定义效率与消费>读后笔记
+              </产业互联网-重新定义效率与消费></a>
             
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/01/细节知多少 - spring boot @Value注解解析/" rel="prev" title="细节知多少 - spring @Value注解解析">
-                细节知多少 - spring @Value注解解析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -724,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配色"><span class="nav-number">3.</span> <span class="nav-text">配色</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步：编辑-pash-profile文件"><span class="nav-number">3.1.</span> <span class="nav-text">第一步：编辑.pash_profile文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步：为iTerm2设置喜爱的配色方案。"><span class="nav-number">3.2.</span> <span class="nav-text">第二步：为iTerm2设置喜爱的配色方案。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2-常用快捷键"><span class="nav-number">4.</span> <span class="nav-text">iTerm2 常用快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">5.</span> <span class="nav-text">扩展</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景：端口明明在，但没搜索到"><span class="nav-number">1.</span> <span class="nav-text">背景：端口明明在，但没搜索到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#现场复现"><span class="nav-number">2.</span> <span class="nav-text">现场复现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决办法"><span class="nav-number">3.</span> <span class="nav-text">解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根本原因"><span class="nav-number">4.</span> <span class="nav-text">根本原因</span></a></li></ol></div>
             
 
           </div>
@@ -887,9 +887,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://yaoyuanyy.github.io/2019/07/12/mac下安装及使用iTerm2/';
-          this.page.identifier = '2019/07/12/mac下安装及使用iTerm2/';
-          this.page.title = 'mac下安装及使用iTerm2';
+          this.page.url = 'https://yaoyuanyy.github.io/2021/02/18/查看pid和服务端口的对应关系/';
+          this.page.identifier = '2021/02/18/查看pid和服务端口的对应关系/';
+          this.page.title = 'mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skyler.disqus.com/embed.js';
