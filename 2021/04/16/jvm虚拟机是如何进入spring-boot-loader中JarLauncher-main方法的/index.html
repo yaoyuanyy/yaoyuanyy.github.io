@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="jvm虚拟机,类加载,springboot加载,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前提关于springboot的类加载原理和spring-boot-loader的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，debug跟着源码运行走一遍，效果往往是很棒的。同理，对于spring-boot-loader的原理，源码的掌握，其原理和debug方式参考：springboot jar包可运行,debug告诉你怎么运行的 本文想要讲">
+<meta name="keywords" content="jvm虚拟机,类加载,springboot加载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="前提关于springboot的类加载原理和spring-boot-loader的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，debug跟着源码运行走一遍，效果往往是很棒的。同理，对于spring-boot-loader的原理，源码的掌握，其原理和debug方式参考：springboot jar包可运行,debug告诉你怎么运行的 本文想要讲">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417141240.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417141952.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417144256.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417144842.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417162905.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417162932.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417171349.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417172247.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417175150.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417181757.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417185738.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417201624.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417192215.png">
+<meta property="og:updated_time" content="2021-04-17T12:31:20.898Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">
+<meta name="twitter:description" content="前提关于springboot的类加载原理和spring-boot-loader的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，debug跟着源码运行走一遍，效果往往是很棒的。同理，对于spring-boot-loader的原理，源码的掌握，其原理和debug方式参考：springboot jar包可运行,debug告诉你怎么运行的 本文想要讲">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417141240.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/">
+
+
+
+
+
+  <title>jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的 | skyler-blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94ae7654e2dc1739de6dffa8904d5c82";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">skyler-blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yaoyuanyy.github.io/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skyler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/tao.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="skyler-blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-16T20:53:28+08:00">
+                2021-04-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-04-17T20:31:20+08:00">
+                2021-04-17
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/jvm虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">jvm虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/jvm虚拟机/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/" class="leancloud_visitors" data-flag-title="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>关于springboot的类加载原理和<code>spring-boot-loader</code>的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，<code>debug</code>跟着源码运行走一遍，效果往往是很棒的。同理，对于<code>spring-boot-loader</code>的原理，源码的掌握，其原理和<code>debug</code>方式参考：<a href="https://juejin.cn/post/6844904088707186701" target="_blank" rel="noopener">springboot jar包可运行,debug告诉你怎么运行的</a></p>
+<p>本文想要讲述的可能要更近一步了。带着一些疑问开始我们的学习<br>1、程序是从哪进入<code>JarLauncher.main()</code>方法的<br>2、<code>java -jar xxx-executable.jar</code> <code>java</code>有什么规定吗<br>3、<code>jvm</code>层面是如何进入到<code>java</code>程序的，连接点在哪里</p>
+<p>让我们一起找到这些问题的答案吧</p>
+<blockquote>
+<p>》本文力求专注和精简，希望你有所收获和想法</p>
+</blockquote>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="jar的规矩"><a href="#jar的规矩" class="headerlink" title="-jar的规矩"></a><code>-jar</code>的规矩</h3><p>其实，<code>java</code>对<code>-jar</code>定义了一些规则，只要符合这个规则，你做啥都行，怎么做都行。其中的一个是:<code>jar</code>中需要一个<code>META-INF/MAINFEST.MF</code>文件，且文件中<code>Main-Class manifest header</code>。官网的说明如下</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417141240.png" alt="20210417141240"></p>
+<p>所以，我们解压一个<code>xxx-executable.jar</code>，会看到<code>META-INF/MAINFEST.MF</code>的文件及其内容<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417141952.png" alt="20210417141952"></p>
+<p>正是因为有了<code>Main-Class: org.springframework.boot.loader.JarLauncher</code>，所以，当<code>java -jar xxx-executable.jar</code>时，程序会进入<code>org.springframework.boot.loader.JarLauncher</code>执行<code>main</code>方法。到这里我又有了疑问，那是从哪进入<code>JarLauncher.main</code>方法的呢</p>
+<h2 id="程序是怎么进入JarLauncher-main方法的呢"><a href="#程序是怎么进入JarLauncher-main方法的呢" class="headerlink" title="程序是怎么进入JarLauncher.main方法的呢"></a>程序是怎么进入<code>JarLauncher.main</code>方法的呢</h2><p>这个时候想到了<code>jvm</code>。应该是从<code>jvm</code>进去到了<code>JarLauncher.main</code>，那么怎么验证呢。</p>
+<p>我们通过<code>CLion</code>查看<code>jvm</code>源码，试图找到这个答案。我们通过全局搜索<code>Main-Class</code>,<code>Manifest</code> 这些关键词来定位所在的文件，并打上相应的<code>debug</code>端点。如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417144256.png" alt=""></p>
+<p>然后我们启动<code>debug</code>模式启动<code>jvm</code>，启动时配置上我们的应用<code>jar</code>包：<code>-jar xxx-executable.jar</code>，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417144842.png" alt="20210417144842"></p>
+<p>现在我们跟着<code>jvm</code>的<code>debug</code>一起追下寻找<code>Main-Class</code>,<code>Manifest</code> 的过程。<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417162905.png" alt="20210417162905"></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417162932.png" alt="20210417162932"></p>
+<p>看到了<code>JLI_ParseManifest</code>，从名字也看的出来这个眉目了<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417171349.png" alt="20210417162933"></p>
+<p>可以看到<code>static const char *manifest_name = &quot;META-INF/MANIFEST.MF&quot;</code>在jvm中是个常量。所以，我们的应用<code>xxx-executable.jar</code>中必须有个叫这个名的目录和文件。方法接着解析了这个文件，文件的内容和我们解压<code>xxx-executable.jar</code>看到的内容一致，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417172247.png" alt=""><br>所以，到这<code>Main-Class</code>的值就被解析出来了。下面我们看下jvm如何加载<code>Main-Class</code>的值(即o<code>rg.springframework.boot.loader.JarLauncher</code>)的。</p>
+<p>下面图中6个部分其实将虚拟机的整个初始化和加载过程都显示出来了。在这里我们只关注<code>JarLauncher</code>是如何加载初始化与<code>JarLauncher.main</code>是怎么运行的，所以我们重点关注(1)、(2)、(4)、(6)<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417175150.png" alt=""></p>
+<h3 id="（1）LoadMainClass-加载main-class"><a href="#（1）LoadMainClass-加载main-class" class="headerlink" title="（1）LoadMainClass - 加载main class"></a>（1）<code>LoadMainClass</code> - 加载<code>main class</code></h3><p>我们先看下<code>LoadMainClass</code>的细节，看看她咋加载的。通过<code>GetLauncherHelperClass</code>方法，我们终于看到了熟悉的身影：<code>sun/launcher/LauncherHelper</code> 这个<code>java class</code>。如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417181757.png" alt="20210417181757"></p>
+<p><code>LoadMainClass</code>做了三件事：<br>1、获取<code>LauncherHelper</code>实例<br>2、通过<code>checkAndLoadMain</code>方法使用<code>ClassLoader.getSystemClassLoader</code>初始化<code>org.springframework.boot.loader.JarLauncher class</code><br>3、<code>makePlatformString</code>获取<code>utf-8</code>后的<code>string</code></p>
+<p>需要特别指出的是<code>LauncherHelper.java</code>。这个类的源码在<code>jvm</code>中，在我们熟悉的<code>rt.jar</code>是以<code>.class</code>的形式出现的。我把他俩放在一张图片里对比下</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417185738.png" alt="20210417185738"></p>
+<h3 id="（2）获取LauncherHelper的实例"><a href="#（2）获取LauncherHelper的实例" class="headerlink" title="（2）获取LauncherHelper的实例"></a>（2）获取<code>LauncherHelper</code>的实例</h3><p>这里的实例是在(1)中初始化好的，用就好了</p>
+<h3 id="（4）验证和加载main方法"><a href="#（4）验证和加载main方法" class="headerlink" title="（4）验证和加载main方法"></a>（4）验证和加载<code>main</code>方法</h3><p>这里用了类似反射的方法来获取<code>main</code>方法</p>
+<h3 id="（6）调用LauncherHelper-main方法"><a href="#（6）调用LauncherHelper-main方法" class="headerlink" title="（6）调用LauncherHelper.main方法"></a>（6）调用<code>LauncherHelper.main</code>方法</h3><p>这里就是我们一直要知道的那个地方，也是文章开头部分的问题1和3的答案。即<code>jvm</code>运行和<code>java application</code>的连接点。利用<code>CLion</code>和<code>Idea</code>，利用<code>debug</code>，我人为的把他俩的运行结合在一起，具象的表示出这两个点的运行，如下图</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417201624.png" alt="20210417201624"></p>
+<h2 id="it-s-time-to-summary"><a href="#it-s-time-to-summary" class="headerlink" title="it`s time to summary"></a>it`s time to summary</h2><p>到这里，我们的疑问都找到答案了。我们从<code>jvm</code>源码到<code>java</code>代码，整个流程串下来。相信有人再问你<code>springboot</code>的入口时，你不仅知道了是<code>JarLauncher.main</code>，而且能进一步知道从哪(怎么)进入的<code>JarLauncher.main</code>的。这不管是对工作，还是面试，对你都是有很大收益的。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417192215.png" alt="20210417192215"></p>
+<p>所有，从<code>jvm</code>到<code>springboot</code>，再到应用<code>app</code>的入口，我们现在都知道了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.c的JavaMain方法 --&gt; LauncherHelper.java的main方法 --&gt; Application.java的main方法</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏个钱</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_pay.png" alt="Skyler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Skyler
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://yaoyuanyy.github.io/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/" title="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">https://yaoyuanyy.github.io/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jvm虚拟机/" rel="tag"># jvm虚拟机</a>
+          
+            <a href="/tags/类加载/" rel="tag"># 类加载</a>
+          
+            <a href="/tags/springboot加载/" rel="tag"># springboot加载</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/02/18/查看pid和服务端口的对应关系/" rel="next" title="mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到">
+                <i class="fa fa-chevron-left"></i> mac linux查看pid和服务端口的对应关系 - 端口明明在，但没搜索到
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/tao.jpg" alt="Skyler">
+            
+              <p class="site-author-name" itemprop="name">Skyler</p>
+              <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yaoyuanyy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yaoyihao1@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/585b94018d6d810065d34497/posts" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jar的规矩"><span class="nav-number">2.1.</span> <span class="nav-text">-jar的规矩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序是怎么进入JarLauncher-main方法的呢"><span class="nav-number">3.</span> <span class="nav-text">程序是怎么进入JarLauncher.main方法的呢</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#（1）LoadMainClass-加载main-class"><span class="nav-number">3.1.</span> <span class="nav-text">（1）LoadMainClass - 加载main class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（2）获取LauncherHelper的实例"><span class="nav-number">3.2.</span> <span class="nav-text">（2）获取LauncherHelper的实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（4）验证和加载main方法"><span class="nav-number">3.3.</span> <span class="nav-text">（4）验证和加载main方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（6）调用LauncherHelper-main方法"><span class="nav-number">3.4.</span> <span class="nav-text">（6）调用LauncherHelper.main方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#it-s-time-to-summary"><span class="nav-number">4.</span> <span class="nav-text">it`s time to summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">5.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skyler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skyler.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://yaoyuanyy.github.io/2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/';
+          this.page.identifier = '2021/04/16/jvm虚拟机是如何进入spring-boot-loader中JarLauncher-main方法的/';
+          this.page.title = 'jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skyler.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("z1rh3HBfRJYf4gqQXC1RjVAC-gzGzoHsz", "cFSlIdGSSY8cjFbc0bTewxKq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
