@@ -102,7 +102,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417185738.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417201624.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417192215.png">
-<meta property="og:updated_time" content="2021-04-17T12:31:20.898Z">
+<meta property="og:updated_time" content="2021-04-17T12:40:38.209Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">
 <meta name="twitter:description" content="前提关于springboot的类加载原理和spring-boot-loader的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，debug跟着源码运行走一遍，效果往往是很棒的。同理，对于spring-boot-loader的原理，源码的掌握，其原理和debug方式参考：springboot jar包可运行,debug告诉你怎么运行的 本文想要讲">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2021-04-17T20:31:20+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2021-04-17T20:40:38+08:00">
                 2021-04-17
               </time>
             
@@ -464,8 +464,12 @@
 
       
         <h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>关于springboot的类加载原理和<code>spring-boot-loader</code>的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，<code>debug</code>跟着源码运行走一遍，效果往往是很棒的。同理，对于<code>spring-boot-loader</code>的原理，源码的掌握，其原理和<code>debug</code>方式参考：<a href="https://juejin.cn/post/6844904088707186701" target="_blank" rel="noopener">springboot jar包可运行,debug告诉你怎么运行的</a></p>
-<p>本文想要讲述的可能要更近一步了。带着一些疑问开始我们的学习<br>1、程序是从哪进入<code>JarLauncher.main()</code>方法的<br>2、<code>java -jar xxx-executable.jar</code> <code>java</code>有什么规定吗<br>3、<code>jvm</code>层面是如何进入到<code>java</code>程序的，连接点在哪里</p>
-<p>让我们一起找到这些问题的答案吧</p>
+<p>本文想要讲述的可能要更近一步了。带着一些疑问开始我们的学习</p>
+<ul>
+<li>1、程序是从哪进入<code>JarLauncher.main()</code>方法的</li>
+<li>2、<code>java -jar xxx-executable.jar</code> <code>java</code>有什么规定吗</li>
+<li>3、<code>jvm</code>层面是如何进入到<code>java</code>程序的，连接点在哪里</li>
+</ul>
 <blockquote>
 <p>》本文力求专注和精简，希望你有所收获和想法</p>
 </blockquote>
