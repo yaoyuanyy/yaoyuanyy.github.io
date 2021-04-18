@@ -102,7 +102,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417185738.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417201624.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417192215.png">
-<meta property="og:updated_time" content="2021-04-17T13:03:18.144Z">
+<meta property="og:updated_time" content="2021-04-18T14:26:24.064Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">
 <meta name="twitter:description" content="前提关于springboot的类加载原理和spring-boot-loader的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，debug跟着源码运行走一遍，效果往往是很棒的。同理，对于spring-boot-loader的原理，源码的掌握，其原理和debug方式参考：springboot jar包可运行,debug告诉你怎么运行的 本文想要讲">
@@ -344,8 +344,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2021-04-17T21:03:18+08:00">
-                2021-04-17
+              <time title="更新于" itemprop="dateModified" datetime="2021-04-18T22:26:24+08:00">
+                2021-04-18
               </time>
             
           </span>
@@ -494,6 +494,7 @@
 <h3 id="（6）调用LauncherHelper-main方法"><a href="#（6）调用LauncherHelper-main方法" class="headerlink" title="（6）调用LauncherHelper.main方法"></a>（6）调用<code>LauncherHelper.main</code>方法</h3><p>这里就是我们一直要知道的那个地方，也是文章开头部分的问题1和3的答案。即<code>jvm</code>运行和<code>java application</code>的连接点。利用<code>CLion</code>和<code>Idea</code>，利用<code>debug</code>，我人为的把他俩的运行结合在一起，具象的表示出这两个点的运行，如下图</p>
 <p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417201624.png" alt="20210417201624"></p>
 <h2 id="it-s-time-to-summary"><a href="#it-s-time-to-summary" class="headerlink" title="it`s time to summary"></a>it`s time to summary</h2><p>到这里，我们的疑问都找到答案了。我们从<code>jvm</code>源码到<code>java</code>代码，整个流程串下来。相信有人再问你<code>springboot</code>的入口时，你不仅知道了是<code>JarLauncher.main</code>，而且能进一步知道从哪(怎么)进入的<code>JarLauncher.main</code>的。这不管是对工作，还是面试，对你都是有很大收益的。</p>
+<p>原位地址：<a href="https://github.com/yaoyuanyy/programing_knowledges/blob/master/java/jvm%E6%80%8E%E4%B9%88%E8%BF%90%E8%A1%8Cspringboot%20jar%E6%96%87%E4%BB%B6%E7%9A%84.adoc" target="_blank" rel="noopener">jvm怎么运行springboot jar文件的</a></p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417192215.png" alt="20210417192215"></p>
 <p>所有，从<code>jvm</code>到<code>springboot</code>，再到应用<code>app</code>的入口，我们现在都知道了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.c的JavaMain方法 --&gt; LauncherHelper.java的main方法 --&gt; Application.java的main方法</span><br></pre></td></tr></table></figure></p>
 <p>收益文章：<a href="https://programmer.ink/think/why-the-jar-of-springboot-can-run-independently.html" target="_blank" rel="noopener">why-the-jar-of-springboot-can-run-independently</a></p>
