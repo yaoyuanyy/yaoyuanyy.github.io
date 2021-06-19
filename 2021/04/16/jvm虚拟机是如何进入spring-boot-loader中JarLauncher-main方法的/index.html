@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619095342.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619111004.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210417192215.png">
-<meta property="og:updated_time" content="2021-06-19T03:14:15.649Z">
+<meta property="og:updated_time" content="2021-06-19T03:27:10.994Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm虚拟机是如何进入spring-boot-loader中JarLauncher.main方法的">
 <meta name="twitter:description" content="前提关于springboot的类加载原理和spring-boot-loader的源码解析，网上已有很多的很棒的文章了。我一直相信对于技术原理的获取，代码层面的话一定是动眼比不上动手，debug跟着源码运行走一遍，效果往往是很棒的。同理，对于spring-boot-loader的原理，源码的掌握，其原理和debug方式参考：springboot jar包可运行,debug可视化告诉你怎么运行的 本文">
@@ -348,7 +348,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2021-06-19T11:14:15+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2021-06-19T11:27:10+08:00">
                 2021-06-19
               </time>
             
@@ -501,7 +501,7 @@
 <h4 id="（2）获取LauncherHelper的实例"><a href="#（2）获取LauncherHelper的实例" class="headerlink" title="（2）获取LauncherHelper的实例"></a>（2）获取<code>LauncherHelper</code>的实例</h4><p>这里的实例是在(1)中初始化好的，用就好了</p>
 <h4 id="（4）验证和加载main方法"><a href="#（4）验证和加载main方法" class="headerlink" title="（4）验证和加载main方法"></a>（4）验证和加载<code>main</code>方法</h4><p>这里用了类似反射的方法来获取<code>main</code>方法</p>
 <h4 id="（6）调用LauncherHelper-main方法"><a href="#（6）调用LauncherHelper-main方法" class="headerlink" title="（6）调用LauncherHelper.main方法"></a>（6）调用<code>LauncherHelper.main</code>方法</h4><p>这里就是我们一直要知道的那个地方，也是文章开头部分的问题1和3的答案。即<code>jvm</code>运行和<code>java application</code>的连接点。</p>
-<h2 id="从java进入springboot"><a href="#从java进入springboot" class="headerlink" title="从java进入springboot"></a>从<code>java</code>进入<code>springboot</code></h2><p>###<br>从<code>java</code>进入<code>springboot</code>，具体的地方是在LauncherHelper类中，在LauncherHelper的checkAndLoadMain方法中，通过loadclass方法实例化<code>org.springframework.boot.loader.JarLauncher</code>；进而调用validateMainClass()方法，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619094306.png" alt="20210619094306"></p>
+<h2 id="从java进入springboot"><a href="#从java进入springboot" class="headerlink" title="从java进入springboot"></a>从<code>java</code>进入<code>springboot</code></h2><p>从<code>java</code>进入<code>springboot</code>，具体的地方是在LauncherHelper类中，在LauncherHelper的checkAndLoadMain方法中，通过loadclass方法实例化<code>org.springframework.boot.loader.JarLauncher</code>；进而调用validateMainClass()方法，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619094306.png" alt="20210619094306"></p>
 <p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619094632.png" alt="20210619094306"></p>
 <p>validateMainClass()的关键点在通过getMethod这个反射方法调用JarLauncher的main方法，从而实现进入到springboot的JarLauncher.java的main方法。看下validateMainClass()方法的内容逻辑，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619094948.png" alt="20210619094948"></p>
 <p>进入JarLauncher.java的main方法<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20210619095342.png" alt="20210619095342"></p>
