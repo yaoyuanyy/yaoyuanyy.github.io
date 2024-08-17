@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>springboot+mysql服务集成docker实例 | Hexo</title>
+  <meta name="description" content="回顾上篇笔者实战操作了&amp;lt;springboot集成docker&amp;gt;从0开始的操作例子，本篇再深入一点：把mysql继承进来，形成springboot+mysql服务集成docker实例，本篇是在上篇&amp;lt;springboot集成docker&amp;gt;的基础上进行的 项目代码: springboot_mybatis docker集成springboot_mybatis+mysql集成myba">
+<meta name="keywords" content="springboot,mysql,docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot+mysql服务集成docker实例">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="回顾上篇笔者实战操作了&amp;lt;springboot集成docker&amp;gt;从0开始的操作例子，本篇再深入一点：把mysql继承进来，形成springboot+mysql服务集成docker实例，本篇是在上篇&amp;lt;springboot集成docker&amp;gt;的基础上进行的 项目代码: springboot_mybatis docker集成springboot_mybatis+mysql集成myba">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129145936.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150116.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150223.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150252.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150335.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150411.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151045.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151118.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151236.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151322.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151426.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151519.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151556.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151719.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151750.png">
+<meta property="og:updated_time" content="2024-08-17T00:18:38.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="springboot+mysql服务集成docker实例">
+<meta name="twitter:description" content="回顾上篇笔者实战操作了&amp;lt;springboot集成docker&amp;gt;从0开始的操作例子，本篇再深入一点：把mysql继承进来，形成springboot+mysql服务集成docker实例，本篇是在上篇&amp;lt;springboot集成docker&amp;gt;的基础上进行的 项目代码: springboot_mybatis docker集成springboot_mybatis+mysql集成myba">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129145936.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/产业互联网/">产业互联网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/性事/">性事</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/如何阅读一本书/">如何阅读一本书</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性/">性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术管理/">技术管理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/枪炮、病菌与钢铁/">枪炮、病菌与钢铁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/男女/">男女</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/病隙碎笔/">病隙碎笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/置身事内/">置身事内</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/docker/" style="font-size: 13.11px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.22px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.11px;">http</a> <a href="/tags/https/" style="font-size: 13.11px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.67px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.22px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.11px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.11px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.44px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.22px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.33px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.11px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.11px;">mysql</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.22px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.56px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.11px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.89px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.22px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.11px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/加密/" style="font-size: 13.11px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/如何阅读一本书/" style="font-size: 13px;">如何阅读一本书</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.11px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/性/" style="font-size: 13px;">性</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/技术管理/" style="font-size: 13px;">技术管理</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/数字签名/" style="font-size: 13.11px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.11px;">数字证书</a> <a href="/tags/枪炮、病菌与钢铁/" style="font-size: 13px;">枪炮、病菌与钢铁</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/男女/" style="font-size: 13px;">男女</a> <a href="/tags/病隙碎笔/" style="font-size: 13px;">病隙碎笔</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.11px;">类加载</a> <a href="/tags/置身事内/" style="font-size: 13px;">置身事内</a> <a href="/tags/读书/" style="font-size: 13.78px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/08/17/抖音/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-08-17T00:18:38.167Z" itemprop="datePublished">2024-08-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/java网络/">java网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/08/05/java网络-TCP|IP 三次握手与四次分手-实践/" class="title">java网络-TCP/IP 三次握手与四次分手-实践</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-08-05T01:00:00.000Z" itemprop="datePublished">2024-08-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/java网络/">java网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/07/26/java网络-TCP|IP 三次握手与四次分手-理论/" class="title">java网络-TCP/IP 三次握手与四次分手-理论</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-07-26T01:00:00.000Z" itemprop="datePublished">2024-07-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/工具/">工具</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/07/20/下载视频神器-命令行下载视频/" class="title">下载视频神器-命令行下载视频</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-07-20T01:00:00.000Z" itemprop="datePublished">2024-07-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/java/">java</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/07/10/java-读取日志文件的多种方法/" class="title">java-读取日志文件的多种方法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-07-10T02:39:00.000Z" itemprop="datePublished">2024-07-10</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#回顾"><span class="toc-number">1.</span> <span class="toc-text">回顾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker集成springboot-mybatis-mysql"><span class="toc-number">2.</span> <span class="toc-text">docker集成springboot_mybatis+mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集成mybatis"><span class="toc-number">2.1.</span> <span class="toc-text">集成mybatis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构建项目并发到docker服务器"><span class="toc-number">2.2.</span> <span class="toc-text">构建项目并发到docker服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker运行mysql-image"><span class="toc-number">2.3.</span> <span class="toc-text">docker运行mysql image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker运行springboot-mybatis项目"><span class="toc-number">2.4.</span> <span class="toc-text">docker运行springboot_mybatis项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问springboot-mybatis服务"><span class="toc-number">2.5.</span> <span class="toc-text">访问springboot_mybatis服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-compose集成springboot-mybatis-mysql"><span class="toc-number">3.</span> <span class="toc-text">docker-compose集成springboot_mybatis+mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose安装和运行"><span class="toc-number">3.1.</span> <span class="toc-text">docker-compose安装和运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose-yml添加mysql的配置"><span class="toc-number">3.2.</span> <span class="toc-text">docker-compose.yml添加mysql的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#上传springboot-mybatis-project到docker服务器"><span class="toc-number">3.3.</span> <span class="toc-text">上传springboot_mybatis project到docker服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用docker-compose启动springboot-mybatis-jar"><span class="toc-number">3.4.</span> <span class="toc-text">使用docker_compose启动springboot_mybatis jar</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#运行"><span class="toc-number">3.4.1.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#报错原因"><span class="toc-number">3.4.2.</span> <span class="toc-text">报错原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决办法"><span class="toc-number">3.4.3.</span> <span class="toc-text">解决办法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-number">4.</span> <span class="toc-text">扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-run与docker-start区别"><span class="toc-number">4.1.</span> <span class="toc-text">docker run与docker start区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker交互式任务"><span class="toc-number">4.2.</span> <span class="toc-text">docker交互式任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进入mysql容器内部"><span class="toc-number">4.3.</span> <span class="toc-text">进入mysql容器内部</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-springboot+mysql服务集成docker实例" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      springboot+mysql服务集成docker实例
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/05/22/springboot+mysql服务集成docker实例/" class="article-date">
+	  <time datetime="2019-05-21T16:00:00.000Z" itemprop="datePublished">2019-05-22</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/运维/">运维</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/docker/">docker</a>, <a class="article-tag-link" href="/tags/mysql/">mysql</a>, <a class="article-tag-link" href="/tags/springboot/">springboot</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/22/springboot+mysql服务集成docker实例/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.9k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 13(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>上篇笔者实战操作了&lt;<a href="https://yaoyuanyy.github.io/2019/05/22/springboot%E9%9B%86%E6%88%90docker%E5%AE%9E%E4%BE%8B/">springboot集成docker</a>&gt;从0开始的操作例子，本篇再深入一点：把mysql继承进来，形成springboot+mysql服务集成docker实例，本篇是在上篇&lt;<a href="https://yaoyuanyy.github.io/2019/05/22/springboot%E9%9B%86%E6%88%90docker%E5%AE%9E%E4%BE%8B/">springboot集成docker</a>&gt;的基础上进行的</p>
+<p>项目代码: <a href="https://github.com/yaoyuanyy/springboot_project/tree/feature-docker-20190517/springboot_mybatis" target="_blank" rel="noopener">springboot_mybatis</a></p>
+<h2 id="docker集成springboot-mybatis-mysql"><a href="#docker集成springboot-mybatis-mysql" class="headerlink" title="docker集成springboot_mybatis+mysql"></a>docker集成springboot_mybatis+mysql</h2><h3 id="集成mybatis"><a href="#集成mybatis" class="headerlink" title="集成mybatis"></a>集成mybatis</h3><p>上篇的项目我们copy下，改个名：springboot_mybatis，在此基础上集成mybatis相关代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"># 增加实体bean: User</span><br><span class="line">package com.yy.demo.bean;</span><br><span class="line"></span><br><span class="line">import lombok.Data;</span><br><span class="line"></span><br><span class="line">@Data</span><br><span class="line">public class User &#123;</span><br><span class="line">    private long id;</span><br><span class="line">    private long studentId;</span><br><span class="line">    private String name;</span><br><span class="line">    private String mobile;</span><br><span class="line">    private int score;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 创建UserMapper</span><br><span class="line">package com.yy.demo.mapper;</span><br><span class="line">import org.apache.ibatis.annotations.Param;</span><br><span class="line">import com.yy.demo.bean.User;</span><br><span class="line"></span><br><span class="line">public interface UserMapper &#123;</span><br><span class="line">    User findById(@Param(&quot;id&quot;) long id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 创建UserMapper对应的xml文件</span><br><span class="line">&lt;mapper namespace=&quot;com.yy.demo.mapper.UserMapper&quot;&gt;</span><br><span class="line">  &lt;resultMap type=&quot;com.yy.demo.bean.User&quot; id=&quot;userMapper&quot;&gt;</span><br><span class="line">        &lt;id property=&quot;id&quot; column=&quot;id&quot;/&gt;</span><br><span class="line">        &lt;result property=&quot;name&quot; column=&quot;name&quot;/&gt;</span><br><span class="line">        &lt;result property=&quot;mobile&quot; column=&quot;mobile&quot;/&gt;</span><br><span class="line">        &lt;result property=&quot;score&quot; column=&quot;score&quot;/&gt;</span><br><span class="line">        &lt;result property=&quot;studentId&quot; column=&quot;studentId&quot;/&gt;</span><br><span class="line">  &lt;/resultMap&gt;</span><br><span class="line">	</span><br><span class="line">  &lt;select id=&quot;findById&quot; parameterType=&quot;long&quot; resultMap=&quot;userMapper&quot;&gt;</span><br><span class="line">        select * from user where id=#&#123;id&#125;</span><br><span class="line">  &lt;/select&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure></p>
+<p>application.yml文件添加mybatis相关配置如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mybatis:</span><br><span class="line">  ## Locations of Mapper xml config file</span><br><span class="line">  mapperLocations: classpath*:com/yy/**/mapper/*.xml</span><br><span class="line">  ## 实体类包路径 Packages to search for type aliases. (Package delimiters are &quot;,; \t\n&quot;)</span><br><span class="line">  typeAliasesPackage: com.yy.**.bean</span><br><span class="line">  ## Location of MyBatis xml config file.</span><br><span class="line">  ## 注意：这个属性与mybatis.configuration二选一</span><br><span class="line">  config-location: classpath:mybatis/mybatis-config.xml</span><br><span class="line">  ##  检查 mybatis 配置是否存在，一般命名为 mybatis-config.xml</span><br><span class="line">  check-config-location: true</span><br></pre></td></tr></table></figure></p>
+<p>pom.xml文件引入mysql和mybatis如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.11&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.3.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>src/main/resources下新增schema.sql文件，否则你需要在docker中安装mysql server, 项目中添加schema.sql可以简便demo的搭建(demo可以这样写，实际项目就不能偷懒了)，内容如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">drop table if exists user;</span><br><span class="line"></span><br><span class="line">CREATE TABLE `user` (</span><br><span class="line">  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `name` varchar(50) NOT NULL,</span><br><span class="line">  `mobile` varchar(20) NOT NULL,</span><br><span class="line">  `score` int(4) NOT NULL DEFAULT &apos;0&apos; COMMENT &apos;分数&apos;,</span><br><span class="line">  `studentId` bigint(20) unsigned NOT NULL DEFAULT &apos;0&apos;,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `idx_studentId` (`studentId`) USING BTREE</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (1, &apos;y&apos;, &apos;13000000000&apos;, 0, 1);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (2, &apos;l&apos;, &apos;13800008888&apos;, 5, 2);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (3, &apos;s&apos;, &apos;111&apos;, 0, 3);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (4, &apos;s&apos;, &apos;111&apos;, 0, 33);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (5, &apos;s&apos;, &apos;112&apos;, 0, 4);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (7, &apos;s&apos;, &apos;113&apos;, 0, 5);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (8, &apos;s&apos;, &apos;113&apos;, 0, 60);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (9, &apos;s&apos;, &apos;114&apos;, 0, 7);</span><br><span class="line">INSERT INTO `user`(`id`, `name`, `mobile`, `score`, `studentId`) VALUES (10, &apos;s&apos;, &apos;115&apos;, 0, 8);</span><br></pre></td></tr></table></figure></p>
+<p>application.yml文件添加mysql连接配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#profile</span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    url: jdbc:mysql://$&#123;DATABASE_HOST&#125;:$&#123;DATABASE_PORT&#125;/$&#123;DATABASE_NAME&#125;?allowMultiQueries=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false</span><br><span class="line">    username: $&#123;DATABASE_USER&#125;</span><br><span class="line">    password: $&#123;DATABASE_PASSWORD&#125;</span><br><span class="line">    driver-class-name: @spring.datasource.driverlassName@</span><br><span class="line"></span><br><span class="line"># 这里使用了maven profile和spring profile特性，@符号使用了maven profile特性，$&#123;&#125;使用spring profile特性，我们使用的是dev profile(具体参见项目代码dev.properties和application-dev.yml), 注：你会发现application-dev.yml没有“DATABASE_HOST ···”的声明，那是因为我们要在docker run的时候指定，如果你使用application-local.yml就发现有了。你会发现local环境可以直接起项目，dev环境使用docker起项目。项目对外保持一致，无需任何修改。</span><br></pre></td></tr></table></figure></p>
+<p>创建controller和service<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">@Slf4j</span><br><span class="line">@RequestMapping(&quot;/user&quot;)</span><br><span class="line">public class UserController &#123;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private IUserService userService;</span><br><span class="line">    /**</span><br><span class="line">    * eq: http://localhost:2372/user/findById?id=3</span><br><span class="line">    * @param id</span><br><span class="line">    * @return</span><br><span class="line">    */</span><br><span class="line">    @GetMapping(&quot;/findById&quot;)</span><br><span class="line">    public ResponseResult findById(long id, @AttrbuteArg(&quot;test&quot;) String name, ModelMap modelMap) &#123;</span><br><span class="line">        log.info(&quot;findById param id:&#123;&#125;&quot;, id);</span><br><span class="line"></span><br><span class="line">        User user = userService.fingById(id);</span><br><span class="line">    log.info(&quot;user:&#123;&#125;&quot;, user);</span><br><span class="line">        System.out.println(&quot;ll: &quot;+modelMap.get(&quot;ll&quot;));</span><br><span class="line">    return ResponseResult.ok(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public interface IUserService &#123;</span><br><span class="line">    User fingById(long id);</span><br><span class="line">&#125;</span><br><span class="line">@Service</span><br><span class="line">public class UserServiceImpl implements IUserService &#123;</span><br><span class="line">    @Resource</span><br><span class="line">    private UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public User fingById(long id) &#123;</span><br><span class="line">      return userMapper.findById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>到这里代码方面的东东添加好了。</p>
+<h3 id="构建项目并发到docker服务器"><a href="#构建项目并发到docker服务器" class="headerlink" title="构建项目并发到docker服务器"></a>构建项目并发到docker服务器</h3><p>项目根路径下执行：<code>mvn clean package docker:build -DskipTests</code>，将项目打包发到docker服务器上。控制台提示build success后，登录远程docker 服务器看见新传上来的image 镜像，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129145936.png" alt="20201129145936"></p>
+<h3 id="docker运行mysql-image"><a href="#docker运行mysql-image" class="headerlink" title="docker运行mysql image"></a>docker运行mysql image</h3><p>我们使用docker run来启动一个mysql image,因为docker hub已经有了很多的常用image, mysql是其中之一，我们只用运行就好<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -t --name mybatis-mysql -e MYSQL_ROOT_PASSWORD=root123 -e MYSQL_DATABASE=jdbc_test -e MYSQL_USER=root -e MYSQL_PASSWORD=root123 mysql:latest</span><br><span class="line"></span><br><span class="line"># 解释一下这个命令，可以自行使用docker run --help查看</span><br><span class="line"># docker run 运行一个image镜像，此处的image为：mysql:latest(mysql最新版本)，同时产生一个container,名字使用--name 指定，此处为mybatis-mysql</span><br><span class="line"># -d 在后台运行</span><br><span class="line"># -t 分配一个伪tty。如果不加-t，命令运行后，你会发现产生的container的状态是Exited。原因是：你镜像里面指定的默认启动程序是bash，对于Linux下的shell程序来说，tty是必须的，所以启动容器的时候要加上-t参数。</span><br><span class="line"># 如果docker run没有加-t ，那么运行完docker run后，需要接着运行docker start containerId</span><br><span class="line"># -e 为这个容器设置环境变量</span><br></pre></td></tr></table></figure></p>
+<p>运行命令后，查看产生的container的状态，可以看到状态为Up，表明mysql已经启动，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150116.png" alt="20201129150116"></p>
+<h3 id="docker运行springboot-mybatis项目"><a href="#docker运行springboot-mybatis项目" class="headerlink" title="docker运行springboot_mybatis项目"></a>docker运行springboot_mybatis项目</h3><p>现在我们可以运行刚刚上传的项目(springboot_mybatis)了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -t --name demo-springboot-docker --link mybatis-mysql:mysql -p 2372:2371 -e DATABASE_HOST=mybatis-mysql -e DATABASE_PORT=3306 -e DATABASE_NAME=jdbc_test -e DATABASE_USER=root -e DATABASE_PASSWORD=root123 springboot_demo/springboot_mybatis</span><br><span class="line"></span><br><span class="line"># 解释一下这个命令 -d -t --name -e 这些参数上面已经解释过，忘记了回看下就好.</span><br><span class="line"># --link 连接一个指定的container</span><br><span class="line"># -p 指定启动的container暴露的端口号，2372:2371指定为springboot_demo/springboot_mybatis仓库产生的container的端口号为2372，冒号后面的2371为springboot_mybatis web项目的端口，冒号起到映射的作用，即docker 容器的2372端口映射到web项目的2371端口</span><br><span class="line"># 注意-e 后面数据库配置的value和启动mysql镜像时设置的一致</span><br></pre></td></tr></table></figure></p>
+<p>运行命令后你可能得到一个错误，如下图，意思为依赖的mybatis-mysql容器不是运行状态，docker ps -a你会发现mybatis-mysql是Exited状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker: Error response from daemon: Cannot link to a non running container: /mybatis-mysql AS /demo-springboot-docker/mysql</span><br></pre></td></tr></table></figure></p>
+<p>为解决这个问题，执行命令：<code>docker start mybatis-mysql</code>，然后<code>docker ps -a</code> 查看mybatis-mysql启动了。<br>再次执行启动springboot_demo/springboot_mybatis仓库的命令。如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150223.png" alt="20201129150223"><br>没有报错，但是我们不知道springboot_mybatis这个web项目是否启动成功，所以我们会想看下web项目的启动日志。这时进行如下步骤，首先执行<code>docker ps</code>查看正在运行的container，找到我们springboot_demo/springboot_mybatis image对应的containerId，然后执行<code>docker logs -f -t --tail 20 containerId</code>，containerId替换为刚才找到的containerId。回车就可以看到springboot_mybatis的日志了，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150252.png" alt="20201129150252"></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150335.png" alt="20201129150335"></p>
+<h3 id="访问springboot-mybatis服务"><a href="#访问springboot-mybatis服务" class="headerlink" title="访问springboot_mybatis服务"></a>访问springboot_mybatis服务</h3><p>项目启动后，就可以访问了，也可以验证我们这一系列操作是否正确，curl项目path，如下图<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://localhost:2372/user/findById?id=3</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129150411.png" alt="20201129150411"></p>
+<p>到这里，docker集成springboot+mysql是搭建完成了。但是加入springboot_mybatis不仅依赖mysql，还有redis mongodb，nginx ···，多个组件时，如果每个组件都要docker run ···，你会疯掉的。这时docker-compose解决了这个问题。下面我们在此基础上使用docker-compose集成springboot_mybatis+mysql。</p>
+<h2 id="docker-compose集成springboot-mybatis-mysql"><a href="#docker-compose集成springboot-mybatis-mysql" class="headerlink" title="docker-compose集成springboot_mybatis+mysql"></a>docker-compose集成springboot_mybatis+mysql</h2><p>项目代码不变，我们还是使用springboot_demo/springboot_mybatis这个image。</p>
+<h3 id="docker-compose安装和运行"><a href="#docker-compose安装和运行" class="headerlink" title="docker-compose安装和运行"></a>docker-compose安装和运行</h3><p>docker-compose的安装和运行上文已经实战过，参见：&lt;<a href="https://yaoyuanyy.github.io/2019/05/22/springboot%E9%9B%86%E6%88%90docker%E5%AE%9E%E4%BE%8B/">springboot集成docker</a>&gt; docker-compose部分</p>
+<h3 id="docker-compose-yml添加mysql的配置"><a href="#docker-compose-yml添加mysql的配置" class="headerlink" title="docker-compose.yml添加mysql的配置"></a>docker-compose.yml添加mysql的配置</h3><p>相对于docker集成mysql,docker-compose的优势是将mysql等组件的配置信息定义在docker-compose.yml文件中, 在docker服务器上创建个目录放docker-compose.yml文件。如<br><code>cd /root/skyler_home/project/docker_compose</code>，没有这个目录就创建下，vim编辑docker-compose.yml，如下，添加如下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@xxxxx docker_compose]# vim docker-compose.yml</span><br><span class="line">version: &apos;3.3&apos;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  mybatis-mysql:</span><br><span class="line">    image: mysql:latest</span><br><span class="line">    environment:</span><br><span class="line">      - MYSQL_ROOT_PASSWORD=root123</span><br><span class="line">      - MYSQL_USER=root</span><br><span class="line">      - MYSQL_PASSWORD=root123</span><br><span class="line">      - MYSQL_DATABASE=jdbc_test</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;</span><br><span class="line">    container_name: mybatis-mysql_dev</span><br><span class="line">  demo-springboot-docker:</span><br><span class="line">    image: springboot_demo/springboot_mybatis</span><br><span class="line">#    build: .</span><br><span class="line">    depends_on:</span><br><span class="line">      - mybatis-mysql</span><br><span class="line">    ports:</span><br><span class="line">      - 2372:2371</span><br><span class="line">    environment:</span><br><span class="line">      - DATABASE_HOST=mybatis-mysql</span><br><span class="line">      - DATABASE_PORT=3306</span><br><span class="line">      - DATABASE_USER=root</span><br><span class="line">      - DATABASE_PASSWORD=root123</span><br><span class="line">      - DATABASE_NAME=jdbc_test</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，这里把命令启动mysql和springboot-mybatis的信息都放在了docker-compose.yml中</p>
+<h3 id="上传springboot-mybatis-project到docker服务器"><a href="#上传springboot-mybatis-project到docker服务器" class="headerlink" title="上传springboot_mybatis project到docker服务器"></a>上传springboot_mybatis project到docker服务器</h3><p>docker-compose执行需要项目jar和Dockerfile，接下来我们需要把springboot_mybatis和Dockerfile上传到docker-compose.yml所在目录<br>现在回到intellij，执行<code>mvn clean package</code>，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151045.png" alt="20201129151045"><br>使用scp上传Dockerfile和jar文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /Users/xx/springboot_mybatis/target/docker</span><br><span class="line"></span><br><span class="line">scp Dockerfile root@48.99.190.38:/root/skyler_home/project/docker_compose #输入密码</span><br><span class="line"></span><br><span class="line">scp springboot_mybatis-0.0.1-SNAPSHOT.jar root@48.99.190.38:/root/skyler_home/project/docker_compose #输入密码</span><br></pre></td></tr></table></figure></p>
+<p>现在docker_compose目录下文件如下<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151118.png" alt="20201129151118"></p>
+<h3 id="使用docker-compose启动springboot-mybatis-jar"><a href="#使用docker-compose启动springboot-mybatis-jar" class="headerlink" title="使用docker_compose启动springboot_mybatis jar"></a>使用docker_compose启动springboot_mybatis jar</h3><p>启动前需要stop rm之前启动的container<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker stop demo-springboot-docker</span><br><span class="line">docker stop mybatis-mysql</span><br><span class="line">docker rm demo-springboot-docker</span><br><span class="line">docker rm mybatis-mysql</span><br></pre></td></tr></table></figure></p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
+<p>可能会报错，如下图</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151236.png" alt="20201129151236"><br>而且springboot-mybatis和mysql container已经创建了，但是状态是Exited<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151322.png" alt="20201129151322"></p>
+<h4 id="报错原因"><a href="#报错原因" class="headerlink" title="报错原因"></a>报错原因</h4><ol>
+<li>mysql container状态是Exited的原因:<br>为docker-compose.yml中<code>MYSQL_USER=root</code>。此docker镜像使用您提供的密码创建root用户，因此当您想再次创建root用户时，它会失败并关闭容器。只需将其更改为<code>MYSQL_USER=myuser</code>即可</li>
+<li>springboot-mybatis启动失败的原因:<br>本质是docker-compose的启动顺序问题。springboot-mybatis依赖mysql, 在docker-compose.yml中，通过配置depends_on, links, volumes_from, 以及 network_mode: “service:…”.可以控制服务的启动顺序，但是却不能知道被依赖的服务是否启动完毕，在一个服务必须要依赖另一个服务完成的时候，这样就会有问题。从springboot-mybatis启动日志也可以看出demo-springboot-docker_1先于mybatis-mysql_dev初始化了<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151426.png" alt="20201129151426"><h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4>针对这样的问题，有两种解决方案:</li>
+</ol>
+<p>1、足够的容错和重试机制，比如连接数据库，在初次连接不上的时候，服务消费者可以不断重试，直到连接上服务。也就是在服务中定义： restart: always</p>
+<p>2、同步等待，使用 wait-for-it.sh或者其他 shell脚本将当前服务启动阻塞，直到被依赖的服务加载完毕。这种方案后期可以尝试使用</p>
+<p>这里我们使用第一种。具体操作：编辑docker-compose.yml，新增restart: always。docker-compose.yml全内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;3.3&apos;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  mybatis-mysql:</span><br><span class="line">    image: mysql:latest</span><br><span class="line">    environment:</span><br><span class="line">      - MYSQL_ROOT_PASSWORD=root123</span><br><span class="line"># MYSQL_USER设置为root，启动服务时报错：Operation CREATE USER failed for &apos;root&apos;@&apos;%&apos;</span><br><span class="line">      - MYSQL_USER=skyler</span><br><span class="line">      - MYSQL_PASSWORD=root123</span><br><span class="line">      - MYSQL_DATABASE=jdbc_test</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;</span><br><span class="line">    restart: always </span><br><span class="line">    container_name: mybatis-mysql_dev</span><br><span class="line">  demo-springboot-docker:</span><br><span class="line">    restart: always</span><br><span class="line">    image: springboot_demo/springboot_mybatis</span><br><span class="line">    depends_on:</span><br><span class="line">      - mybatis-mysql</span><br><span class="line">    ports:</span><br><span class="line">      - 2372:2371</span><br><span class="line">    environment:</span><br><span class="line">      - DATABASE_HOST=mybatis-mysql</span><br><span class="line">      - DATABASE_PORT=3306</span><br><span class="line">      - DATABASE_USER=skyler</span><br><span class="line">      - DATABASE_PASSWORD=root123</span><br><span class="line">      - DATABASE_NAME=jdbc_test</span><br></pre></td></tr></table></figure></p>
+<p>再运行一次：<code>docker-compose up -d</code>。-d为后台启动，可选<br>使用<code>docker logs -f -t --tail 20 62617312c8bf</code>看日志，你会发现，失败之后自动重启，最后显示服务启动成功</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151519.png" alt="20201129151519"><br>使用docker-compose ps(类似docker ps -a)查看container的状态为Up<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151556.png" alt="20201129151556"></p>
+<p>现在，无论docker集成springboot_mybatis+mysql还是docker-compose集成springboot_mybatis+mysql，都实战完成</p>
+<p>文中所用代码: <a href="https://github.com/yaoyuanyy/springboot_project/tree/feature-docker-20190517/springboot_mybatis" target="_blank" rel="noopener">springboot_mybatis</a></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="docker-run与docker-start区别"><a href="#docker-run与docker-start区别" class="headerlink" title="docker run与docker start区别"></a><code>docker run与docker start</code>区别</h3><p><code>docker run IMAGE_ID</code>，而<code>docker start CONTAINER_ID</code>。即<code>run runs an image</code>; <code>start starts a container</code>。<code>docker run = docker create + docker start</code></p>
+<h3 id="docker交互式任务"><a href="#docker交互式任务" class="headerlink" title="docker交互式任务"></a>docker交互式任务</h3><p>格式：<code>docker exec [OPTIONS] CONTAINER COMMAND [ARG...]</code></p>
+<p>-i, –interactive    Keep STDIN open even if not attached<br>-t, –tty            Allocate a pseudo-TTY</p>
+<p>如：<code>docker exec -it 62617312c8bf /bin/bash</code>，这个命令是进入容器62617312c8bf内部打开shell，ll 可以看到容器的目录结构，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151719.png" alt="20201129151719"><br><code>Ctrl + d</code> 退出</p>
+<h3 id="进入mysql容器内部"><a href="#进入mysql容器内部" class="headerlink" title="进入mysql容器内部"></a>进入mysql容器内部</h3><p><code>docker ps</code>找到mysql容器containerId或containerName，运行 <code>docker exec -it containerId/containerName bash</code>, <code>mysql -uskyler -p</code>，输入密码，进去mysql server查看数据库,如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201129151750.png" alt="20201129151750"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/" title="springboot+mysql服务集成docker实例" target="_blank" rel="external">https://yaoyuanyy.github.io/2019/05/22/springboot+mysql服务集成docker实例/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/05/28/细节知多少 - spring boot aop动态代理解析之阶段三/" title="细节知多少 - spring boot aop过程解析之阶段三 CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/05/22/springboot集成docker实例/" title="springboot集成docker"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>
