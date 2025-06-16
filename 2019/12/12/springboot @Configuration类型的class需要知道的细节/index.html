@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>springboot @Configuration类型的class需要知道的细节 | Hexo</title>
+  <meta name="description" content="知识点收获通过本文，你能收获什么？  @Configuration的.class文件如何被spring加载的？ @Configuration的.class文件如何被转化为BeanDefinition放入spring容器的？ @Configuration的BeanDefinition如何转化为ConfigurationClass对象的 ConfigurationClass对象属性在哪里开始被解析的？">
+<meta name="keywords" content="springboot,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot @Configuration类型的class需要知道的细节">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/12/12/springboot @Configuration类型的class需要知道的细节/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="知识点收获通过本文，你能收获什么？  @Configuration的.class文件如何被spring加载的？ @Configuration的.class文件如何被转化为BeanDefinition放入spring容器的？ @Configuration的BeanDefinition如何转化为ConfigurationClass对象的 ConfigurationClass对象属性在哪里开始被解析的？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191129002132.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125072356.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125075119.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191212080200.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191126082030.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191128000838.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191127235053.png">
+<meta property="og:updated_time" content="2025-06-16T22:57:47.501Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="springboot @Configuration类型的class需要知道的细节">
+<meta name="twitter:description" content="知识点收获通过本文，你能收获什么？  @Configuration的.class文件如何被spring加载的？ @Configuration的.class文件如何被转化为BeanDefinition放入spring容器的？ @Configuration的BeanDefinition如何转化为ConfigurationClass对象的 ConfigurationClass对象属性在哪里开始被解析的？">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191129002132.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/12/12/springboot @Configuration类型的class需要知道的细节/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cursor/">cursor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos7/">centos7</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos8/">centos8</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/婚姻/">婚姻</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/投资/">投资</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/男性/">男性</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/">$</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos8/">centos8</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cursor/">cursor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql网络/">mysql网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健康/">健康</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投资/">投资</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/男性/">男性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/股票/">股票</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/" style="font-size: 13px;">$</a> <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/centos8/" style="font-size: 13.25px;">centos8</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/cursor/" style="font-size: 13px;">cursor</a> <a href="/tags/docker/" style="font-size: 13.5px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.25px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.13px;">http</a> <a href="/tags/https/" style="font-size: 13.13px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.25px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.13px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.13px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.5px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.25px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.38px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.13px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.38px;">mysql</a> <a href="/tags/mysql网络/" style="font-size: 13px;">mysql网络</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.25px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.63px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.13px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.88px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.25px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.13px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/健康/" style="font-size: 13px;">健康</a> <a href="/tags/加密/" style="font-size: 13.13px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.13px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/投资/" style="font-size: 13px;">投资</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/数字签名/" style="font-size: 13.13px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.13px;">数字证书</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/男性/" style="font-size: 13px;">男性</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.13px;">类加载</a> <a href="/tags/股票/" style="font-size: 13px;">股票</a> <a href="/tags/读书/" style="font-size: 13.88px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">十一月 2024</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/投资/">投资</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/06/09/AI与股票/" class="title">AI与股票</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-06-09T03:10:59.000Z" itemprop="datePublished">2025-06-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/读书/">读书</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/05/10/阅读笔记-云雨-性张力下的中国人/" class="title">云雨-性张力下的中国人-读书笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-05-10T00:01:20.000Z" itemprop="datePublished">2025-05-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/cursor/">cursor</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/03/20/cursor使用 @code @codebase @files @folders 详解/" class="title">cursor @code @codebase @files @folders 详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-03-20T01:00:00.000Z" itemprop="datePublished">2025-03-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/01/04/2024年回顾与2025年期待/" class="title">2024年回顾与2025年期待</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-01-04T01:00:00.000Z" itemprop="datePublished">2025-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/docker/">docker</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/docker/centos8/">centos8</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/11/28/docker系列-4-macos下docker运行mysql5.7/" class="title">macos下docker运行mysql5.7</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-11-28T03:10:59.000Z" itemprop="datePublished">2024-11-28</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点收获"><span class="toc-number">1.</span> <span class="toc-text">知识点收获</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Configuration注解作用"><span class="toc-number">2.</span> <span class="toc-text">@Configuration注解作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Configuration-class源码加载分析"><span class="toc-number">3.</span> <span class="toc-text">@Configuration class源码加载分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration相关的类"><span class="toc-number">3.1.</span> <span class="toc-text">@Configuration相关的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration解析过程"><span class="toc-number">3.2.</span> <span class="toc-text">@Configuration解析过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ConfigurationClassPostProcessor实例创建过程"><span class="toc-number">3.2.1.</span> <span class="toc-text">ConfigurationClassPostProcessor实例创建过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用ConfigurationClassPostProcessor实例加载-Configuration进行BeanDefinition注册"><span class="toc-number">3.2.2.</span> <span class="toc-text">应用ConfigurationClassPostProcessor实例加载@Configuration进行BeanDefinition注册</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用ConfigurationClassPostProcessor实例将BeanDefinition-beanClass生成proxy代理类"><span class="toc-number">3.2.3.</span> <span class="toc-text">应用ConfigurationClassPostProcessor实例将BeanDefinition.beanClass生成proxy代理类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Configuration-class过程解析"><span class="toc-number">3.2.4.</span> <span class="toc-text">@Configuration class过程解析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Configuration类的cglib代理类实例化分析"><span class="toc-number">4.</span> <span class="toc-text">@Configuration类的cglib代理类实例化分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#it-s-time-to-summary"><span class="toc-number">5.</span> <span class="toc-text">it`s time to summary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点收获回复"><span class="toc-number">6.</span> <span class="toc-text">知识点收获回复</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-springboot @Configuration类型的class需要知道的细节" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      springboot @Configuration类型的class需要知道的细节
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/12/12/springboot @Configuration类型的class需要知道的细节/" class="article-date">
+	  <time datetime="2019-12-11T23:39:44.000Z" itemprop="datePublished">2019-12-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/spring/">spring</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/spring/">spring</a>, <a class="article-tag-link" href="/tags/springboot/">springboot</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/12/12/springboot @Configuration类型的class需要知道的细节/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 11(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="知识点收获"><a href="#知识点收获" class="headerlink" title="知识点收获"></a>知识点收获</h2><p>通过本文，你能收获什么？</p>
+<ol>
+<li>@Configuration的.class文件如何被spring加载的？</li>
+<li>@Configuration的.class文件如何被转化为BeanDefinition放入spring容器的？</li>
+<li>@Configuration的BeanDefinition如何转化为ConfigurationClass对象的</li>
+<li>ConfigurationClass对象属性在哪里开始被解析的？</li>
+<li>@Configuration的BeanDefinition的beanClass值何时变成proxy代理类的，为什么要变</li>
+<li>@Configuration类最终会生成cglib proxy代理类，这个由@Configuration类生成的cglib proxy代理类如何实例化的</li>
+<li>我们能从中得到的扩展点有哪些</li>
+</ol>
+<blockquote>
+<p>》本文力求专注和精简，希望你有所收获和想法</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191129002132.png" alt="20191129002132.png"></p>
+<h2 id="Configuration注解作用"><a href="#Configuration注解作用" class="headerlink" title="@Configuration注解作用"></a>@Configuration注解作用</h2><p>@Configuration标识的类有这些特性：可以声明多个@Bean方法，且在运行时被spring容器处理来生成BeanDefinition。@Configuration类是被AnnotationConfigWebApplicationContext启动(bootstrap)处理流程的。声明方式如下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> @Configuration</span><br><span class="line"> public class AppConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public MyBean myBean() &#123;</span><br><span class="line">        // instantiate, configure and return bean ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>@Configuration class存在如下约束，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125072356.png" alt="20191125072356.png"></p>
+<h2 id="Configuration-class源码加载分析"><a href="#Configuration-class源码加载分析" class="headerlink" title="@Configuration class源码加载分析"></a>@Configuration class源码加载分析</h2><h3 id="Configuration相关的类"><a href="#Configuration相关的类" class="headerlink" title="@Configuration相关的类"></a>@Configuration相关的类</h3><p>如果IDE你使用的Idea，double Shift键，输入<code>ConfigurationClass</code>，会出现一长列的类，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191125075119.png" alt="20191125075119.png"><br>这些类分工协作，从加载标识@Configuration的.class文件，到生成BeanDefinition，再到生成ConfigurationClass对象，再到解析ConfigurationClass对象，即解析@ConfigurationClass class类中@Bean、@Import、@ImportResource等注解<br>|class|作用|<br>|  – | – |<br>| ConfigurationClass | 专门表示@Configuration class。存储解析@Configuration class的信息 |<br>| ConfigurationClassPostProcessor | 专门用于处理@Configuration class的BeanDefinitoinRegistryPostProcessor（BeanFactoryPostProcessor子类) |<br>| AnnotationConfigUtils | 专门注册BeanPostProcessor和BeanFactoryPostProcessor到spring容器 | </p>
+<h3 id="Configuration解析过程"><a href="#Configuration解析过程" class="headerlink" title="@Configuration解析过程"></a>@Configuration解析过程</h3><h4 id="ConfigurationClassPostProcessor实例创建过程"><a href="#ConfigurationClassPostProcessor实例创建过程" class="headerlink" title="ConfigurationClassPostProcessor实例创建过程"></a>ConfigurationClassPostProcessor实例创建过程</h4><p>我们刚说过，ConfigurationClassPostProcessor是处理@Configuration class的核心组件，它是BeanFactoryPostProcessor类型子类且是BeanDefinitoinRegistryPostProcessor类型子类。BeanFactoryPostProcessor是<code>AbstractApplicationContext&#39;s post-processor handling</code>技术的规范接口，在项目启动较早时段，它便开始工作。或者说任何spring boot项目启动时都是走<code>post-processor handling</code>处理逻辑，这个逻辑的入口在<code>PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors()方法</code>，代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PostProcessorRegistrationDelegate class</span><br><span class="line">public static void invokeBeanFactoryPostProcessors(</span><br><span class="line">		ConfigurableListableBeanFactory beanFactory, List&lt;BeanFactoryPostProcessor&gt; beanFactoryPostProcessors) &#123;</span><br><span class="line">    ···</span><br><span class="line">	// Invoke BeanDefinitionRegistryPostProcessors first, if any.</span><br><span class="line">	if (beanFactory instanceof BeanDefinitionRegistry) &#123;</span><br><span class="line">		BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;</span><br><span class="line">		List&lt;BeanDefinitionRegistryPostProcessor&gt; currentRegistryProcessors = new ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">		// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.</span><br><span class="line">		String[] postProcessorNames =</span><br><span class="line">				beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false); // (1)</span><br><span class="line">		for (String ppName : postProcessorNames) &#123;</span><br><span class="line">			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) &#123;</span><br><span class="line">				currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class)); // (2)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		sortPostProcessors(currentRegistryProcessors, beanFactory);</span><br><span class="line">        // 将@Configuration类生成BeanDefinition，此时的BeanDefinition.beanClass为原类class对象</span><br><span class="line">		invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry); // (3)</span><br><span class="line"></span><br><span class="line">        // Now, invoke the postProcessBeanFactory callback of all processors handled so far.</span><br><span class="line">        // 将(3)处的BeanDefinition.beanClass赋值为proxy代理类</span><br><span class="line">		nvokeBeanFactoryPostProcessors(registryProcessors, beanFactory);(4)</span><br><span class="line">	&#125;</span><br><span class="line">	···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法处理所有的BeanFactoryPostProcessor类型对象，但是通过优先级来规定先后处理顺序，优先级维度有两个:<code>1:BeanDefinitionRegistryPostProcessor类型和BeanFactoryPostProcessor类型；2:PriorityOrdered和Ordered</code>。而<br>ConfigurationClassPostProcessor同时实现了BeanDefinitionRegistryPostProcessor和PriorityOrdered，所以它得到最优先处理的机会</p>
+<p>如上方法(1)处，从spring容器获取BeanDefinitionRegistryPostProcessor类型的beanName, 这个时期只有ConfigurationClassPostProcessor的beanName满足，需要指出：ConfigurationClassPostProcessor是通过硬编码的方式注册到spring容器的，详见AnnotationConfigUtils类)，接着执行如上方法(2)处，以beanName为key从spring容器中获取ConfigurationClassPostProcessor实例。</p>
+<h4 id="应用ConfigurationClassPostProcessor实例加载-Configuration进行BeanDefinition注册"><a href="#应用ConfigurationClassPostProcessor实例加载-Configuration进行BeanDefinition注册" class="headerlink" title="应用ConfigurationClassPostProcessor实例加载@Configuration进行BeanDefinition注册"></a>应用ConfigurationClassPostProcessor实例加载@Configuration进行BeanDefinition注册</h4><p>如上方法(3)处，即为应用ConfigurationClassPostProcessor实例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PostProcessorRegistrationDelegate class</span><br><span class="line">private static void invokeBeanDefinitionRegistryPostProcessors(</span><br><span class="line">		Collection&lt;? extends BeanDefinitionRegistryPostProcessor&gt; postProcessors, BeanDefinitionRegistry registry) &#123;</span><br><span class="line">	for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) &#123;</span><br><span class="line">		postProcessor.postProcessBeanDefinitionRegistry(registry);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ConfigurationClassPostProcessor class</span><br><span class="line">@Override</span><br><span class="line">public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) &#123;</span><br><span class="line">	processConfigBeanDefinitions(registry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从方法名大概就知道方法的作用了，会调用所有<code>BeanDefinitionRegistryPostProcessor类型</code>的<code>postProcessBeanDefinitionRegistry()</code>方法，此处只有<code>ConfigurationClassPostProcessor</code>符合。</p>
+<h4 id="应用ConfigurationClassPostProcessor实例将BeanDefinition-beanClass生成proxy代理类"><a href="#应用ConfigurationClassPostProcessor实例将BeanDefinition-beanClass生成proxy代理类" class="headerlink" title="应用ConfigurationClassPostProcessor实例将BeanDefinition.beanClass生成proxy代理类"></a>应用ConfigurationClassPostProcessor实例将BeanDefinition.beanClass生成proxy代理类</h4><p>如上<code>invokeBeanFactoryPostProcessors</code>方法(4)处，经过了方法(3)的处理，@Configuration类已经生成BeanDefinition，此时BeanDefinition.beanClass值为原类class对象。而方法(4)处目的是将BeanDefinition.beanClass赋值为proxy代理类，<code>这里留个问题，其他为什么要设置成proxy代理类呢</code></p>
+<p>关于方法(3)和方法(4)要做的事，参考下图，时机和作用清晰的对比和展示<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191212080200.png" alt="20191212080200.png"></p>
+<h4 id="Configuration-class过程解析"><a href="#Configuration-class过程解析" class="headerlink" title="@Configuration class过程解析"></a>@Configuration class过程解析</h4><p>下面的方法就是解析@Configuration class的核心逻辑了。解析过程可以总结分三步，正好对应着方法中(1),(2),(3)处<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">ConfigurationClassPostProcessor class</span><br><span class="line">public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) &#123;</span><br><span class="line">	List&lt;BeanDefinitionHolder&gt; configCandidates = new ArrayList&lt;&gt;();</span><br><span class="line">	String[] candidateNames = registry.getBeanDefinitionNames(); </span><br><span class="line"></span><br><span class="line">	for (String beanName : candidateNames) &#123;</span><br><span class="line">		BeanDefinition beanDef = registry.getBeanDefinition(beanName);</span><br><span class="line">		if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory))&#123;</span><br><span class="line">			configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));//(1)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	··· 排序等</span><br><span class="line">s</span><br><span class="line">	// Parse each @Configuration class</span><br><span class="line">	ConfigurationClassParser parser = new ConfigurationClassParser(</span><br><span class="line">			this.metadataReaderFactory, this.problemReporter, this.environment,</span><br><span class="line">			this.resourceLoader, this.componentScanBeanNameGenerator, registry);</span><br><span class="line"></span><br><span class="line">	Set&lt;BeanDefinitionHolder&gt; candidates = new LinkedHashSet&lt;&gt;(configCandidates);</span><br><span class="line">	Set&lt;ConfigurationClass&gt; alreadyParsed = new HashSet&lt;&gt;(configCandidates.size());</span><br><span class="line">	do &#123;</span><br><span class="line">		parser.parse(candidates); //(2)</span><br><span class="line">		parser.validate();</span><br><span class="line"></span><br><span class="line">		Set&lt;ConfigurationClass&gt; configClasses = new LinkedHashSet&lt;&gt;(parser.getConfigurationClasses());</span><br><span class="line"> </span><br><span class="line">		// Read the model and create bean definitions based on its content</span><br><span class="line">		this.reader = new ConfigurationClassBeanDefinitionReader(</span><br><span class="line">				registry, this.sourceExtractor, this.resourceLoader, this.environment,</span><br><span class="line">				this.importBeanNameGenerator, parser.getImportRegistry());</span><br><span class="line">	</span><br><span class="line">		this.reader.loadBeanDefinitions(configClasses); //(3)</span><br><span class="line">		 </span><br><span class="line">	&#125;</span><br><span class="line">	while (!candidates.isEmpty());</span><br><span class="line">	</span><br><span class="line">	··· ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>step1: 获取候选者<br>从spring容器拿到所有的beanDefinitionNames，然后遍历验证获得候选者，验证的依据是class metadata是否含有@Configuration注解，从下面我们可知，此时，beanDefinitionNames中只有<code>consumerFeignApp</code>符合条件。所以候选者就是consumerFeignApp及他的beanDefinition<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191126082030.png" alt="20191126082030.png"></p>
+<p>step2: 通过候选者获取ConfigurationClass<br>找到了候选者，下面就对候选者进行解析，解析的全部功能和逻辑都集中在ConfigurationClassParser类中，看名称可知，这个类专业解析@Configuration类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">ConfigurationClassParser class</span><br><span class="line">public void parse(Set&lt;BeanDefinitionHolder&gt; configCandidates) &#123;</span><br><span class="line">	for (BeanDefinitionHolder holder : configCandidates) &#123;</span><br><span class="line">		BeanDefinition bd = holder.getBeanDefinition();</span><br><span class="line">		if (bd instanceof AnnotatedBeanDefinition) &#123;</span><br><span class="line">			parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());</span><br><span class="line">		&#125;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	this.deferredImportSelectorHandler.process();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected final void parse(AnnotationMetadata metadata, String beanName) throws IOException &#123;</span><br><span class="line">	processConfigurationClass(new ConfigurationClass(metadata, beanName));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected void processConfigurationClass(ConfigurationClass configClass) throws IOException &#123;</span><br><span class="line">	// 评估标识@Configuration的类是否满足条件去加载，这是条件注解@ConditionalXXX起的作用</span><br><span class="line">	// 实际开发中，我们可以依据这个功能实现灵活的加载配置(如让谁加载进来，不让谁加载进来^_^)</span><br><span class="line">	if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) &#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Recursively process the configuration class and its superclass hierarchy.</span><br><span class="line">	SourceClass sourceClass = asSourceClass(configClass);</span><br><span class="line">	do &#123;</span><br><span class="line">		sourceClass = doProcessConfigurationClass(configClass, sourceClass);</span><br><span class="line">	&#125;</span><br><span class="line">	while (sourceClass != null);</span><br><span class="line"></span><br><span class="line">    // 所有加载的@Configuration类都会转为ConfigurationClass放入这个map中</span><br><span class="line">	this.configurationClasses.put(configClass, configClass);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected final SourceClass doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass)&#123;</span><br><span class="line">	// 为了集中说明意图，隐藏了代码</span><br><span class="line">    // Recursively process any member (nested) classes first</span><br><span class="line">	// Process any @PropertySource annotations</span><br><span class="line">	// Process any @ComponentScan annotations</span><br><span class="line">	for (AnnotationAttributes componentScan : componentScans) &#123;</span><br><span class="line">		for (BeanDefinitionHolder holder : scannedBeanDefinitions) &#123;</span><br><span class="line">			if () &#123;</span><br><span class="line">				// 进入递归调用</span><br><span class="line">				parse(bdCand.getBeanClassName(), holder.getBeanName());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Process any @Import annotations</span><br><span class="line">	// Process any @ImportResource annotations</span><br><span class="line">	// Process individual @Bean methods</span><br><span class="line">	// Process default methods on interfaces</span><br><span class="line">	// Process superclass, if any</span><br><span class="line">	// No superclass -&gt; processing is complete</span><br><span class="line">	return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如上方法整体的逻辑为对ConfigurationClass和SourceClass解析，检查他们有没有@ComponentScan，@Import，@Bean methods，@ImportResource，@PropertySource这些注解，如果有，分别对其解析，解析后的结果放入ConfigurationClass的各属性中，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191128000838.png" alt="20191128000838.png"></p>
+<p>各个注解的属性值中可能又包含@Configuration注解，又要对包含的@Configuration注解进行解析，这样形成了递归，所以解析过程中有三个方法形成了三角递归调用的逻辑，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20191127235053.png" alt="20191127235053.png"></p>
+<p>这一步会将我们项目中定义的@Configuration类都加载进来，你可能有疑问，难道项目中我们自己定义的@Configuration类都是靠递归加载进来的？答案当然是NO，请注意@ComponentScan注解，这个注解的解析器很厉害，它把所有的标识@Component注解的class加载进来，而@Configuration，@RestController，@Service，@Repository等都包含@Component，所有这些注解的class都会加载进来形成BeanDefinition存入spring 容器(解析过程详见ComponentScanAnnotationParser)。说回来，对于@ComponentScan解析器加载进来的BeanDefinitoin，会进行时@Configuration进行过滤，从而得到@Configuration类，再次调用parse()方法，这时体现出三角递归调用了。此时，项目中所有我们自定义的@Configuration类都获取到了</p>
+<p>step3: 解析每个ConfigurationClass<br>step2中对@Configuration类的@Import，@Bean methods，@ImportResource进行解析，解析的结果放入ConfigurationClass对象的importBeanDefinitionRegistrars，beanMethods，importedResources，metadata等属性。<br>所以，step2将@Configuration类的解析结果都放入了ConfigurationClass对象，即ConfigurationClass对象包装了@Configuration类的所有信息。</p>
+<p>回到ConfigurationClassPostProcessor.processConfigBeanDefinitions()方法(3)处，现在，我们解析ConfigurationClass，而解析ConfigurationClass过程由ConfigurationClassBeanDefinitionReader类负责的<br>看code<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">ConfigurationClassBeanDefinitionReader class</span><br><span class="line">public void loadBeanDefinitions(Set&lt;ConfigurationClass&gt; configurationModel) &#123;</span><br><span class="line">	TrackedConditionEvaluator trackedConditionEvaluator = new TrackedConditionEvaluator();</span><br><span class="line">	for (ConfigurationClass configClass : configurationModel) &#123;</span><br><span class="line">		loadBeanDefinitionsForConfigurationClass(configClass, trackedConditionEvaluator);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void loadBeanDefinitionsForConfigurationClass(</span><br><span class="line">		ConfigurationClass configClass, TrackedConditionEvaluator trackedConditionEvaluator) &#123;</span><br><span class="line"></span><br><span class="line">	if (trackedConditionEvaluator.shouldSkip(configClass)) &#123;</span><br><span class="line">		String beanName = configClass.getBeanName();</span><br><span class="line">		if (StringUtils.hasLength(beanName) &amp;&amp; this.registry.containsBeanDefinition(beanName)) &#123;</span><br><span class="line">			this.registry.removeBeanDefinition(beanName);</span><br><span class="line">		&#125;</span><br><span class="line">		this.importRegistry.removeImportingClass(configClass.getMetadata().getClassName());</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if (configClass.isImported()) &#123;</span><br><span class="line">		registerBeanDefinitionForImportedConfigurationClass(configClass);</span><br><span class="line">	&#125;</span><br><span class="line">	for (BeanMethod beanMethod : configClass.getBeanMethods()) &#123;</span><br><span class="line">		loadBeanDefinitionsForBeanMethod(beanMethod);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());</span><br><span class="line">	loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看loadBeanDefinitionsForConfigurationClass()方法，方法主要功能为对ConfigurationClass的beanMethods，importedResources，importBeanDefinitionReistrars属性进行解析，为什么要对这三个属性进行解析呢，看看这三个其@Import，@Bean methods，@ImportResource的用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Import(DispatcherServletConfiguration.class)</span><br><span class="line">@ImportResource(&quot;classpath:/com/acme/database-config.xml&quot;)</span><br><span class="line">protected static class DispatcherServletRegistrationConfiguration &#123;</span><br><span class="line"></span><br><span class="line">	@Bean(name = DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME)</span><br><span class="line">	public DispatcherServletRegistrationBean dispatcherServletRegistration()&#123;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，这三个注解的属性值都是类或者配置文件或者加载文件的类，所以，需要解析，从而将解析到的.class文件转化为BeanDefinition放入spring容器。</p>
+<h2 id="Configuration类的cglib代理类实例化分析"><a href="#Configuration类的cglib代理类实例化分析" class="headerlink" title="@Configuration类的cglib代理类实例化分析"></a>@Configuration类的cglib代理类实例化分析</h2><p>由于@Configuration注解的都是类，而非接口，所有这里使用的是cglib代理技术，ConfigurationClassEnhancer包装了cglib。<code>这里我们实际工作中可以直接复用ConfigurationClassEnhancer满足我们生成代理类的场景</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">实现自BeanFactoryPostProcessor.postProcessBeanFactory</span><br><span class="line">ConfigurationClassPostProcessor class</span><br><span class="line">@Override</span><br><span class="line">public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) &#123;</span><br><span class="line">    // 生成代理</span><br><span class="line">    enhanceConfigurationClasses(beanFactory);</span><br><span class="line">    beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ConfigurationClassPostProcessor.ConfigurationClassEnhancer class</span><br><span class="line">public void enhanceConfigurationClasses(ConfigurableListableBeanFactory beanFactory) &#123;</span><br><span class="line">    Map&lt;String, AbstractBeanDefinition&gt; configBeanDefs = new LinkedHashMap&lt;&gt;();</span><br><span class="line">    for (String beanName : beanFactory.getBeanDefinitionNames()) &#123;</span><br><span class="line">        BeanDefinition beanDef = beanFactory.getBeanDefinition(beanName);</span><br><span class="line">        if (ConfigurationClassUtils.isFullConfigurationClass(beanDef)) &#123;</span><br><span class="line">            if (!(beanDef instanceof AbstractBeanDefinition)) &#123;</span><br><span class="line">                throw </span><br><span class="line">            &#125;</span><br><span class="line">            configBeanDefs.put(beanName, (AbstractBeanDefinition) beanDef);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ConfigurationClassEnhancer enhancer = new ConfigurationClassEnhancer();</span><br><span class="line">    for (Map.Entry&lt;String, AbstractBeanDefinition&gt; entry : configBeanDefs.entrySet()) &#123;</span><br><span class="line">        AbstractBeanDefinition beanDef = entry.getValue();</span><br><span class="line">        // If a @Configuration class gets proxied, always proxy the target class</span><br><span class="line">        beanDef.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);</span><br><span class="line">        // Set enhanced subclass of the user-specified bean class</span><br><span class="line">        Class&lt;?&gt; configClass = beanDef.resolveBeanClass(this.beanClassLoader);</span><br><span class="line">        if (configClass != null) &#123;</span><br><span class="line">            Class&lt;?&gt; enhancedClass = enhancer.enhance(configClass, this.beanClassLoader);</span><br><span class="line">            if (configClass != enhancedClass) &#123;</span><br><span class="line">                beanDef.setBeanClass(enhancedClass);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ConfigurationClassPostProcessor.ConfigurationClassEnhancer class</span><br><span class="line">public Class&lt;?&gt; enhance(Class&lt;?&gt; configClass, @Nullable ClassLoader classLoader) &#123;</span><br><span class="line">    if (EnhancedConfiguration.class.isAssignableFrom(configClass)) &#123;</span><br><span class="line">        return configClass;</span><br><span class="line">    &#125;</span><br><span class="line">    Class&lt;?&gt; enhancedClass = createClass(newEnhancer(configClass, classLoader));</span><br><span class="line">    return enhancedClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代理的代码很清晰，很值得我们学习</p>
+<h2 id="it-s-time-to-summary"><a href="#it-s-time-to-summary" class="headerlink" title="it`s time to summary"></a>it`s time to summary</h2><p>整个过程可以看做是一颗小树长成参天大树，consumerFeignApp就是树苗，而我们项目的代码就是后来大树的枝干和叶子。枝干和叶子与@ComponentScan，@Import，@Bean methods，@ImportResource，@PropertySource，@Configuration交织在一起被解析出来，生成beanDefinition、实例对象或代理类。</p>
+<p>本文主要说明了标识了@Configuration的.class文件，是如何被解析成ConfigurationClass，再到转化为ConfigurationClassBeanDefinition放入spring容器，再到如何解析ConfigurationClass对象属性。为了集中阐述@Configuration，所以，其他的部分这里不做详述和延展。如果阅读后你有所收获，共享欢喜</p>
+<h2 id="知识点收获回复"><a href="#知识点收获回复" class="headerlink" title="知识点收获回复"></a>知识点收获回复</h2><p>1，2，3，4相信你已经有答案了，现在，我们看看扩展点有什么 </p>
+<ol>
+<li>加载一些package目录下的.class文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,</span><br><span class="line">			componentScan.getBoolean(&quot;useDefaultFilters&quot;), this.environment, this.resourceLoader);</span><br><span class="line">Set&lt;BeanDefinitionHolder&gt; beanDefinitions = scanner.doScan(StringUtils.toStringArray(basePackages));</span><br><span class="line">如此两行代码就实现了加载package目录下的.class文件的功能。详见ComponentScanAnnotationParser.parse()方法</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2019/12/12/springboot @Configuration类型的class需要知道的细节/" title="springboot @Configuration类型的class需要知道的细节" target="_blank" rel="external">https://yaoyuanyy.github.io/2019/12/12/springboot @Configuration类型的class需要知道的细节/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/01/02/java软件开发书籍推荐/" title="java软件开发书籍推荐"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/12/11/springboot 正经的bean与不正经的bean实例化过程区别/" title="springboot 正经的bean与不正经的bean实例化过程区别"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>
