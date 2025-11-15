@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>网络请求响应中的两个握手-TLS握手与TCP握手 | Hexo</title>
+  <meta name="description" content="背景今天逛 medium，发现一篇介绍 SSL/TLS 的文章。讲到握手的时候，突然联想到 TCP 的握手。两个都是握手，还都是网络传输和协议相关的领域。在今年的核心调子：结构化。即知识和思维成体系的影响下，都是网络传输和网络协议领域的两个握手，多好的体系知识的例子啊，一定要放在一起梳理下。遂有了这篇文章。 我们主要阐述 TLS 为主，但是会在 意义目的、结构关系、时间顺序 三个维度上两者一起看，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络请求响应中的两个握手-TLS握手与TCP握手">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="背景今天逛 medium，发现一篇介绍 SSL/TLS 的文章。讲到握手的时候，突然联想到 TCP 的握手。两个都是握手，还都是网络传输和协议相关的领域。在今年的核心调子：结构化。即知识和思维成体系的影响下，都是网络传输和网络协议领域的两个握手，多好的体系知识的例子啊，一定要放在一起梳理下。遂有了这篇文章。 我们主要阐述 TLS 为主，但是会在 意义目的、结构关系、时间顺序 三个维度上两者一起看，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419121334.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419205703.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419210057.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420083642.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420073655.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420235803.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420073848.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420075115.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220421000315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420183041.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420074636.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220422151129.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420081320.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220422155906.png">
+<meta property="og:updated_time" content="2025-11-15T04:49:10.277Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络请求响应中的两个握手-TLS握手与TCP握手">
+<meta name="twitter:description" content="背景今天逛 medium，发现一篇介绍 SSL/TLS 的文章。讲到握手的时候，突然联想到 TCP 的握手。两个都是握手，还都是网络传输和协议相关的领域。在今年的核心调子：结构化。即知识和思维成体系的影响下，都是网络传输和网络协议领域的两个握手，多好的体系知识的例子啊，一定要放在一起梳理下。遂有了这篇文章。 我们主要阐述 TLS 为主，但是会在 意义目的、结构关系、时间顺序 三个维度上两者一起看，">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419121334.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos7/">centos7</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos8/">centos8</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/婚姻/">婚姻</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/教育/">教育</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/考试/">考试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股市/">股市</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股票/">股票</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/">$</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI提示词/">AI提示词</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos8/">centos8</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cursor/">cursor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepseek/">deepseek</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql网络/">mysql网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prompt/">prompt</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/书籍会说话/">书籍会说话</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投资/">投资</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教育/">教育</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/考试/">考试</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/股市/">股市</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/" style="font-size: 13px;">$</a> <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AI提示词/" style="font-size: 13px;">AI提示词</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/centos8/" style="font-size: 13.25px;">centos8</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/cursor/" style="font-size: 13.13px;">cursor</a> <a href="/tags/deepseek/" style="font-size: 13px;">deepseek</a> <a href="/tags/docker/" style="font-size: 13.5px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.25px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.13px;">http</a> <a href="/tags/https/" style="font-size: 13.13px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.25px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.13px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.13px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.5px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.25px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.38px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.13px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.38px;">mysql</a> <a href="/tags/mysql网络/" style="font-size: 13px;">mysql网络</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/prompt/" style="font-size: 13.25px;">prompt</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.25px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.63px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.13px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.88px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.25px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.13px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/书籍会说话/" style="font-size: 13px;">书籍会说话</a> <a href="/tags/加密/" style="font-size: 13.13px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.13px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/思考/" style="font-size: 13px;">思考</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/投资/" style="font-size: 13.25px;">投资</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/教育/" style="font-size: 13px;">教育</a> <a href="/tags/数字签名/" style="font-size: 13.13px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.13px;">数字证书</a> <a href="/tags/生活/" style="font-size: 13.13px;">生活</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.13px;">类加载</a> <a href="/tags/考试/" style="font-size: 13.25px;">考试</a> <a href="/tags/股市/" style="font-size: 13.13px;">股市</a> <a href="/tags/读书/" style="font-size: 13.88px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">十一月 2024</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/life/">生活</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/15/生活-活生生的活着/" class="title">男性强身健体的运动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-15T03:10:10.000Z" itemprop="datePublished">2025-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/穷人的特征/" class="title">穷人的特征</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T02:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/如何培养一个优秀的小孩/" class="title">如何培养一个优秀的小孩</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T01:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测-1-言语理解/" class="title">言语理解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测/" class="title">考试记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-网络请求响应中的两个握手-TLS握手与TCP握手" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网络请求响应中的两个握手-TLS握手与TCP握手
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/" class="article-date">
+	  <time datetime="2022-04-18T15:26:26.000Z" itemprop="datePublished">2022-04-18</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.6k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 17(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>今天逛 medium，发现一篇介绍 SSL/TLS 的文章。讲到握手的时候，突然联想到 TCP 的握手。两个都是握手，还都是网络传输和协议相关的领域。在今年的核心调子：<strong>结构化</strong>。即知识和思维成体系的影响下，都是网络传输和网络协议领域的两个握手，多好的体系知识的例子啊，一定要放在一起梳理下。遂有了这篇文章。</p>
+<p>我们主要阐述 TLS 为主，但是会在 意义目的、结构关系、时间顺序 三个维度上两者一起看，更利于掌握和理解，形成自己的知识结构和体系。就像树突一样，不断的链接在一起</p>
+<h2 id="SSL-TLS-vs-TCP-的目的"><a href="#SSL-TLS-vs-TCP-的目的" class="headerlink" title="SSL/TLS vs TCP 的目的"></a>SSL/TLS vs TCP 的目的</h2><p>SSL/TLS的意义：安全的传输数据：数据安全性<br>TCP的意义    ：可靠的传输数据：数据可靠性</p>
+<h2 id="SSL-TLS-vs-TCP-的位置"><a href="#SSL-TLS-vs-TCP-的位置" class="headerlink" title="SSL/TLS vs TCP 的位置"></a>SSL/TLS vs TCP 的位置</h2><p>在网络体系结构图(如下图)中，SSL/TLS 在应用层；TCP 在运输(传输)层。即</p>
+<p>SSL/TLS 在 Http 的 上方<br>TCP     在 Http 的 下方</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419121334.png" alt="20220419121334"></p>
+<h2 id="发生的时间先后关系"><a href="#发生的时间先后关系" class="headerlink" title="发生的时间先后关系"></a>发生的时间先后关系</h2><p>当一台机器向另一台机器发起网络请求时，通过网络体系层次结构，我们知道，先进行TCP连接，在进行Http连接。所以从时间上，先进行 TCP 握手，成功后，再进行 SSL/TLS 握手。</p>
+<p>上面从整体概览了 SSL/TLS 和 TCP。下面我们主要说下 SSL/TLS</p>
+<h2 id="SSL-TLS-是什么"><a href="#SSL-TLS-是什么" class="headerlink" title="SSL/TLS 是什么"></a>SSL/TLS 是什么</h2><p>SSL（安全套接字层：Secure Socket Layer）及其后继者 TLS （传输层安全性：Transport Layer Security）是用于在联网计算机之间建立经过身份验证和加密的链接的协议。具体而言，原来的Http在计算机间联网是明文的，很容易造成传输数据泄漏。所以，在 Http 上加了一层协议，对数据进行加密后传输，这层协议就是 SSL/TLS 。先有的 SSL，后产生的TLS，TLS 取代了 SSL。</p>
+<p>TLS （传输层安全性）于1999年发布，是继 SSL（安全套接字层） 认证和加密协议。最新版本是 TLS 1.3（2018年），TLS 1.2 至今仍在广泛使用</p>
+<h3 id="SSL-与-TLS-的关系"><a href="#SSL-与-TLS-的关系" class="headerlink" title="SSL 与 TLS 的关系"></a>SSL 与 TLS 的关系</h3><p>Netscape 开发了名为安全套接字层（Secure Socket Layer，SSL）的上一代加密协议，TLS 由此演变而来。TLS 1.0 版实际上最初作为 SSL 3.1 版开发，但在发布前更改了名称，以表明它不再与 Netscape 关联。由于这个历史原因，TLS 和 SSL 这两个术语有时会互换使用。</p>
+<blockquote>
+<blockquote>
+<p>NOTE: <strong>以下就不用 SSL 这个名称了，统一使用 TLS</strong></p>
+</blockquote>
+</blockquote>
+<h3 id="TLS-和-HTTPS-有什么区别？"><a href="#TLS-和-HTTPS-有什么区别？" class="headerlink" title="TLS 和 HTTPS 有什么区别？"></a>TLS 和 HTTPS 有什么区别？</h3><p>HTTPS 是在 HTTP 协议基础上实施 TLS 加密，所有网站以及其他部分 web 服务都使用该协议。因此，任何使用 HTTPS 的网站都使用 TLS 加密。</p>
+<h3 id="TLS-握手"><a href="#TLS-握手" class="headerlink" title="TLS 握手"></a>TLS 握手</h3><p>TLS 是一种在保护互联网通信安全的加密协议。TLS 握手是启动 TLS 加密通信会话的过程的描述。在 TLS 握手过程中，通信双方要交换消息以相互确认，彼此验证，确立它们将使用的 TLS 版本和密码套件¹(一组加密算法)，并生成一致的会话密钥。会话密钥用于 Http协议的通信。这个握手过程也是网络上的两方（例如浏览器和Web服务器）之间的协商过程。TLS 握手是 HTTPS 工作原理的基础部分。</p>
+<p>当用户访问一个 HTTPS 的网站时，这时就会发生 TLS 握手。当然，终端访问也一样。例如：$ curl <a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a></p>
+<p>TLS 握手主要做四件事</p>
+<ul>
+<li>确定TLS版本</li>
+<li>确定加密套件，即使用的加密算法</li>
+<li>获取公钥，同时验证服务器</li>
+<li>生成会话密钥</li>
+</ul>
+<p>NOTE<br>需要说明的是：握手过程使用的非对称加密算法，而握手后使用会话密钥进行通信时，使用的是对称加密算法</p>
+<h3 id="TLS-握手过程"><a href="#TLS-握手过程" class="headerlink" title="TLS 握手过程"></a>TLS 握手过程</h3><p>我们通过一张图展示这个握手过程</p>
+<p>这个图从人角度出发，形成的握手交互图。文章后面还有从机器角度的握手交互图</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419205703.png" alt="20220419205703"></p>
+<p><a href="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419165952.png" target="_blank" rel="noopener">SSL/TLS相关站点有自己的握手图</a></p>
+<p>上面的过程图是模拟人的思维来进行的；而下面是一张贴近真实机器请求响应的TLS 过程图，其中每一个「框」都是一个记录，多个记录组合成一个 TCP 包发送。所以，最多经过两次消息往返（4 个消息）就可以完成握手，然后就可以在安全的通信环境里发送 HTTP 报文，实现 HTTPS 协议。（来源于网上）</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220419210057.png" alt="20220419210057"></p>
+<h3 id="wireshark-查看-TLS-握手过程"><a href="#wireshark-查看-TLS-握手过程" class="headerlink" title="wireshark 查看 TLS 握手过程"></a>wireshark 查看 TLS 握手过程</h3><p>下面我们使用 wireshake 看看真实的请求中，TLS是如何进行握手的，以及握手时传的信息都是啥样的</p>
+<h4 id="1-保持-wireshake-监听状态"><a href="#1-保持-wireshake-监听状态" class="headerlink" title="1. 保持 wireshake 监听状态"></a>1. 保持 wireshake 监听状态</h4><p>这里假设你熟悉 wireshake 的基本操作</p>
+<p>终端执行命令：</p>
+<ul>
+<li>$ curl <a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a></li>
+</ul>
+<p>过滤框输入：</p>
+<ul>
+<li>ip.addr = 110.242.68.3 and tls</li>
+</ul>
+<p>效果如下图</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420083642.png" alt="全流程图"></p>
+<p>我们结合这个实例，看 <code>info</code> 那列</p>
+<h4 id="1-〔客户端-gt-服务端〕—-握手协议：Client-Hello"><a href="#1-〔客户端-gt-服务端〕—-握手协议：Client-Hello" class="headerlink" title="1.〔客户端 -&gt; 服务端〕— 握手协议：Client Hello"></a>1.〔客户端 -&gt; 服务端〕— 握手协议：Client Hello</h4><p>主要做三件事<br>❶ TLS版本：可以看到版本为1.2<br>❷ 生成的随机数：bdeecfc713fca80c12908cce6f1f91566736f856b7c58d6e29fb158d15db8639<br>❸ 密码套件列表：可以看到列表的长度是46，即46个密码套件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (0xc030)</span><br><span class="line">Cipher Suite: TLS_RSA_WITH_CAMELLIA_256_CBC_SHA256 (0x00c0)</span><br><span class="line">Cipher Suite: TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (0x0084)</span><br><span class="line">Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)</span><br><span class="line">Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (0xc02b)</span><br><span class="line">Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (0xc027)</span><br><span class="line">                        ... ...</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420073655.png" alt="20220420073655"></p>
+<h4 id="2-〔服务端-gt-客户端〕—-握手协议：Server-Hello"><a href="#2-〔服务端-gt-客户端〕—-握手协议：Server-Hello" class="headerlink" title="2.〔服务端 -&gt; 客户端〕— 握手协议：Server Hello"></a>2.〔服务端 -&gt; 客户端〕— 握手协议：Server Hello</h4><p>主要做三件事<br>❶ 确认TLS版本：可以看到版本为1.2<br>❷ 生成的随机数：625f446320207799678035ac0d11d1c8e3ff0c678b34f0362b1ac2b803f0769f // 用于生成master secret<br>❸ 选中了一个密码套件：TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 // 密码套件包含了 TLS 握手用到的 所有加密算法</p>
+<p>密码套件组成：<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420235803.png" alt="20220420235803"></p>
+<p>TLS 握手过程会用到的三个算法，而密码套件指定了 TLS 握手用到的这些加密算法</p>
+<ul>
+<li>ECDHE(EC Diffie-Hellman) 算法：对于 ECDHE 来说，预主密钥是双方通过椭圆曲线算法生成的，双方各自生成临时公私钥对，保留私钥，将公钥发给对方，然后就可以用自己的私钥以及对方的公钥通过椭圆曲线算法来生成预主密钥，所以 ECDHE 生成预主密钥。而主密钥是由预主密钥、ClientHello random 和 ServerHello random 通过 PRF 函数生成的。</li>
+<li>RSA 算法：用于 Server Key Exchange 阶段，此阶段的签名 Signature 是使用 RSA 算法，通过服务端的私钥加密生成的，客户端使用 Server Hello 阶段的证书中的的公钥来验证签名 Signature</li>
+<li>AES 算法：在握手成功后，用于对传输的数据进行加密 </li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420073848.png" alt="20220420073848"></p>
+<p>可以看到 Server Hello 中的证书信息和浏览器锁头标识中的证书信息是一样的</p>
+<h4 id="3-〔服务端-gt-客户端〕—-握手协议：这里是三个握手协议：Certificate-Server-Key-Exchange-Server-Hello-Done"><a href="#3-〔服务端-gt-客户端〕—-握手协议：这里是三个握手协议：Certificate-Server-Key-Exchange-Server-Hello-Done" class="headerlink" title="3.〔服务端 -&gt; 客户端〕— 握手协议：这里是三个握手协议：Certificate, Server Key Exchange, Server Hello Done"></a>3.〔服务端 -&gt; 客户端〕— 握手协议：这里是三个握手协议：Certificate, Server Key Exchange, Server Hello Done</h4><p>❶ 握手协议：Certificate：把证书(包含公钥)下发给客户端</p>
+<p>包含：<br>Certificate: 证书；<br>subjectPublicKey：公钥</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420075115.png" alt="20220420075115"></p>
+<p>当你用浏览器打开 <a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a> 时，有个锁头的标识，你点开看下证书，如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220421000315.png" alt="20220421000315"></p>
+<p>正如文章开头处的疑问：客户端是如何验证服务端「证书」的合法性的呢？⁴</p>
+<p>❷ 握手协议：Server Key Exchange：将 ECDH 参数、签名发给客户端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Handshake Protocol: Server Key Exchange</span><br><span class="line">    EC Diffie-Hellman Server Params</span><br><span class="line">        Curve Type: named_curve (0x03) // 曲线类型</span><br><span class="line">        Named Curve: x25519 (0x001d) // 曲线名称</span><br><span class="line">        Pubkey: 042a3d2a271d3e84c9b4d3ce15e80b9cdcb74444b89849101992e0b500beef59a155f0d0… // 通过 ECDH 算法生成的，用于推导 &quot;预主密钥&quot;</span><br><span class="line">        Signature Algorithm: rsa_pkcs1_sha512</span><br><span class="line">        Signature: 057d3953e4f86885d88b3ad2fc5bdd18e19aaf4f90aadcc1c241e8173e68b4eb4d219aab… // Signature = SHA256(client_random + server_random + server_params)</span><br></pre></td></tr></table></figure>
+<p>EC Diffie-Hellman(ECDH) 算法是一个密钥交换算法。该算法解决了密钥在双方不直接传递密钥的情况下完成密钥交换。该算法也是一个密钥协商算法，双方最终协商出一个共同的密钥，而这个密钥不会通过网络传输。</p>
+<p>算法原理如下图<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">我们来看DH算法交换密钥的步骤。假设甲乙双方需要传递密钥，他们之间可以这么做：</span><br><span class="line">甲首选选择一个素数p，例如509，底数g，任选，例如5，随机数a，例如123，然后计算A=gᵃ mod p，结果是215，然后，甲发送p＝509，g=5，A=215给乙；</span><br><span class="line">乙方收到后，也选择一个随机数b，例如，456，然后计算B=gᵇ mod p，结果是181，乙再同时计算s=Aᵇ mod p，结果是121；</span><br><span class="line">乙把计算的B=181发给甲，甲计算s＝Bᵃ mod p的余数，计算结果与乙算出的结果一样，都是121。</span><br><span class="line">所以最终双方协商出的密钥s是121。注意到这个密钥s并没有在网络上传输。而通过网络传输的p，g，A和B是无法推算出s的，因为实际算法选择的素数是非常大的。</span><br><span class="line"></span><br><span class="line">如果我们把a看成甲的私钥，A看成甲的公钥，b看成乙的私钥，B看成乙的公钥，DH算法的本质就是双方各自生成自己的私钥和公钥，私钥仅对自己可见，然后交换公钥，并根据自己的私钥和对方的公钥，生成最终的密钥secretKey，DH算法通过数学定律保证了双方各自计算出的secretKey是相同的。</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420183041.png" alt="20220420183041"></p>
+<p>算法原理详见 <a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1304227905273889" target="_blank" rel="noopener">密钥交换算法</a></p>
+<ul>
+<li>Pubkey</li>
+</ul>
+<p>对应到 TLS 上，EC Diffie-Hellman Server Params 中的 Pubkey 就是 A； EC Diffie-Hellman Client Params 中 Pubkey 就是 B。客户端和服务端相互发送各自Pubkey，用于后面生成 “会话密钥(共享密钥)”</p>
+<p>NOTE: 注意区分证书里的公钥和这里的Pubkey，详见<a href="https://crypto.stackexchange.com/questions/66104/public-key-on-server-key-exchange-generation-vs-public-key-on-servers-certifica" target="_blank" rel="noopener">Public key on Server Key Exchange Generation vs Public key on Server’s Certificate</a></p>
+<ul>
+<li>Signature<br>Signature 使用 RSA 算法。Signature = SHA256(client_random + server_random + server_params(curve_info + pub_key))，即服务端使用 <strong>私钥</strong> 对 client_random + server_random + server_params(curve_info + pub_key) 加密，生成签名 Signature。还记得 Server Hello 那个握手吗，那个握手把 <strong>公钥</strong> 发给了客户端。所以，在下面的握手 Client Key Exchange 中，就可以使用  <strong>公钥</strong> 来解密签名 Signature。所以，如果Signature验证通过，可以确保它们是合法的，即可以阻止中间人攻击</li>
+</ul>
+<p>❸ 握手协议：Handshake Protocol: Server Hello Done<br>仅仅是一个「通知」，表明客户端要的信息服务端已给</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420074636.png" alt="20220420074636"></p>
+<h4 id="4-〔客户端-gt-服务端〕—-握手协议：这里是三个握手协议：Client-Key-Exchange-Change-Cipher-Spec-Encrypted-Handshake-Message"><a href="#4-〔客户端-gt-服务端〕—-握手协议：这里是三个握手协议：Client-Key-Exchange-Change-Cipher-Spec-Encrypted-Handshake-Message" class="headerlink" title="4.〔客户端 -&gt; 服务端〕— 握手协议：这里是三个握手协议：Client Key Exchange, Change Cipher Spec, Encrypted Handshake Message"></a>4.〔客户端 -&gt; 服务端〕— 握手协议：这里是三个握手协议：Client Key Exchange, Change Cipher Spec, Encrypted Handshake Message</h4><p>在进行此次握手前，客户端要做两件事，只有通过了才进行握手</p>
+<ol>
+<li>客户端需要验证上一次握手时服务端给的证书，验证通过后，会解析出公钥，用于解密上面握手(Server Key Exchange)中的签名 Signature，目地是阻止中间人攻击</li>
+</ol>
+<p>这里衍生出一个问题：如何验证证书</p>
+<p>参考如下文章<br><a href="https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">数字签名是什么？</a><br><a href="https://zq99299.github.io/note-book2/http-protocol/05/03.html" target="_blank" rel="noopener">数字签名与证书</a></p>
+<ol start="2">
+<li>验证服务端给的 Signature，客户端如何验证的呢<br>结合以上的阐述，你应该已经有答案了。即通过证书中的公钥，解密Signature</li>
+</ol>
+<p>❶ 握手协议：Client Key Exchange<br>同样，服务器会将 Diffie-Hellman 算法的 Client Params 参数发给客户端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Handshake Protocol: Client Key Exchange </span><br><span class="line">    EC Diffie-Hellman Client Params</span><br><span class="line">        Pubkey: 045ed66a325e1eab8ec6e16db0def744b9adb615d089027c4ddada3af5531a9137dea386… // ECDH 算法通过它推导出&quot;预主密钥&quot;</span><br></pre></td></tr></table></figure>
+<p>这里的 Pubkey 同 Server Key Exchange 握手协议中的 Pubkey。</p>
+<p>此时，客户端和服务器都有了 client_params、server_params 参数，所以双方就都可以使用 ECDH(EC Diffie-Hellman) 算法，推导出 “预主密钥”(pre_master_secret)。</p>
+<p>然后，客户端和服务端就可以使用”预主密钥”(pre_master_secret)，client_random + server_random，通过 AES 算法，得出”主密钥” master_secret。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">master_secret = PRF(pre_master_secret, &quot;master secret&quot;,</span><br><span class="line">                    ClientHello.random + ServerHello.random)</span><br><span class="line">                    [0..47];</span><br></pre></td></tr></table></figure>
+<p>得到主密钥之后，再将其扩展为一个安全字节序列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">key_block = PRF(SecurityParameters.master_secret,</span><br><span class="line">                     &quot;key expansion&quot;,</span><br><span class="line">                     SecurityParameters.server_random +</span><br><span class="line">                     SecurityParameters.client_random);</span><br></pre></td></tr></table></figure></p>
+<p>然后分别切分为MAC密钥、对称加密的key和IV。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">client_write_MAC_key[SecurityParameters.mac_key_length]</span><br><span class="line">server_write_MAC_key[SecurityParameters.mac_key_length]</span><br><span class="line">client_write_key[SecurityParameters.enc_key_length]</span><br><span class="line">server_write_key[SecurityParameters.enc_key_length]</span><br><span class="line">client_write_IV[SecurityParameters.fixed_iv_length]</span><br><span class="line">server_write_IV[SecurityParameters.fixed_iv_length]</span><br></pre></td></tr></table></figure></p>
+<p>通过这个计算之后，得出会话密钥 session_key。</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220422151129.png" alt="20220422151129"></p>
+<p>在每个TLS握手中创建的4个会话密钥是：</p>
+<ul>
+<li>“客户端写入密钥（client_write_key）”</li>
+<li>“服务器写入密钥（server_write_key）“</li>
+<li>“客户端写入MAC密钥（client_write_MAC_key）”</li>
+<li>“服务器写入MAC密钥（client_write_MAC_key）”</li>
+</ul>
+<p>客户端写入密钥是客户端用来加密其消息的密钥。客户端写入密钥是对称密钥，客户端和服务器都有。这使服务器可以使用相同的密钥解密来自客户端的消息。</p>
+<p>服务器写入密钥与客户端写入密钥相同，只是它处在服务器端。概括来讲：从客户端到服务器的消息使用客户端写入密钥加密，服务器使用客户端写入密钥解密它们。服务器到客户端的消息使用服务器写入密钥加密，客户端使用服务器写入密钥来解密它们。（整个过程由客户端设备或浏览器处理；用户本身不必执行任何加密或解密操作。）</p>
+<p>MAC（消息身份验证代码）密钥用于对消息进行数字签名。服务器使用服务器写入MAC密钥对消息进行签名，并且当客户端收到消息时，它可以对照自己的服务器MAC密钥记录检查使用的MAC密钥，以确保其合法性。客户端则使用客户端写入MAC密钥签署消息。</p>
+<p>每个新的通信会话和新的TLS握手都会创建一组4个全新的会话密钥。会有一个不同的客户端写入密钥、服务器写入密钥等等，但是每次都会创建这4种类型的密钥。</p>
+<p>❷ 握手协议：Change Cipher Spec 变更密码规范协议<br>一个「通知」，客户端告诉服务端。意思是告诉对方，从现在起，后续的数据都将使用加密传输。</p>
+<p>❸ 握手协议：Encrypted Handshake Message<br>一个「通知」，表明此刻开始是加密后的消息了。也是一次校验，验证下按约定生成的会话密钥是否正确</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220420081320.png" alt="20220420081320"></p>
+<h4 id="5-〔服务端-gt-客户端〕—-握手协议：这里是两个握手协议：Change-Cipher-Spec-Encrypted-Handshake-Message"><a href="#5-〔服务端-gt-客户端〕—-握手协议：这里是两个握手协议：Change-Cipher-Spec-Encrypted-Handshake-Message" class="headerlink" title="5.〔服务端 -&gt; 客户端〕— 握手协议：这里是两个握手协议：Change Cipher Spec, Encrypted Handshake Message"></a>5.〔服务端 -&gt; 客户端〕— 握手协议：这里是两个握手协议：Change Cipher Spec, Encrypted Handshake Message</h4><p>❶ 握手协议：Change Cipher Spec 变更密码规范协议<br>一个「通知」，告诉客户端。从现在起，后续的数据都将使用加密传输。</p>
+<p>❷ 握手协议：Encrypted Handshake Message<br>一个「通知」，表明此刻开始是加密后的消息了。也是一次校验，验证下各自按约定生成的会话密钥是否正确</p>
+<p>经过了 SSL 握手后，服务端的身份认证成功，协商出了加密算法为 AES，密钥为 xxxxx（客户端和服务端拿三个随机值用相同算法计算出来的，并没有明文传输）。一切准备就绪。<br>SSL 握手成功，已经可以对接下来的数据加密了，接下来各种应用层协议都可以加密传输。</p>
+<h4 id="6-〔客户端-gt-服务端〕—-应用数据协议-Application-Data-Protocol-http-over-tls"><a href="#6-〔客户端-gt-服务端〕—-应用数据协议-Application-Data-Protocol-http-over-tls" class="headerlink" title="6.〔客户端 -&gt; 服务端〕— 应用数据协议(Application Data Protocol): http-over-tls"></a>6.〔客户端 -&gt; 服务端〕— 应用数据协议(Application Data Protocol): http-over-tls</h4><p>此时就是客户端传输给服务端的经过加密后的消息了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Encrypted Application Data: 000000000000000177019f75823977b85ee4357006374d828c3caaaa15821b1fe5dacbd9…</span><br></pre></td></tr></table></figure>
+<h4 id="7-8-〔服务端-gt-客户端〕—-应用数据协议-Application-Data-Protocol-http-over-tls"><a href="#7-8-〔服务端-gt-客户端〕—-应用数据协议-Application-Data-Protocol-http-over-tls" class="headerlink" title="7/8.〔服务端 -&gt; 客户端〕— 应用数据协议(Application Data Protocol): http-over-tls"></a>7/8.〔服务端 -&gt; 客户端〕— 应用数据协议(Application Data Protocol): http-over-tls</h4><p>此时就是服务端传输客户端给的经过加密后的消息了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Encrypted Application Data²: 00000000000000015e0bd6689e934efca74a065706ac68b7bae6292d9579dcc8f038dba1…</span><br><span class="line">Encrypted Application Data³: 0000000000000002aa77a1123571b14e204cbb8979f44b7033e8c88b4c8ac3f55eedf44e…</span><br></pre></td></tr></table></figure>
+<h4 id="9-〔客户端-gt-服务端〕—-Encrypted-Alert"><a href="#9-〔客户端-gt-服务端〕—-Encrypted-Alert" class="headerlink" title="9.〔客户端 -&gt; 服务端〕— Encrypted Alert"></a>9.〔客户端 -&gt; 服务端〕— Encrypted Alert</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Transport Layer Security</span><br><span class="line">    TLSv1.2 Record Layer: Encrypted Alert</span><br><span class="line">        Content Type: Alert (21)</span><br><span class="line">        Version: TLS 1.2 (0x0303)</span><br><span class="line">        Length: 26</span><br><span class="line">        Alert Message: Encrypted Alert</span><br></pre></td></tr></table></figure>
+<p>decryption_failed_RESERVED(21)</p>
+<p>SSL通信在断开连接时均为发送Encrypted Alert信息给客户端告知要关闭ssl会话了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">This “alert” is used in SSL/TLS for notifying to close the connection. So it’s quit normal to see “Encrypted Alert” at the end of a SSL/TLS session. Normally when there is no more data to send, the sender sends this TLS Alert.</span><br></pre></td></tr></table></figure>
+<h4 id="10-〔服务端-gt-客户端〕—-Encrypted-Alert"><a href="#10-〔服务端-gt-客户端〕—-Encrypted-Alert" class="headerlink" title="10.〔服务端 -&gt; 客户端〕— Encrypted Alert"></a>10.〔服务端 -&gt; 客户端〕— Encrypted Alert</h4><p>和客户端一样</p>
+<p>现在，整个 TLS 的握手过程就结束了。此时，我们从机器角度，结合真实的tls请求，梳理如下图(来源于网络)</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20220422155906.png" alt="20220422155906"></p>
+<h2 id="周边知识点"><a href="#周边知识点" class="headerlink" title="周边知识点"></a>周边知识点</h2><ol>
+<li><p>⁴处：在 TLS 握手过程中，服务端会发给客户端证书，而客户端会验证证书。那怎么验证的呢</p>
+</li>
+<li><p>在 TLS 握手过程中</p>
+</li>
+</ol>
+<p>Diffie-Hellman算法原理详见 <a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1304227905273889" target="_blank" rel="noopener">密钥交换算法</a></p>
+<p>我们小结下协商过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">客户端：Hi，服务端，我这边支持这些算法，这是我本次的随机数。</span><br><span class="line">服务端：好的，我看看，我们就选用这个算法套件吧，这是我本次的随机数，给你我的证书。我这边用这个DH参数，这是对应的签名。</span><br><span class="line">客户端：稍等我验下证书和签名，嗯，的确是服务端的证书，签名也没有问题。这是我这边的DH参数。（使用DH参数推导出预主密钥，再使用两个随机数+预主密钥计算主密钥，然后生成会话密钥。。。）好了，我这边OK了。</span><br><span class="line">服务端：收到。（使用DH参数推导预主密钥，再使用两个随机数+预主密钥计算主密钥，然后生成会话密钥。。。）好了，我这边也OK了。</span><br><span class="line">客户端：这是加密的应用数据。。。</span><br><span class="line">服务端：这是加密的应用数据。。。</span><br></pre></td></tr></table></figure>
+<h2 id="java-代码演示-TLS"><a href="#java-代码演示-TLS" class="headerlink" title="java 代码演示 TLS"></a>java 代码演示 TLS</h2><p><a href="https://docs.oracle.com/javase/10/security/sample-code-illustrating-secure-socket-connection-client-and-server.htm#JSSEC-GUID-B1060A74-9BAE-40F1-AB2B-C8D83812A4C7" target="_blank" rel="noopener">sample-code-illustrating-secure-socket-connection-client-and-server</a></p>
+<p><a href="https://www.baeldung.com/java-7-tls-v12" target="_blank" rel="noopener">Enabling TLS v1.2 in Java</a></p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="¹什么是密码套件？"><a href="#¹什么是密码套件？" class="headerlink" title="¹什么是密码套件？"></a>¹什么是密码套件？</h3><p>密码套件是一组用于建立安全通信连接的加密算法。（加密算法是对数据执行的一组数学运算，以使数据显得随机。）广泛使用的密码套件有多种，而且 TLS 握手的一个重要组成部分就是对这个握手使用哪一密码套件达成一致意见。</p>
+<h3 id="²³处的数据是加密的，不直观。为了学习，我们怎样能看到加密前的信息呢"><a href="#²³处的数据是加密的，不直观。为了学习，我们怎样能看到加密前的信息呢" class="headerlink" title="²³处的数据是加密的，不直观。为了学习，我们怎样能看到加密前的信息呢"></a>²³处的数据是加密的，不直观。为了学习，我们怎样能看到加密前的信息呢</h3><p>需要设置下wireshake，详见<br><a href="https://imququ.com/post/http2-traffic-in-wireshark.html" target="_blank" rel="noopener">使用 Wireshark 调试 HTTP/2 流量</a></p>
+<p><a href="https://www.jianshu.com/p/40c7a42c42b0" target="_blank" rel="noopener">tls</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://zq99299.github.io/note-book2/http-protocol/05/04.html#%E5%B0%8F%E7%BB%93" target="_blank" rel="noopener">信任始于握手: TLS 1.2 连接过程解析</a></p>
+<p><a href="https://www.cloudflare.com/zh-cn/learning/ssl/what-happens-in-a-tls-handshake/" target="_blank" rel="noopener">什么是 TLS 握手？</a></p>
+<p><a href="https://newsbasis.com/what-does-encrypted-alert-mean-in-wireshark/" target="_blank" rel="noopener">What does encrypted alert mean in Wireshark?</a></p>
+<p><a href="https://catbro666.github.io/posts/e92ef4b4/" target="_blank" rel="noopener">一篇文章搞懂密码学基础及SSL/TLS协议</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/" title="网络请求响应中的两个握手-TLS握手与TCP握手" target="_blank" rel="external">https://yaoyuanyy.github.io/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/15/interview大厂面试真题草录/" title="interview大厂面试真题草录"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/04/12/apollo client 自动更新解析/" title="apollo client 自动更新解析"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>

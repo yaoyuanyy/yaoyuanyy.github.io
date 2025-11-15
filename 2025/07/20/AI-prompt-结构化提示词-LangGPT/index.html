@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>prompt-结构化提示词-LangGPT | Hexo</title>
+  <meta name="description" content="背景在我学习AI编程和AI问答的时候，无论是使用deepseek 还是 chatgpt，发现喂给他们的提示词非常关键，提示词给的准，LLM给的越准。 看了很多prompt的文章，LLM在快速的发展，网上更多的是重复的知识和文章，掐头去尾了。搜索有价值的东西越来越难了。 先是看到了许多CRISPE，BREKE等框架的知识，最后，看到了最想学习的LangGPT。 LangGPT - 结构化Prompt">
+<meta name="keywords" content="prompt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="prompt-结构化提示词-LangGPT">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2025/07/20/AI-prompt-结构化提示词-LangGPT/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="背景在我学习AI编程和AI问答的时候，无论是使用deepseek 还是 chatgpt，发现喂给他们的提示词非常关键，提示词给的准，LLM给的越准。 看了很多prompt的文章，LLM在快速的发展，网上更多的是重复的知识和文章，掐头去尾了。搜索有价值的东西越来越难了。 先是看到了许多CRISPE，BREKE等框架的知识，最后，看到了最想学习的LangGPT。 LangGPT - 结构化Prompt">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/截屏2025-07-20-1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/截屏2025-07-20-2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20250729225235.png">
+<meta property="og:updated_time" content="2025-11-15T04:49:10.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="prompt-结构化提示词-LangGPT">
+<meta name="twitter:description" content="背景在我学习AI编程和AI问答的时候，无论是使用deepseek 还是 chatgpt，发现喂给他们的提示词非常关键，提示词给的准，LLM给的越准。 看了很多prompt的文章，LLM在快速的发展，网上更多的是重复的知识和文章，掐头去尾了。搜索有价值的东西越来越难了。 先是看到了许多CRISPE，BREKE等框架的知识，最后，看到了最想学习的LangGPT。 LangGPT - 结构化Prompt">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/截屏2025-07-20-1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2025/07/20/AI-prompt-结构化提示词-LangGPT/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos7/">centos7</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos8/">centos8</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/婚姻/">婚姻</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/教育/">教育</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/考试/">考试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股市/">股市</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股票/">股票</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/">$</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI提示词/">AI提示词</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos8/">centos8</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cursor/">cursor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepseek/">deepseek</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql网络/">mysql网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prompt/">prompt</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/书籍会说话/">书籍会说话</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投资/">投资</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教育/">教育</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/考试/">考试</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/股市/">股市</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/" style="font-size: 13px;">$</a> <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AI提示词/" style="font-size: 13px;">AI提示词</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/centos8/" style="font-size: 13.25px;">centos8</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/cursor/" style="font-size: 13.13px;">cursor</a> <a href="/tags/deepseek/" style="font-size: 13px;">deepseek</a> <a href="/tags/docker/" style="font-size: 13.5px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.25px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.13px;">http</a> <a href="/tags/https/" style="font-size: 13.13px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.25px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.13px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.13px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.5px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.25px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.38px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.13px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.38px;">mysql</a> <a href="/tags/mysql网络/" style="font-size: 13px;">mysql网络</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/prompt/" style="font-size: 13.25px;">prompt</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.25px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.63px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.13px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.88px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.25px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.13px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/书籍会说话/" style="font-size: 13px;">书籍会说话</a> <a href="/tags/加密/" style="font-size: 13.13px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.13px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/思考/" style="font-size: 13px;">思考</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/投资/" style="font-size: 13.25px;">投资</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/教育/" style="font-size: 13px;">教育</a> <a href="/tags/数字签名/" style="font-size: 13.13px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.13px;">数字证书</a> <a href="/tags/生活/" style="font-size: 13.13px;">生活</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.13px;">类加载</a> <a href="/tags/考试/" style="font-size: 13.25px;">考试</a> <a href="/tags/股市/" style="font-size: 13.13px;">股市</a> <a href="/tags/读书/" style="font-size: 13.88px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">十一月 2024</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/life/">生活</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/15/生活-活生生的活着/" class="title">男性强身健体的运动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-15T03:10:10.000Z" itemprop="datePublished">2025-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/穷人的特征/" class="title">穷人的特征</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T02:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/如何培养一个优秀的小孩/" class="title">如何培养一个优秀的小孩</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T01:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测-1-言语理解/" class="title">言语理解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测/" class="title">考试记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LangGPT-结构化Prompt"><span class="toc-number">1.1.</span> <span class="toc-text">LangGPT - 结构化Prompt</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Prompt-提示-设计规则"><span class="toc-number">1.1.1.</span> <span class="toc-text">Prompt(提示)设计规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个-Prompt-template-包含以下模块"><span class="toc-number">1.1.2.</span> <span class="toc-text">一个 Prompt template 包含以下模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prompt-template"><span class="toc-number">1.1.3.</span> <span class="toc-text">Prompt template</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Role-模板"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">Role 模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prompt-template-使用步骤"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">Prompt template 使用步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#高级用法"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">高级用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Role-模板实例：诗人"><span class="toc-number">1.1.3.4.</span> <span class="toc-text">Role 模板实例：诗人</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何写好结构化Prompt"><span class="toc-number">1.1.4.</span> <span class="toc-text">如何写好结构化Prompt</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Prompt-理解LLM-Know-how-逻辑清晰"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">Prompt = 理解LLM + Know-how + 逻辑清晰</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#构建全局思维链"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">构建全局思维链</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结构化-Prompt-对不同模型的适用性"><span class="toc-number">1.1.5.</span> <span class="toc-text">结构化 Prompt 对不同模型的适用性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自动生成结构化Prompt"><span class="toc-number">1.1.6.</span> <span class="toc-text">自动生成结构化Prompt</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资料"><span class="toc-number">1.2.</span> <span class="toc-text">资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附件"><span class="toc-number">1.3.</span> <span class="toc-text">附件</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AI-prompt-结构化提示词-LangGPT" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      prompt-结构化提示词-LangGPT
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2025/07/20/AI-prompt-结构化提示词-LangGPT/" class="article-date">
+	  <time datetime="2025-07-20T03:10:59.000Z" itemprop="datePublished">2025-07-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/AI/">AI</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/prompt/">prompt</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2025/07/20/AI-prompt-结构化提示词-LangGPT/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3.6k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 13(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在我学习AI编程和AI问答的时候，无论是使用deepseek 还是 chatgpt，发现喂给他们的提示词非常关键，提示词给的准，LLM给的越准。</p>
+<p>看了很多prompt的文章，LLM在快速的发展，网上更多的是重复的知识和文章，掐头去尾了。搜索有价值的东西越来越难了。</p>
+<p>先是看到了许多CRISPE，BREKE等框架的知识，最后，看到了最想学习的LangGPT。</p>
+<h2 id="LangGPT-结构化Prompt"><a href="#LangGPT-结构化Prompt" class="headerlink" title="LangGPT - 结构化Prompt"></a>LangGPT - 结构化Prompt</h2><p>LangGPT - language of gpt：面向LLM打模型的自然语言编程框架。</p>
+<h3 id="Prompt-提示-设计规则"><a href="#Prompt-提示-设计规则" class="headerlink" title="Prompt(提示)设计规则"></a>Prompt(提示)设计规则</h3><ol>
+<li>具有规范化的格式</li>
+<li>可扩展</li>
+<li>要求必须具体，清晰，完整</li>
+<li>语言要灵活</li>
+</ol>
+<h3 id="一个-Prompt-template-包含以下模块"><a href="#一个-Prompt-template-包含以下模块" class="headerlink" title="一个 Prompt template 包含以下模块"></a>一个 Prompt template 包含以下模块</h3><ol>
+<li>Profile：指出了用户对LLM在角色方面的要求，包括个人简介、人物肖像等。</li>
+<li>Goal：列出了用户想要实现的目标，这就是LLM需要完成的目标。</li>
+<li>Skill：用于向LLM表明他们拥有的技能。经过工具学习的LLM，可以指导他们调用工具，更准确地执行任务。</li>
+<li>Constraint：表示约束或突出，即不允许LLM超出的范围以及生成回复时必须满足的要求等。</li>
+<li>Rules： 角色必须遵守的规则，通常是角色必须做的或者禁止做的事情，比如 “不许打破角色设定” 等规则。</li>
+<li>Example：给出了输入-输出对作为供LLM学习的例子。</li>
+<li>Workflow：指示了执行任务时的工作流程，当任务需求比较复杂时，往往需要实例化这个模块。</li>
+<li>Suggestion：包括对LLM的建议和行为规划。该模块重点列出常见场景，并告诉LLM在此类情况下可以采取的行为或应对措施</li>
+<li>Background：表示LLM在执行任务时需要具备的背景信息和记忆。</li>
+<li>Style：限定了LLM生成回复的风格。</li>
+<li>Output Format：定义了LLM的输出格式。指定输出格式可以提高某些任务中结果提取的效率和准确。</li>
+<li>Initialization：即初始化，以告知LLM即将开始对话。有时，该模块中还会给出指定的第一句话。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/截屏2025-07-20-1.png" alt="截屏2025-07-20-1"></p>
+<h3 id="Prompt-template"><a href="#Prompt-template" class="headerlink" title="Prompt template"></a>Prompt template</h3><p>ChatGPT 很擅长角色扮演，只要提供角色说明，角色行为，技能等描述，就能做出很符合角色的行为。</p>
+<p>因此 LangGPT 设计了模板让 ChatGPT 更好的理解用户意图，并相应提供了一套角色设计方法。</p>
+<p>LangGPT 提供了 Prompt 编写模板，套用模板即可快速编写高质量 Prompts。</p>
+<h4 id="Role-模板"><a href="#Role-模板" class="headerlink" title="Role 模板"></a>Role 模板</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"># Role: Your_Role_Name</span><br><span class="line"></span><br><span class="line">## Profile</span><br><span class="line"></span><br><span class="line">- Author: 设置 Prompt 作者名，保护 Prompt 原作权益</span><br><span class="line">- Version: 设置 Prompt 版本号，记录迭代版本</span><br><span class="line">- Language: 设置语言，中文还是 English</span><br><span class="line">- Description:  一两句话简要描述角色设定，背景，技能等</span><br><span class="line"></span><br><span class="line">### Skill-1</span><br><span class="line">1.技能描述1</span><br><span class="line">2.技能描述2</span><br><span class="line"></span><br><span class="line">### Skill-2</span><br><span class="line">1.技能描述1</span><br><span class="line">2.技能描述2</span><br><span class="line"></span><br><span class="line">## Rules</span><br><span class="line">1. Don&apos;t break character under any circumstance.</span><br><span class="line">2. Don&apos;t talk nonsense and make up facts.</span><br><span class="line"></span><br><span class="line">## Workflow     设置工作流程，如何和用户交流，交互</span><br><span class="line">1. 让用户以 &quot;形式：[], 主题：[]&quot; 的方式指定诗歌形式，主题。</span><br><span class="line">2. 针对用户给定的主题，创作诗歌，包括题目和诗句。</span><br><span class="line"></span><br><span class="line">## Tools</span><br><span class="line"></span><br><span class="line">### More Tools</span><br><span class="line"></span><br><span class="line">## Initialization 设置初始化步骤，强调 prompt 各内容之间的作用和联系，定义初始化行为。</span><br><span class="line">作为角色 &lt;Role&gt;, 严格遵守 &lt;Rules&gt;, 使用默认 &lt;Language&gt; 与用户对话，友好的欢迎用户。然后介绍自己，并告诉用户 &lt;Workflow&gt;。</span><br></pre></td></tr></table></figure>
+<p>Role 模板主要包含四部分内容:</p>
+<ul>
+<li>Profile 角色的简历: 角色描述，角色特点，角色技能以及你想要的其他角色特性。</li>
+<li>Rules 角色必须遵守的规则，通常是角色必须做的或者禁止做的事情，比如 “不许打破角色设定” 等规则。</li>
+<li>Workflow 角色的工作流，需要用户提供怎样的输入，角色如何响应用户。</li>
+<li>Initialization 按照 Role 模板的配置初始化角色，大部分时候使用模板默认内容即可</li>
+</ul>
+<h4 id="Prompt-template-使用步骤"><a href="#Prompt-template-使用步骤" class="headerlink" title="Prompt template 使用步骤"></a>Prompt template 使用步骤</h4><ol>
+<li><p>Role 设置角色名：将 Role：Your_Role_Name 中的 Your_Role_Name 替换为你的角色名</p>
+</li>
+<li><p>Profile 编写角色简历：</p>
+<ul>
+<li>设置语言，Language 设置为 中文 或者 English 等其他语言, 用目标语言表达为佳</li>
+<li>Description 后面简单描述角色</li>
+</ul>
+</li>
+<li><p>Skill 部分添加角色技能：可以设置多个技能，技能下分点提供技能描述</p>
+</li>
+<li><p>Rules 设定规则：添加角色必须遵守的规则，通常是角色必须做的或者禁止做的事情，比如 “Don’t break character under any circumstance.” “禁止出戏” 等规则</p>
+</li>
+<li><p>Workflow 设定工作流：角色如何与用户交互，需要用户提供怎样的输入，角色如何响应用户。</p>
+</li>
+<li><p>Initialization 初始化角色：Role 模板依据模板内容对角色进行设定，一般不需要修改。</p>
+</li>
+<li><p>将编写好的 Role 模板内容复制到 ChatGPT 对话框（or API）愉快使用~</p>
+</li>
+</ol>
+<h4 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h4><p>变量为 Prompt 的编写带来了很大的灵活性。使用变量可以方便的引用角色内容，设置和更改角色属性。</p>
+<p>Role 模板里的Initialization部分则大量使用的了变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">As a/an &lt;Role&gt;, you must follow the &lt;Rules&gt;, you must talk to user in default &lt;Language&gt;，you must greet the user. Then introduce yourself and introduce the &lt;Workflow&gt;.</span><br><span class="line">LangGPT 中使用 &quot;&lt;&gt;&quot; 标识变量，这里的变量有：</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><role> 变量，指代了整个 Role 角色的内容。</role></li>
+<li><rules> 变量，指代了 ## Rules 一节的规则</rules></li>
+<li><language> 变量，指代了 Language 字段的值</language></li>
+</ul>
+<h4 id="Role-模板实例：诗人"><a href="#Role-模板实例：诗人" class="headerlink" title="Role 模板实例：诗人"></a>Role 模板实例：诗人</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># Role: 诗人</span><br><span class="line"></span><br><span class="line">## Profile</span><br><span class="line">- Author: YZFly</span><br><span class="line">- Version: 1.0</span><br><span class="line">- Language: 中文</span><br><span class="line">- Description: 诗人是创作诗歌的艺术家，擅长通过诗歌来表达情感、描绘景象、讲述故事，具有丰富的想象力和对文字的独特驾驭能力。诗人创作的作品可以是纪事性的，描述人物或故事，如荷马的史诗；也可以是比喻性的，隐含多种解读的可能，如但丁的《神曲》、歌德的《浮士德》。</span><br><span class="line"></span><br><span class="line">### 擅长写现代诗:</span><br><span class="line">1. 现代诗形式自由，意涵丰富，意象经营重于修辞运用，是心灵的映现</span><br><span class="line">2. 更加强调自由开放和直率陈述与进行“可感与不可感之间”的沟通。</span><br><span class="line"></span><br><span class="line">### 擅长写七言律诗</span><br><span class="line">1. 七言体是古代诗歌体裁</span><br><span class="line">2. 全篇每句七字或以七字句为主的诗体</span><br><span class="line">3. 它起于汉族民间歌谣</span><br><span class="line"></span><br><span class="line">### 擅长写五言诗</span><br><span class="line">1. 全篇由五字句构成的诗</span><br><span class="line">2. 能够更灵活细致地抒情和叙事</span><br><span class="line">3. 在音节上，奇偶相配，富于音乐美</span><br><span class="line"></span><br><span class="line">## Rules</span><br><span class="line">1. 内容健康，积极向上</span><br><span class="line">2. 七言律诗和五言诗要押韵</span><br><span class="line"></span><br><span class="line">## Workflow</span><br><span class="line">1. 让用户以 &quot;形式：[], 主题：[]&quot; 的方式指定诗歌形式，主题。</span><br><span class="line">2. 针对用户给定的主题，创作诗歌，包括题目和诗句。</span><br><span class="line"></span><br><span class="line">## Initialization</span><br><span class="line">作为角色 &lt;Role&gt;, 严格遵守 &lt;Rules&gt;, 使用默认 &lt;Language&gt; 与用户对话，友好的欢迎用户。然后介绍自己，并告诉用户 &lt;Workflow&gt;。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>形式：七言绝句，主题：少女思春</li>
+</ul>
+<p>deepseek效果图</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/截屏2025-07-20-2.png" alt="截屏2025-07-20-2"></p>
+<p>更多</p>
+<p><a href="https://juejin.cn/post/7287412759050289212" target="_blank" rel="noopener">结构化Prompt应用实例</a></p>
+<p><a href="https://github.com/lijigang/prompts" target="_blank" rel="noopener">lijigang - LangGPT prompts case</a></p>
+<p><a href="https://github.com/langgptai/LangGPT/tree/main/examples" target="_blank" rel="noopener">prompts examples</a></p>
+<p><a href="https://github.com/langgptai/LangGPT/blob/main/examples/chinese_xiaohongshu_writer/ChatGPT-%E5%B0%8F%E7%BA%A2%E4%B9%A6%E7%88%86%E6%AC%BE%E7%94%9F%E6%88%90%E5%99%A8%E5%AF%B9%E8%AF%9D.md" target="_blank" rel="noopener">小红书爆款生成器</a></p>
+<h3 id="如何写好结构化Prompt"><a href="#如何写好结构化Prompt" class="headerlink" title="如何写好结构化Prompt"></a>如何写好结构化Prompt</h3><h4 id="Prompt-理解LLM-Know-how-逻辑清晰"><a href="#Prompt-理解LLM-Know-how-逻辑清晰" class="headerlink" title="Prompt = 理解LLM + Know-how + 逻辑清晰"></a>Prompt = 理解LLM + Know-how + 逻辑清晰</h4><p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20250729225235.png" alt="20250729225235"></p>
+<ul>
+<li><p>理解LLM：了解每个模型的特点和能力，是构建有效 Prompt 的基础。</p>
+</li>
+<li><p>Know-how：对于一个领域、一个行业，一个细分场景的理解到底有多深？</p>
+</li>
+<li><p>逻辑清晰：逻辑这个层面上，也就是表达层面上，一个人是不是能够把一个复杂的事情给说清楚了</p>
+</li>
+</ul>
+<h4 id="构建全局思维链"><a href="#构建全局思维链" class="headerlink" title="构建全局思维链"></a>构建全局思维链</h4><p>一个好的结构化 Prompt 模板，某种意义上是构建了一个好的全局思维链。 如 LangGPT 中展示的模板设计时就考虑了如下思维链:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Role (角色) -&gt; Profile（角色简介）—&gt; Profile 下的 skill (角色技能) -&gt; Rules (角色要遵守的规则) -&gt; Workflow (满足上述条件的角色的工作流程) -&gt; Initialization (进行正式开始工作的初始化准备) -&gt; 开始实际使用</span><br></pre></td></tr></table></figure>
+<h3 id="结构化-Prompt-对不同模型的适用性"><a href="#结构化-Prompt-对不同模型的适用性" class="headerlink" title="结构化 Prompt 对不同模型的适用性"></a>结构化 Prompt 对不同模型的适用性</h3><p>结构化 Prompt 编写对模型基础能力有一定要求，要求模型本身具有较好的指令遵循、结构识别分析能力。从实践来看，GPT-4 是最佳选择， Claude 模型能力次之， GPT-3.5 勉强可用。依据笔者实践和身边朋友使用的反馈来看，在 GPT-4 和 Claude 模型上的表现情况都不错， GPT-3.5 则存在表现不稳定现象。</p>
+<p>推荐使用 GPT-4</p>
+<p>deepseek 能用一些</p>
+<h3 id="自动生成结构化Prompt"><a href="#自动生成结构化Prompt" class="headerlink" title="自动生成结构化Prompt"></a>自动生成结构化Prompt</h3><ul>
+<li>构建复杂高性能结构化 Prompt 有以下几种工作流：</li>
+</ul>
+<ol>
+<li>自动化生成初版结构化 Prompt -&gt; 手工迭代调优 -&gt; 符合需求的 prompt</li>
+<li>自动化生成初版结构化 Prompt -&gt; 自动化分析评估 Prompt -&gt; 基于评估结果迭代调优 -&gt; 符合需求的 prompt</li>
+</ol>
+<p>这里列出一个 LangGPT 社区广受好评的用于Prompt <code>自动生成Prompt</code> 的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"># Role:Prompt工程师</span><br><span class="line"></span><br><span class="line">## Attention：</span><br><span class="line">- 我总是被老板骂写不出来Prompt，如果你能写出优秀的Prompt会避免让我失业，请认真思考并竭尽全力，拜托了！</span><br><span class="line"></span><br><span class="line">## Profile:</span><br><span class="line">- Author:pp</span><br><span class="line">- Version:2.1</span><br><span class="line">- Language:中文</span><br><span class="line">- Description:你是一名优秀的Prompt工程师，擅长将常规的Prompt转化为结构化的Prompt，并输出符合预期的回复。</span><br><span class="line"></span><br><span class="line">### Skills:</span><br><span class="line">- 了解LLM的技术原理和局限性，包括它的训练数据、构建方式等，以便更好地设计Prompt。</span><br><span class="line">- 具有丰富的自然语言处理经验，能够设计出符合语法、语义的高质量Prompt。</span><br><span class="line">- 迭代优化能力强，能通过不断调整和测试Prompt的表现,持续改进Prompt质量。</span><br><span class="line">- 能结合具体业务需求设计Prompt，使LLM生成的内容符合业务要求。</span><br><span class="line">- Use irregular sentence lengths between8-36 words. Introduce logical confusion and unpredictability in the language. The goal is maxirum engagement, complexity, and surprise.</span><br><span class="line"></span><br><span class="line">## Goals：</span><br><span class="line">- 分析用户的Prompt，设计一个结构清晰、符合逻辑的Prompt框架，确保分析过程符合各个学科的最佳实践。</span><br><span class="line">- 按照&lt;OutputFormat&gt;填充该框架,生成一个高质量的Prompt。</span><br><span class="line">- 每个结构必须输出5个建议</span><br><span class="line">- 确保输出Initialization内容后再结束</span><br><span class="line"></span><br><span class="line">## Constrains:</span><br><span class="line">1. 你将分析下面这些信息，确保所有内容符合各个学科的最佳实践。</span><br><span class="line">    - Role: 分析用户的Prompt，思考最适合扮演的1个或多个角色，该角色是这个领域最资深的专家，也最适合解决我的问题。</span><br><span class="line">    - Background：分析用户的Prompt，思考用户为什么会提出这个问题，陈述用户提出这个问题的原因、背景、上下文。</span><br><span class="line">    - Attention：分析用户的Prompt，思考用户对这项任务的渴求，并给予积极向上的情绪刺激。</span><br><span class="line">    - Profile：基于你扮演的角色，简单描述该角色。</span><br><span class="line">    - Skills：基于你扮演的角色，思考应该具备什么样的能力来完成任务。</span><br><span class="line">    - Goals：分析用户的Prompt，思考用户需要的任务清单，完成这些任务，便可以解决问题。</span><br><span class="line">    - Constrains：基于你扮演的角色，思考该角色应该遵守的规则，确保角色能够出色的完成任务。</span><br><span class="line">    - OutputFormat: 基于你扮演的角色，思考应该按照什么格式进行输出是清晰明了具有逻辑性。</span><br><span class="line">    - Workflow: 基于你扮演的角色，拆解该角色执行任务时的工作流，生成不低于5个步骤，其中要求对用户提供的信息进行分析，并给与补充信息建议。</span><br><span class="line">    - Suggestions：基于我的问题(Prompt)，思考我需要提给chatGPT的任务清单，确保角色能够出色的完成任务。</span><br><span class="line">2. Don&apos;t break character under any circumstance.</span><br><span class="line">3. Don&apos;t talk nonsense and make up facts.</span><br><span class="line"></span><br><span class="line">## Workflow:</span><br><span class="line">1. 分析用户输入的Prompt，提取关键信息。</span><br><span class="line">2. 根据关键信息确定最合适的角色。</span><br><span class="line">3. 分析该角色的背景、注意事项、描述、技能等。</span><br><span class="line">4. 将分析的信息按照&lt;OutputFormat&gt;输出。</span><br><span class="line">5. 输出的prompt为可被用户复制的markdown源代码格式。</span><br><span class="line"></span><br><span class="line">## Suggestions:</span><br><span class="line">1. 明确指出这些建议的目标对象和用途,例如&quot;以下是一些可以提供给用户以帮助他们改进Prompt的建议&quot;。</span><br><span class="line">2. 将建议进行分门别类,比如&quot;提高可操作性的建议&quot;、&quot;增强逻辑性的建议&quot;等,增加结构感。</span><br><span class="line">3. 每个类别下提供3-5条具体的建议,并用简单的句子阐述建议的主要内容。</span><br><span class="line">4. 建议之间应有一定的关联和联系,不要是孤立的建议,让用户感受到这是一个有内在逻辑的建议体系。</span><br><span class="line">5. 避免空泛的建议,尽量给出针对性强、可操作性强的建议。</span><br><span class="line">6. 可考虑从不同角度给建议,如从Prompt的语法、语义、逻辑等不同方面进行建议。</span><br><span class="line">7. 在给建议时采用积极的语气和表达,让用户感受到我们是在帮助而不是批评。</span><br><span class="line">8. 最后,要测试建议的可执行性,评估按照这些建议调整后是否能够改进Prompt质量。</span><br><span class="line"></span><br><span class="line">## OutputFormat:</span><br><span class="line">    ---</span><br><span class="line">    # Role：Your_Role_Name</span><br><span class="line">    </span><br><span class="line">    ## Background：Role Background.</span><br><span class="line">    </span><br><span class="line">    ## Attention：xxx</span><br><span class="line">    </span><br><span class="line">    ## Profile：</span><br><span class="line">    - Author: xxx</span><br><span class="line">    - Version: 0.1</span><br><span class="line">    - Language: 中文</span><br><span class="line">    - Description: Describe your role. Give an overview of the character&apos;s characteristics and skills.</span><br><span class="line">    </span><br><span class="line">    ### Skills:</span><br><span class="line">    - Skill Description 1</span><br><span class="line">    - Skill Description 2</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    ## Goals:</span><br><span class="line">    - Goal 1</span><br><span class="line">    - Goal 2</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    ## Constrains:</span><br><span class="line">    - Constraints 1</span><br><span class="line">    - Constraints 2</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    ## Workflow:</span><br><span class="line">    1. First, xxx</span><br><span class="line">    2. Then, xxx</span><br><span class="line">    3. Finally, xxx</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    ## OutputFormat:</span><br><span class="line">    - Format requirements 1</span><br><span class="line">    - Format requirements 2</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    ## Suggestions:</span><br><span class="line">    - Suggestions 1</span><br><span class="line">    - Suggestions 2</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    ## Initialization</span><br><span class="line">    As a/an &lt;Role&gt;, you must follow the &lt;Constrains&gt;, you must talk to user in default &lt;Language&gt;，you must greet the user. Then introduce yourself and introduce the &lt;Workflow&gt;.</span><br><span class="line">    ---</span><br><span class="line"></span><br><span class="line">## Initialization：</span><br><span class="line">    我会给出Prompt，请根据我的Prompt，慢慢思考并一步一步进行输出，直到最终输出优化的Prompt。</span><br><span class="line">    请避免讨论我发送的内容，不需要回复过多内容，不需要自我介绍，如果准备好了，请告诉我已经准备好。</span><br></pre></td></tr></table></figure>
+<p>更多优秀的：<a href="https://langgptai.feishu.cn/wiki/WDfzwfTKwi1lyAkBcoCcu0sUnPc" target="_blank" rel="noopener">AI Prompt 群精选 - Meta Prompt</a></p>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><p><a href="https://github.com/langgptai/LangGPT" target="_blank" rel="noopener">LangGPT</a></p>
+<p><a href="https://langgptai.feishu.cn/wiki/ASXOwDbTEiH9CUkXFA5cLHumn88" target="_blank" rel="noopener">feishu-langgptai</a></p>
+<h2 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h2><p><a href="source/images/【论文中文版】LangGPT：面向大模型的自然语言编程框架.pdf">LangGPT论文-中文版</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2025/07/20/AI-prompt-结构化提示词-LangGPT/" title="prompt-结构化提示词-LangGPT" target="_blank" rel="external">https://yaoyuanyy.github.io/2025/07/20/AI-prompt-结构化提示词-LangGPT/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2025/08/09/转载_穷人的特征/" title="穷人的特征"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2025/06/29/AI-cursor学习-提示词生成/" title="cursor学习-提示词生成"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>interview大厂面试真题草录 | Hexo</title>
+  <meta name="description" content="2021-07-10question: epoll原理 redis 穿透，击穿，雪崩解决方案 多线程相关 锁 算法：二叉树的最大深度  answer: epoll原理周志垒视频  redis 缓存穿透，缓存击穿，缓存雪崩及解决方案缓存穿透： 大量查询请求进来，访问的是压根儿在缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。这种查询不存在的数据的现象我们称为缓存穿透。缓存穿透带来的">
+<meta name="keywords" content="interview,面试,找工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="interview大厂面试真题草录">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2022/05/15/interview大厂面试真题草录/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="2021-07-10question: epoll原理 redis 穿透，击穿，雪崩解决方案 多线程相关 锁 算法：二叉树的最大深度  answer: epoll原理周志垒视频  redis 缓存穿透，缓存击穿，缓存雪崩及解决方案缓存穿透： 大量查询请求进来，访问的是压根儿在缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。这种查询不存在的数据的现象我们称为缓存穿透。缓存穿透带来的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/robot_maze.png">
+<meta property="og:updated_time" content="2025-11-15T04:49:10.271Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="interview大厂面试真题草录">
+<meta name="twitter:description" content="2021-07-10question: epoll原理 redis 穿透，击穿，雪崩解决方案 多线程相关 锁 算法：二叉树的最大深度  answer: epoll原理周志垒视频  redis 缓存穿透，缓存击穿，缓存雪崩及解决方案缓存穿透： 大量查询请求进来，访问的是压根儿在缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。这种查询不存在的数据的现象我们称为缓存穿透。缓存穿透带来的">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/robot_maze.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2022/05/15/interview大厂面试真题草录/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos7/">centos7</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos8/">centos8</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/婚姻/">婚姻</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/教育/">教育</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/考试/">考试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股市/">股市</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股票/">股票</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/">$</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI提示词/">AI提示词</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos8/">centos8</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cursor/">cursor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepseek/">deepseek</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql网络/">mysql网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prompt/">prompt</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/书籍会说话/">书籍会说话</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投资/">投资</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教育/">教育</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/考试/">考试</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/股市/">股市</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/" style="font-size: 13px;">$</a> <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AI提示词/" style="font-size: 13px;">AI提示词</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/centos8/" style="font-size: 13.25px;">centos8</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/cursor/" style="font-size: 13.13px;">cursor</a> <a href="/tags/deepseek/" style="font-size: 13px;">deepseek</a> <a href="/tags/docker/" style="font-size: 13.5px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.25px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.13px;">http</a> <a href="/tags/https/" style="font-size: 13.13px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.25px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.13px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.13px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.5px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.25px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.38px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.13px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.38px;">mysql</a> <a href="/tags/mysql网络/" style="font-size: 13px;">mysql网络</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/prompt/" style="font-size: 13.25px;">prompt</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.25px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.63px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.13px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.88px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.25px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.13px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/书籍会说话/" style="font-size: 13px;">书籍会说话</a> <a href="/tags/加密/" style="font-size: 13.13px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.13px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/思考/" style="font-size: 13px;">思考</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/投资/" style="font-size: 13.25px;">投资</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/教育/" style="font-size: 13px;">教育</a> <a href="/tags/数字签名/" style="font-size: 13.13px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.13px;">数字证书</a> <a href="/tags/生活/" style="font-size: 13.13px;">生活</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.13px;">类加载</a> <a href="/tags/考试/" style="font-size: 13.25px;">考试</a> <a href="/tags/股市/" style="font-size: 13.13px;">股市</a> <a href="/tags/读书/" style="font-size: 13.88px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">十一月 2024</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/life/">生活</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/15/生活-活生生的活着/" class="title">男性强身健体的运动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-15T03:10:10.000Z" itemprop="datePublished">2025-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/穷人的特征/" class="title">穷人的特征</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T02:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/如何培养一个优秀的小孩/" class="title">如何培养一个优秀的小孩</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T01:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测-1-言语理解/" class="title">言语理解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测/" class="title">考试记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-07-10"><span class="toc-number">1.</span> <span class="toc-text">2021-07-10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question"><span class="toc-number">1.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#answer"><span class="toc-number">1.2.</span> <span class="toc-text">answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-07-12"><span class="toc-number">2.</span> <span class="toc-text">2021-07-12</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-1"><span class="toc-number">2.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#answer-1"><span class="toc-number">2.2.</span> <span class="toc-text">answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-07-23"><span class="toc-number">3.</span> <span class="toc-text">2021-07-23</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-2"><span class="toc-number">3.1.</span> <span class="toc-text">question:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-07-26"><span class="toc-number">4.</span> <span class="toc-text">2021-07-26</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-3"><span class="toc-number">4.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#answer-2"><span class="toc-number">4.2.</span> <span class="toc-text">answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-02"><span class="toc-number">5.</span> <span class="toc-text">2021-08-02</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-4"><span class="toc-number">5.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#answer-3"><span class="toc-number">5.2.</span> <span class="toc-text">answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-07"><span class="toc-number">6.</span> <span class="toc-text">2021-08-07</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer"><span class="toc-number">6.1.</span> <span class="toc-text">question and answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-07-1"><span class="toc-number">7.</span> <span class="toc-text">2021-08-07</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-5"><span class="toc-number">7.1.</span> <span class="toc-text">question:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-10"><span class="toc-number">8.</span> <span class="toc-text">2021-08-10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-1"><span class="toc-number">8.1.</span> <span class="toc-text">question and answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-11"><span class="toc-number">9.</span> <span class="toc-text">2021-08-11</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-6"><span class="toc-number">9.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#answer-4"><span class="toc-number">9.2.</span> <span class="toc-text">answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-12"><span class="toc-number">10.</span> <span class="toc-text">2021-08-12</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-7"><span class="toc-number">10.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#answer-5"><span class="toc-number">10.2.</span> <span class="toc-text">answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-16"><span class="toc-number">11.</span> <span class="toc-text">2021-08-16</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-12-1"><span class="toc-number">12.</span> <span class="toc-text">2021-08-12</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-8"><span class="toc-number">12.1.</span> <span class="toc-text">question:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Answer"><span class="toc-number">12.2.</span> <span class="toc-text">Answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-08-12-2"><span class="toc-number">13.</span> <span class="toc-text">2021-08-12</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-2"><span class="toc-number">13.1.</span> <span class="toc-text">question and answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-09-02"><span class="toc-number">14.</span> <span class="toc-text">2021-09-02</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-3"><span class="toc-number">14.1.</span> <span class="toc-text">question and answer:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-09-07"><span class="toc-number">15.</span> <span class="toc-text">2021-09-07</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-4"><span class="toc-number">15.1.</span> <span class="toc-text">question and answer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2021-09-07-1"><span class="toc-number">16.</span> <span class="toc-text">2021-09-07</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-5"><span class="toc-number">16.1.</span> <span class="toc-text">question and answer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2022-06-15"><span class="toc-number">17.</span> <span class="toc-text">2022-06-15</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-6"><span class="toc-number">17.1.</span> <span class="toc-text">question and answer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2022-06-16"><span class="toc-number">18.</span> <span class="toc-text">2022-06-16</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#question-and-answer-7"><span class="toc-number">18.1.</span> <span class="toc-text">question and answer</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-interview大厂面试真题草录" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      interview大厂面试真题草录
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/15/interview大厂面试真题草录/" class="article-date">
+	  <time datetime="2022-05-15T09:12:33.000Z" itemprop="datePublished">2022-05-15</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/面试/">面试</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/interview/">interview</a>, <a class="article-tag-link" href="/tags/找工作/">找工作</a>, <a class="article-tag-link" href="/tags/面试/">面试</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/15/interview大厂面试真题草录/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 5.2k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 20(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="2021-07-10"><a href="#2021-07-10" class="headerlink" title="2021-07-10"></a>2021-07-10</h2><h3 id="question"><a href="#question" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>epoll原理</li>
+<li>redis 穿透，击穿，雪崩解决方案</li>
+<li>多线程相关 锁</li>
+<li>算法：二叉树的最大深度</li>
+</ol>
+<h3 id="answer"><a href="#answer" class="headerlink" title="answer:"></a>answer:</h3><ol>
+<li><p>epoll原理<br>周志垒视频</p>
+</li>
+<li><p>redis 缓存穿透，缓存击穿，缓存雪崩及解决方案<br>缓存穿透：<br> 大量查询请求进来，访问的是压根儿在缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。这种查询不存在的数据的现象我们称为缓存穿透。<br>缓存穿透带来的问题：<br> 试想一下，如果有黑客会对你的系统进行攻击，拿一个不存在的id 去查询数据，会产生大量的请求到数据库去查询。可能会导致你的数据库由于压力过大而宕掉。<br>缓存穿透的解决方案：布隆过滤器；缓存空值；接口层增加校验：鉴权校验，参数校验，不合法的参数直接代码Return，比如：id 做基础校验，id &lt;=0的直接拦截等。详见链接</p>
+<p>缓存击穿：<br> 缓存击穿是指一个Key非常热点，在不停的扛着大并发，大量的请求同时集中对这一个点进行访问，当这个Key在失效的瞬间，持续的大并发就穿破缓存，直接请求数据库，就像在一个完好无损的桶上凿开了一个洞。这种现象我们称为缓存击穿<br>缓存击穿带来的问题：<br> 会造成某一时刻数据库请求量过大，压力剧增。可能会导致你的数据库由于压力过大而宕掉。<br>缓存击穿的解决方案：<br> 设置热点数据永远不过期。或者加上互斥锁搞定：多个线程同时去查询，第一个查询数据的请求用一个互斥锁来锁住它。其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存<br>缓存雪崩：<br> 当某一时刻发生大规模的缓存失效的情况，比如在同一个时间点大量的key全部过期了或者你的缓存服务宕机了，会有大量的请求进来直接打到DB上面。结果就是DB扛不住，挂掉。这种现象我们称为缓存雪崩<br>缓存雪崩带来的问题：<br> 大量的请求进来直接打到DB上面。结果就是DB扛不住，挂掉。<br>缓存雪崩的解决方案：<br> 缓存的过期时间设置一个波动随机值；限流&amp;降级；分治法：将热点数据打散分不到不同的机房中，有效缓解</p>
+<p><a href="https://juejin.cn/post/6844903807797690376" target="_blank" rel="noopener">https://juejin.cn/post/6844903807797690376</a></p>
+</li>
+</ol>
+<ol start="3">
+<li>多线程相关 锁</li>
+<li>算法：二叉树的最大深度<br>public int getDeep(Node node){<br>if(node == null) {<br>return 0;<br>}<br>return Math.max(getDeep(node.left), getDeep(node.right)) + 1;<br>}</li>
+</ol>
+<h2 id="2021-07-12"><a href="#2021-07-12" class="headerlink" title="2021-07-12"></a>2021-07-12</h2><h3 id="question-1"><a href="#question-1" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>redis 分布式锁的实现原理 setnx的弊端 redis分布式锁的过期时间设置方法</li>
+<li>mysql 索引方法论 幻读 间隙锁实现原理</li>
+<li>cms g1 要回收的内存花费的时间 大于指定的时间，怎么办</li>
+<li>算法：将两个有序的链表合并为一个新链表，要求新的链表是通过拼接两个链表的节点来生成的，且合并后新链表依然有序。</li>
+</ol>
+<h3 id="answer-1"><a href="#answer-1" class="headerlink" title="answer:"></a>answer:</h3><ol>
+<li><p>redis 分布式锁的实现原理 setnx的弊端 redis分布式锁的过期时间设置方法<br>redis分布式锁的过期时间设置方法:<br>redisson watch dog   watch dog 如何配置<br>redis做分布式锁历程中遇到的问题：1.原子性；2过期时间小于业务执行时间；3. 主从下master宕机，slave还没有master上的key，造成重复获取锁</p>
+</li>
+<li><p>mysql 索引方法论 幻读 间隙锁实现原理<br><a href="https://stackoverflow.com/questions/26215071/rationale-behind-difference-between-unique-and-non-unique-indexes-in-mysql-innod?rq=1" target="_blank" rel="noopener">https://stackoverflow.com/questions/26215071/rationale-behind-difference-between-unique-and-non-unique-indexes-in-mysql-innod?rq=1</a><br><a href="https://ningyu1.github.io/site/post/50-mysql-gap-lock/" target="_blank" rel="noopener">https://ningyu1.github.io/site/post/50-mysql-gap-lock/</a></p>
+</li>
+<li><p>cms g1 要回收的内存花费的时间 大于指定的时间，怎么办</p>
+</li>
+<li>算法：将两个有序的链表合并为一个新链表，要求新的链表是通过拼接两个链表的节点来生成的，且合并后新链表依然有序。</li>
+</ol>
+<h2 id="2021-07-23"><a href="#2021-07-23" class="headerlink" title="2021-07-23"></a>2021-07-23</h2><h3 id="question-2"><a href="#question-2" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>jvm的类加载过程</li>
+<li>redis如何实现延时队列</li>
+<li>阻塞队列 delayQueue</li>
+<li>线程池原理 为啥用阻塞队列,使用普通的集合不可以吗</li>
+</ol>
+<p>answer:</p>
+<h2 id="2021-07-26"><a href="#2021-07-26" class="headerlink" title="2021-07-26"></a>2021-07-26</h2><h3 id="question-3"><a href="#question-3" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>threadlocal hash冲突是怎么解决的<br><a href="https://www.shangmayuan.com/a/71c07f8e44f147a18cc5dd16.html" target="_blank" rel="noopener">https://www.shangmayuan.com/a/71c07f8e44f147a18cc5dd16.html</a><br><a href="http://www.cxyzjd.com/article/xiaoxiaodaxiake/107732928z" target="_blank" rel="noopener">http://www.cxyzjd.com/article/xiaoxiaodaxiake/107732928z</a></li>
+</ol>
+<ol start="2">
+<li>java8 新增加的特性是哪些</li>
+</ol>
+<ol start="3">
+<li>jvm的类加载过程</li>
+</ol>
+<h3 id="answer-2"><a href="#answer-2" class="headerlink" title="answer:"></a>answer:</h3><h2 id="2021-08-02"><a href="#2021-08-02" class="headerlink" title="2021-08-02"></a>2021-08-02</h2><h3 id="question-4"><a href="#question-4" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>遇到过死锁吗，如何发现死锁</li>
+<li>spring/springboot 加载过程</li>
+<li>mysql间隙锁</li>
+<li>双亲委派机制，哪些组件破坏了双亲委派机制</li>
+<li>如何保证系统稳定性？事前，事中，事后</li>
+<li>秒杀的设计，1000份，10分钟后活动结束，未付款30分钟后自动失效，从页面，从服务，从db的角度设计下</li>
+<li>你的优势 劣势</li>
+</ol>
+<h3 id="answer-3"><a href="#answer-3" class="headerlink" title="answer:"></a>answer:</h3><ol>
+<li><p>遇到过死锁吗，如何发现死锁<br>a. 死锁代码实践<br>b. 死锁检测方法<br>c. 避免死锁方法 顺序加锁(顺序性的进行加锁) 和 时限加锁(使用ReentrantLock.tryLook(time))<br><a href="https://juejin.cn/post/6844904100488806413#heading-10" target="_blank" rel="noopener">https://juejin.cn/post/6844904100488806413#heading-10</a></p>
+</li>
+<li><p>spring/springboot 加载过程</p>
+</li>
+<li>mysql间隙锁</li>
+<li>双亲委派机制，哪些组件破坏了双亲委派机制<br>jdbc tomcat spring等<br>为什么Tomcat要破坏双亲委派<br>我们知道，Tomcat是web容器，那么一个web容器可能需要部署多个应用程序。<br>不同的应用程序可能会依赖同一个第三方类库的不同版本，但是不同版本的类库中某一个类的全路径名可能是一样的。<br>如多个应用都要依赖hollis.jar，但是A应用需要依赖1.0.0版本，但是B应用需要依赖1.0.1版本。这两个版本中都有一个类是com.hollis.Test.class。<br>如果采用默认的双亲委派类加载机制，那么是无法加载多个相同的类。<br>所以，Tomcat破坏双亲委派原则，提供隔离的机制，为每个web容器单独提供一个WebAppClassLoader加载器。<br>Tomcat的类加载机制：为了实现隔离性，优先加载 Web 应用自己定义的类，所以没有遵照双亲委派的约定，每一个应用自己的类加载器——WebAppClassLoader负责加载本身的目录下的class文件，加载不到时再交给CommonClassLoader加载，这和双亲委派刚好相反。</li>
+</ol>
+<p><a href="https://zhuanlan.zhihu.com/p/343563937" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/343563937</a></p>
+<ol start="5">
+<li>如何保证系统稳定性？事前，事中，事后</li>
+<li>秒杀的设计，1000份，10分钟后活动结束，未付款30分钟后自动失效，从页面，从服务，从db的角度设计下</li>
+<li>你的优势 劣势</li>
+</ol>
+<h2 id="2021-08-07"><a href="#2021-08-07" class="headerlink" title="2021-08-07"></a>2021-08-07</h2><h3 id="question-and-answer"><a href="#question-and-answer" class="headerlink" title="question and answer:"></a>question and answer:</h3><p>海量数据</p>
+<ol>
+<li>100G的文件，每行是一个字符串，找出重复数最多的行<br>步骤一：分而治之：分成1000个文件，每个文件存放的数据：hash(每个字符串)%1000，这样既保证了相同的字符串被存放到一个文件中。又把大文件分成了1000个相对小的文件中<br>步骤二：HashMap统计：统计每个相同字符串的个数，HashMap&lt;str_hash, count&gt;<br>步骤三：快速排序/堆排序：把1000中每个HashMap的最大count那个再组合到一个HashMap中，对count使用快速排期/堆排序，找到目标数据</li>
+</ol>
+<p><a href="https://wizardforcel.gitbooks.io/the-art-of-programming-by-july/content/06.02.html" target="_blank" rel="noopener">https://wizardforcel.gitbooks.io/the-art-of-programming-by-july/content/06.02.html</a><br><a href="https://segmentfault.com/a/1190000021109127" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021109127</a>   </p>
+<p>1G = 1000m = 1000 <em> 1000KB = 1000 </em> 1000 * 1000B</p>
+<h2 id="2021-08-07-1"><a href="#2021-08-07-1" class="headerlink" title="2021-08-07"></a>2021-08-07</h2><h3 id="question-5"><a href="#question-5" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>操作系统：拔网线和kill -9， 服务端的异常是啥样的</li>
+<li>如何设计一个100万用户的聊天系统</li>
+<li>操作系统为啥有父进程和子进程</li>
+<li>一个服务器支持的最大连接数，长链接</li>
+<li>带人注重的是哪些方面</li>
+</ol>
+<h2 id="2021-08-10"><a href="#2021-08-10" class="headerlink" title="2021-08-10"></a>2021-08-10</h2><h3 id="question-and-answer-1"><a href="#question-and-answer-1" class="headerlink" title="question and answer:"></a>question and answer:</h3><ol>
+<li><p>mysql<br>学生表：student(学号,学生姓名,出生年月,性别)<br>成绩表：score(学号,课程号,成绩)<br>课程表：course(课程号,课程名称,教师号)</p>
+<p>1.查询平均成绩大于60分学生的学号和平均成绩<br>2.查询每门课程的平均成绩，结果按平均成绩升序排序，平均成绩相同时，按课程号降序排列<br>3.查询两门以上课程成绩小于60分的学生的学号及其平均成绩</p>
+<ol>
+<li><p>select 学号，avg(成绩) as avgScore from score group by 学号 having avgScore &gt; 60;</p>
+</li>
+<li><p>select * from<br>  (select avg(成绩) as avgScore, 课程号 from score group by 课程号)<br>t_table order by avgScore, 课程号 desc</p>
+<p>// select * from score as sc JOIN student st ON as.学号 = st.学号</p>
+</li>
+<li>select 学号, avg(成绩) from score where 学号 in (<br>select 学号 from<br>  (select 学号, count(课程号) 课程号count from score  where 成绩 &lt; 60 group by 学号 having 课程号count &gt; 2)<br>t_table<br>) group by 学号</li>
+</ol>
+</li>
+<li><p>mysql事务隔离级别，每个级别对应的问题：脏读，不可重复度，幻读，间隙锁的实现原理</p>
+</li>
+<li>两个栈实现一个队列</li>
+</ol>
+<h2 id="2021-08-11"><a href="#2021-08-11" class="headerlink" title="2021-08-11"></a>2021-08-11</h2><h3 id="question-6"><a href="#question-6" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>java锁<br>1.1 synchronized锁能降级吗<br>1.2 condition实现原理<br>1.3 reentantlock 是乐观锁吗<br>1.4 锁能降级吗，ReentantReadWriteLock的实现原理，适用场景<br>1.5 Lock能被中断吗 synchronized能被中断吗<br>1.6 synchronized和Lock分别适用什么样的场景<br>spring定时任务的底层队列是什么<br>代码规范<br>mysql联合索引的生效问题<br>kafka提高consumer吞吐量<br>redis<br>集群下一组一个master和两个slave挂了，   redis还能提供服务吗<br>高并发下redis和数据库的强一致如何保证<br>接口鉴权<br>服务c只让a服务访问，不让b服务访问，每次请求生成一个key?<br>Nio是异步阻塞</li>
+</ol>
+<h3 id="answer-4"><a href="#answer-4" class="headerlink" title="answer:"></a>answer:</h3><ol>
+<li><p>java锁<br>1.1 synchronized的实现原理，升级过程<br>1.2 condition实现原理<br><a href="https://www.cnblogs.com/bendantuohai/p/4738792.html" target="_blank" rel="noopener">https://www.cnblogs.com/bendantuohai/p/4738792.html</a></p>
+<p>1.3 reentantlock 是乐观锁吗<br>1.4 锁能降级吗，ReentantReadWriteLock的实现原理，适用场景<br><a href="https://zhuanlan.zhihu.com/p/136884541" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/136884541</a><br><a href="https://zhuanlan.zhihu.com/p/138274427" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/138274427</a></p>
+<p>ReentantReadWriteLock使用实例：<br><a href="https://bestzuo.cn/posts/1665595927.html" target="_blank" rel="noopener">https://bestzuo.cn/posts/1665595927.html</a></p>
+<p>1.5 Lock能被中断吗 synchronized能被中断吗<br>   Lock相较于Synchronized优势如下：<br>   可中断获取锁：使用synchronized关键字获取锁的时候，如果线程没有获取到被阻塞了，那么这个时候该线程是不响应中断(interrupt)的，而使用Lock.lockInterruptibly()获取锁时被中断，线程将抛出中断异常。<br>   可非阻塞获取锁：使用synchronized关键字获取锁时，如果没有成功获取，只有被阻塞，而使用Lock.tryLock()获取锁时，如果没有获取成功也不会阻塞而是直接返回false。<br>   可限定获取锁的超时时间：使用Lock.tryLock(long time, TimeUnit unit)。<br>   同一个所对象上可以有多个等待队列（Conditin，类似于Object.wait()，支持公平锁模式）<br>1.6 synchronized和Lock分别适用什么样的场景</p>
+<p>整体参考：<br><a href="https://tech.youzan.com/javasuo-de-na-xie-shi-er/" target="_blank" rel="noopener">https://tech.youzan.com/javasuo-de-na-xie-shi-er/</a><br><a href="https://jishuin.proginn.com/p/763bfbd345d9" target="_blank" rel="noopener">https://jishuin.proginn.com/p/763bfbd345d9</a></p>
+</li>
+<li><p>spring定时任务的底层队列是什么 堆排序数据结构的优先队列</p>
+</li>
+<li>代码规范</li>
+<li>mysql联合索引的生效问题</li>
+<li>kafka提高consumer吞吐量</li>
+<li>redis<br> 集群下一组一个master和两个slave挂了，redis还能提供服务吗</li>
+<li>高并发下redis和数据库的强一致如何保证</li>
+<li>接口鉴权<br> 服务c只让a服务访问，不让b服务访问，每次请求生成一个key?</li>
+<li>Nio是异步阻塞</li>
+</ol>
+<p>synchronized锁升级过程 jvm debug</p>
+<h2 id="2021-08-12"><a href="#2021-08-12" class="headerlink" title="2021-08-12"></a>2021-08-12</h2><h3 id="question-7"><a href="#question-7" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>springboot 三级缓存 循环依赖</li>
+<li>锁 reentantLock实现原理 AQS，锁升级过程</li>
+<li>kafka offset存在哪里，为啥用kafka不是其他消息组件，他最大能支持多少并发，如何保证消息的可靠的</li>
+<li>mysql 事务是如何实现的，实现原理(redo undo)，回滚时是怎么个操作流程，</li>
+<li>ConcurrentHashMap是如何做到线程安全的，他的数据结构是什么</li>
+</ol>
+<h3 id="answer-5"><a href="#answer-5" class="headerlink" title="answer:"></a>answer:</h3><ol>
+<li><p>springboot 三级缓存 循环依赖<br><a href="https://www.cnblogs.com/grey-wolf/p/13034371.html#_label10_0" target="_blank" rel="noopener">https://www.cnblogs.com/grey-wolf/p/13034371.html#_label10_0</a><br><a href="https://cloud.tencent.com/developer/article/1497692" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1497692</a><br><a href="https://juejin.cn/post/6882266649509298189" target="_blank" rel="noopener">https://juejin.cn/post/6882266649509298189</a></p>
+</li>
+<li><p>锁 reentantLock实现原理 AQS，锁升级过程</p>
+</li>
+<li>kafka offset存在哪里，为啥用kafka不是其他消息组件，他最大能支持多少并发，如何保证消息的可靠的</li>
+<li>mysql 事务是如何实现的，实现原理(redo undo)，回滚时是怎么个操作流程，</li>
+<li>ConcurrentHashMap是如何做到线程安全的，他的数据结构是什么<br>CAS + synchronized</li>
+</ol>
+<h2 id="2021-08-16"><a href="#2021-08-16" class="headerlink" title="2021-08-16"></a>2021-08-16</h2><p>如何准备系统设计面试？<br>如何设计一个 RPC 框架？<br>如何设计微博 Feed 流/信息流系统？<br>如何解决网站大文件上传问题？<br>如何设计一个排行榜？<br>如何设计站内消息系统？<br>如何设计一个秒杀系统？</p>
+<p>面试的时候，大家都是怎么回答“请简单介绍一下你做的这个项目”的？</p>
+<p>1、项目背景</p>
+<p>为什么要做这个项目，让完全陌生的面试官能知道大概是干嘛的，需要有逻辑，条理清晰，说白了就是讲背景和概况</p>
+<p>2、项目模块和业务介绍</p>
+<p>看情况大致讲一下项目整体或者举例几个项目的业务流程和功能讲解</p>
+<p>3、职责和产出</p>
+<p>你负责了部分还是全部，花了多久，做了什么努力，遇到了什么问题，如何去解决，最后取得了什么效益</p>
+<p>注意：讲的过程中注意观察面试官，如果有明显看出来不耐烦的不能太过于啰嗦，一定要抓重点讲，提前组织好框架，比如上述的1点2点3点，切记不要死记硬背全文朗诵</p>
+<h2 id="2021-08-12-1"><a href="#2021-08-12-1" class="headerlink" title="2021-08-12"></a>2021-08-12</h2><h3 id="question-8"><a href="#question-8" class="headerlink" title="question:"></a>question:</h3><ol>
+<li>线程池<br>核心线程何时销毁<br>线程池设置多少合适呢 cpu密集型的设置多少，io密集型的设置多少</li>
+<li>synchronized 和 lock的区别，多线程竞争激烈时哪个效率高；如何决定何时使用哪个</li>
+<li>mysql<br>B+树相比平衡树和红黑树的优势；<br>查询第100万那条记录的时候，为啥比较慢(比查第一条慢)<br>10万数据时，B+数是多少层</li>
+<li>threadlocal的key是啥<br>threadlocal的key是啥</li>
+<li>给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。<br>子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。<br>示例 1：<br>输入：nums = [10,9,2,5,3,7,101,18]<br>输出：4<br>解释：最长递增子序列是 [2,3,7,101]，因此长度为 4。<br>示例 2：<br>输入：nums = [0,1,0,3,2,3]<br>输出：4<br>示例 3：<br>输入：nums = [7,7,7,7,7,7,7]<br>输出：1</li>
+</ol>
+<h3 id="Answer"><a href="#Answer" class="headerlink" title="Answer:"></a>Answer:</h3><ol>
+<li><p>线程池<br>-&gt; 核心线程何时销毁<br>-&gt; 线程池设置多少合适呢 cpu密集型的设置多少，io密集型的设置多少<br>CPU密集型程序: CPU 核数（逻辑）+ 1 个线程数<br>I/O 密集型程序: 最佳线程数 = CPU核心数<em>(1/CPU利用率) = CPU核心数</em>(IO耗时/CPU耗时)<br>我怎么知道具体的 I/O耗时和CPU耗时呢？<br>怎么查看CPU利用率？<br>APM(SkyWalking CAT zipkin)工具可以帮我们得到准确的数据，学会使用这类工具，也就可以结合理论，在调优的过程得到更优的线程个数了。</p>
+</li>
+<li><p>synchronized 和 lock的区别，多线程竞争激烈时哪个效率高；如何决定何时使用哪个</p>
+</li>
+<li><p>mysql<br>B+树相比平衡树和红黑树的优势；<br>查询第100万那条记录的时候，为啥比较慢(比查第一条慢)<br>10万数据时，B+数是多少层</p>
+</li>
+<li>threadlocal的key是啥<br>threadlocal的key是啥</li>
+<li>给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。</li>
+</ol>
+<ul>
+<li>leetcode - 300. 最长递增子序列<br><a href="https://leetcode-cn.com/problems/longest-increasing-subsequence/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/longest-increasing-subsequence/</a></li>
+</ul>
+<h2 id="2021-08-12-2"><a href="#2021-08-12-2" class="headerlink" title="2021-08-12"></a>2021-08-12</h2><h3 id="question-and-answer-2"><a href="#question-and-answer-2" class="headerlink" title="question and answer:"></a>question and answer:</h3><ol>
+<li><p>redis key过期策略和内存淘汰策略<br><a href="https://juejin.cn/post/6869396128228442119#heading-22" target="_blank" rel="noopener">https://juejin.cn/post/6869396128228442119#heading-22</a></p>
+</li>
+<li><p>eureka的机制，如何做到eureka高可用<br>心跳注册：<br> 服务提供者在启动后，周期性（默认30秒）向Eureka Server发送心跳，以证明当前服务是可用状态。Eureka Server在一定的时间（默认90秒）未收到客户端的心跳，则认为服务宕机，注销该实例。</p>
+<p>保护模式：<br> 当一分钟内收到的心跳数大量减少时，会触发该保护机制。可以在eureka管理界面看到Renews threshold和Renews(last min)，当Renews(last min)（最后一分钟收到的心跳数）小于Renews threshold（心跳阈值）的时候，如果某个服务实例宕机掉，触发保护机制</p>
+<p> Renews threshold：Eureka Server 期望每分钟收到客户端实例续约的总数。<br> Renews (last min)：Eureka Server 最后 1 分钟收到客户端实例续约的总数。</p>
+<p> 实际上，该警告就是触发了Eureka Server的自我保护机制，服务注册到Eureka Server之后，会维护个心跳连接， 告诉Eureka Server自己还活着。Eureka Server在运行期间，会统计客户端节点的心跳失败的比例在最后一分钟之内是否低于85%如果出现低于的情况，如果低于85%，那就触发自我保护机制，</p>
+<p>参考：<br><a href="https://www.infoq.cn/article/jldjq*3wtn2pcqtdyokh" target="_blank" rel="noopener">https://www.infoq.cn/article/jldjq*3wtn2pcqtdyokh</a><br><a href="https://tech.yangqianguan.com/607d1e7ece7094706059f124/" target="_blank" rel="noopener">https://tech.yangqianguan.com/607d1e7ece7094706059f124/</a><br><a href="https://www.cnblogs.com/xishuai/p/spring-cloud-eureka-safe.html" target="_blank" rel="noopener">https://www.cnblogs.com/xishuai/p/spring-cloud-eureka-safe.html</a></p>
+</li>
+<li><p>mysql主从的实现方式，哪些方式<br><a href="https://www.cnblogs.com/rickiyang/p/13856388.html" target="_blank" rel="noopener">https://www.cnblogs.com/rickiyang/p/13856388.html</a> </p>
+</li>
+<li><p>oom发生的场景和java命令查看oom的方法<br>总结起来是四个区域：堆，栈，matespace，堆外<br><a href="https://cloud.tencent.com/developer/article/1730910" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1730910</a><br><a href="https://xie.infoq.cn/article/74d7449272c21dd9f8d706957" target="_blank" rel="noopener">https://xie.infoq.cn/article/74d7449272c21dd9f8d706957</a></p>
+<p>内存泄漏的例子和检测方式<br>参见&lt;java技术栈知识点草集&gt; 之 jvm 发生的场景和java命令查看oom的方法</p>
+</li>
+<li><p>给定一个二叉树的 根节点 root，想象自己站在它的右侧，<br>按照从顶部到底部的顺序，返回从右侧所能看到的节点值。<br>输入: [1,2,3,null,5,null,4]<br>输出: [1,3,4]</p>
+</li>
+</ol>
+<p>LC199 二叉树的右视图：<a href="https://leetcode-cn.com/problems/binary-tree-right-side-view" target="_blank" rel="noopener">https://leetcode-cn.com/problems/binary-tree-right-side-view</a></p>
+<h2 id="2021-09-02"><a href="#2021-09-02" class="headerlink" title="2021-09-02"></a>2021-09-02</h2><h3 id="question-and-answer-3"><a href="#question-and-answer-3" class="headerlink" title="question and answer:"></a>question and answer:</h3><ol>
+<li><p>单例（懒汉模式+线程安全）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">    volatile private Singleton instance;</span><br><span class="line"></span><br><span class="line">    private Singleton()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton gegSingleton() &#123;</span><br><span class="line">        if(instance == null) &#123;</span><br><span class="line">            synchronized(Singleton.class) &#123;</span><br><span class="line">                if(instance == null) &#123;</span><br><span class="line">                    instance = new Singleton();lx</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。<br>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
+</li>
+</ol>
+<p>例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]<br>示例 1:<br>输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1<br>输出: 3<br>解释: 节点 5 和节点 1 的最近公共祖先是节点 3。</p>
+<p>示例 2:<br>输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4<br>输出: 5<br>解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。</p>
+<p>LC236 二叉树的最近公共祖先 ttps://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/</p>
+<h2 id="2021-09-07"><a href="#2021-09-07" class="headerlink" title="2021-09-07"></a>2021-09-07</h2><h3 id="question-and-answer-4"><a href="#question-and-answer-4" class="headerlink" title="question and answer"></a>question and answer</h3><ol>
+<li><p>延迟队列实现</p>
+</li>
+<li><p>redis cluster的原理</p>
+</li>
+<li><p>redis hotkey如何解决，超高的qps 写操作</p>
+</li>
+<li><p>redis zset 底层的数据结构是什么<br>跳跃表和堆排序的区别是什么</p>
+</li>
+<li><p>算法 - 动态规划</p>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/robot_maze.png" alt="img"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">输入：m = 3, n = 7</span><br><span class="line">输出：28</span><br><span class="line"></span><br><span class="line">输入：m = 3, n = 2</span><br><span class="line">输出：3</span><br><span class="line">解释：</span><br><span class="line">从左上角开始，总共有 3 条路径可以到达右下角。</span><br><span class="line">1. 向右 -&gt; 向右 -&gt; 向下</span><br><span class="line">2. 向右 -&gt; 向下 -&gt; 向右</span><br><span class="line">3. 向下 -&gt; 向右 -&gt; 向右</span><br><span class="line"> </span><br><span class="line">输入：m = 7, n = 3</span><br><span class="line">输出：28</span><br><span class="line"> </span><br><span class="line">输入：m = 3, n = 3</span><br><span class="line">输出：6</span><br></pre></td></tr></table></figure></p>
+<h2 id="2021-09-07-1"><a href="#2021-09-07-1" class="headerlink" title="2021-09-07"></a>2021-09-07</h2><h3 id="question-and-answer-5"><a href="#question-and-answer-5" class="headerlink" title="question and answer"></a>question and answer</h3><p>标题<br>n 个倒序的链表找 top k</p>
+<p>题目描述<br>input:​<br>7-&gt;6-&gt;3-&gt;2-&gt;1​<br>6-&gt;4-&gt;2​<br>5-&gt;3-&gt;2-&gt;1​</p>
+<p>k=4​</p>
+<p>output:7,6,6,5</p>
+<p>1.需求讨论及技术方案设计<br>2.核心项目搭建、服务架构迭代<br>3.项目攻关带队，多部门协作<br>4.设计基础组件研发提效<br>5.团队事务管理建设、任务分配</p>
+<h2 id="2022-06-15"><a href="#2022-06-15" class="headerlink" title="2022-06-15"></a>2022-06-15</h2><h3 id="question-and-answer-6"><a href="#question-and-answer-6" class="headerlink" title="question and answer"></a>question and answer</h3><ol>
+<li><p>你们那微服务是怎么划分的</p>
+</li>
+<li><p>高性能</p>
+</li>
+</ol>
+<p>超高瞬时点赞 收藏如何解决</p>
+<ol start="3">
+<li>高并发</li>
+</ol>
+<p>写高并发</p>
+<p>读高并发</p>
+<h2 id="2022-06-16"><a href="#2022-06-16" class="headerlink" title="2022-06-16"></a>2022-06-16</h2><h3 id="question-and-answer-7"><a href="#question-and-answer-7" class="headerlink" title="question and answer"></a>question and answer</h3><ol>
+<li>mysql 写多读少场景，更新一条语句时，条件中唯一索引和普通索引哪个选择更好的，为什么</li>
+</ol>
+<p>本质想问的是 mysql change buffer<br><a href="https://www.modb.pro/db/50671" target="_blank" rel="noopener">https://www.modb.pro/db/50671</a></p>
+<p>关联知识点 mysql buffer pool</p>
+<ol start="2">
+<li>如何从一个无序数组中求出第 K 大的数</li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2022/05/15/interview大厂面试真题草录/" title="interview大厂面试真题草录" target="_blank" rel="external">https://yaoyuanyy.github.io/2022/05/15/interview大厂面试真题草录/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/06/10/ThreadPoolExecutor细抠源码/" title="ThreadPoolExecutor细抠源码"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/04/18/网络请求响应中的两个握手-TLS握手与TCP握手/" title="网络请求响应中的两个握手-TLS握手与TCP握手"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>

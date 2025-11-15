@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <meta name="google-site-verification" content="29vLVh4vA4suQh5SRMCfQisJ8UugXBkjM46VFkYeonU">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+
+  <!--  -->
+
+  
+  <title>细节知多少 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类 | Hexo</title>
+  <meta name="description" content="此篇是细节知多少-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
+<meta name="keywords" content="springboot,spring,spring aop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="细节知多少 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类">
+<meta property="og:url" content="https://yaoyuanyy.github.io/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/index.html">
+<meta property="og:site_name" content="skyler-blog">
+<meta property="og:description" content="此篇是细节知多少-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210116.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210209.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210402.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210446.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210536.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210636.png">
+<meta property="og:updated_time" content="2025-11-15T04:49:10.276Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="细节知多少 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类">
+<meta name="twitter:description" content="此篇是细节知多少-spring boot aop过程解析系列的第二篇，即第二阶段 我们把spring boot的aop实现分为三个阶段  AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段 AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanCla">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210116.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://yaoyuanyy.github.io/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="skyler-blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yaoyuanyy" target="_blank">
+          <img class="img-circle img-rotate" src="/images/meinv.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">skyler</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech="">
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos7/">centos7</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/centos8/">centos8</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/javaweb/">javaweb</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/agent/">agent</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/spring/">spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-io/">java io</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java多线程/">java多线程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java程序员/">java程序员</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java经典/">java经典</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java网络/">java网络</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/juc/">juc</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/">jvm虚拟机</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/jvm虚拟机/springboot/">springboot</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac开发工具/">mac开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot/">springboot</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/命令/">命令</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/婚姻/">婚姻</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发效率工具/">开发效率工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/教育/">教育</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">生活</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/考试/">考试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股市/">股市</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/股票/">股票</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机组成/">计算机组成</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/认知/">认知</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/认知/读书/">读书</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/面试/">面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高质量文章/">高质量文章</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/">$</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/符号/">$符号</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2的次方/">2的次方</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI提示词/">AI提示词</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AQS/">AQS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/">Cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAM内存/">RAM内存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReentrantLock/">ReentrantLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Value/">\@Value</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alfred/">alfred</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo-client/">apollo-client</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos8/">centos8</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/classloader/">classloader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cursor/">cursor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepseek/">deepseek</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/futex/">futex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-revert/">git revert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iTerm2/">iTerm2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interactive-timeout/">interactive_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/">interview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io读写/">io读写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-命令/">java 命令</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaagent/">javaagent</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java多线程/">java多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java并发/">java并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java微服务调用/">java微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java技术栈/">java技术栈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java探针/">java探针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java类加载/">java类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java线程池/">java线程池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java网络/">java网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm虚拟机/">jvm虚拟机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux网络命令/">linux网络命令</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lsof/">lsof</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac网络命令/">mac网络命令</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql网络/">mysql网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/">netstat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prompt/">prompt</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ranger/">ranger</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-aop/">spring aop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring boot</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-cloud微服务调用/">spring cloud微服务调用</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-transaction/">spring transaction</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-jar包可运行/">springboot jar包可运行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-loader/">springboot loader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot加载/">springboot加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springcloud/">springcloud</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcpip/">tcpip</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wait-timeout/">wait_timeout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/书籍会说话/">书籍会说话</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令行下载视频/">命令行下载视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大牛技术/">大牛技术</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/婚姻/">婚姻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率工具/">开发效率工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/得失感悟/">得失感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/找工作/">找工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文章/">技术文章</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投资/">投资</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拦截器/">拦截器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教育/">教育</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字证书/">数字证书</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活感悟/">生活感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神器/">神器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类加载/">类加载</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/考试/">考试</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/股市/">股市</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取文件/">读取文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读取日志文件/">读取日志文件</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随机写/">随机写</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/顺序写/">顺序写</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/" style="font-size: 13px;">$</a> <a href="/tags/符号/" style="font-size: 13px;">$符号</a> <a href="/tags/2的次方/" style="font-size: 13px;">2的次方</a> <a href="/tags/AI提示词/" style="font-size: 13px;">AI提示词</a> <a href="/tags/AQS/" style="font-size: 13px;">AQS</a> <a href="/tags/Cache/" style="font-size: 13px;">Cache</a> <a href="/tags/RAM内存/" style="font-size: 13px;">RAM内存</a> <a href="/tags/ReentrantLock/" style="font-size: 13px;">ReentrantLock</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 13px;">ThreadPoolExecutor</a> <a href="/tags/Value/" style="font-size: 13px;">\@Value</a> <a href="/tags/alfred/" style="font-size: 13px;">alfred</a> <a href="/tags/apollo-client/" style="font-size: 13px;">apollo-client</a> <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/centos8/" style="font-size: 13.25px;">centos8</a> <a href="/tags/classloader/" style="font-size: 13px;">classloader</a> <a href="/tags/cursor/" style="font-size: 13.13px;">cursor</a> <a href="/tags/deepseek/" style="font-size: 13px;">deepseek</a> <a href="/tags/docker/" style="font-size: 13.5px;">docker</a> <a href="/tags/futex/" style="font-size: 13px;">futex</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/git-revert/" style="font-size: 13px;">git revert</a> <a href="/tags/github/" style="font-size: 13.25px;">github</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/http/" style="font-size: 13.13px;">http</a> <a href="/tags/https/" style="font-size: 13.13px;">https</a> <a href="/tags/iTerm2/" style="font-size: 13px;">iTerm2</a> <a href="/tags/interactive-timeout/" style="font-size: 13px;">interactive_timeout</a> <a href="/tags/interview/" style="font-size: 13px;">interview</a> <a href="/tags/io读写/" style="font-size: 13px;">io读写</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/java-命令/" style="font-size: 13px;">java 命令</a> <a href="/tags/javaagent/" style="font-size: 13.25px;">javaagent</a> <a href="/tags/java多线程/" style="font-size: 13.13px;">java多线程</a> <a href="/tags/java并发/" style="font-size: 13px;">java并发</a> <a href="/tags/java微服务调用/" style="font-size: 13px;">java微服务调用</a> <a href="/tags/java技术栈/" style="font-size: 13px;">java技术栈</a> <a href="/tags/java探针/" style="font-size: 13px;">java探针</a> <a href="/tags/java类加载/" style="font-size: 13px;">java类加载</a> <a href="/tags/java线程池/" style="font-size: 13px;">java线程池</a> <a href="/tags/java网络/" style="font-size: 13.13px;">java网络</a> <a href="/tags/juc/" style="font-size: 13px;">juc</a> <a href="/tags/jvm/" style="font-size: 13px;">jvm</a> <a href="/tags/jvm虚拟机/" style="font-size: 13px;">jvm虚拟机</a> <a href="/tags/linux/" style="font-size: 13.5px;">linux</a> <a href="/tags/linux网络命令/" style="font-size: 13.25px;">linux网络命令</a> <a href="/tags/lsof/" style="font-size: 13px;">lsof</a> <a href="/tags/mac/" style="font-size: 13.38px;">mac</a> <a href="/tags/mac网络命令/" style="font-size: 13.13px;">mac网络命令</a> <a href="/tags/mysql/" style="font-size: 13.38px;">mysql</a> <a href="/tags/mysql网络/" style="font-size: 13px;">mysql网络</a> <a href="/tags/netstat/" style="font-size: 13px;">netstat</a> <a href="/tags/prompt/" style="font-size: 13.25px;">prompt</a> <a href="/tags/ranger/" style="font-size: 13px;">ranger</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/spring-aop/" style="font-size: 13.25px;">spring aop</a> <a href="/tags/spring-boot/" style="font-size: 13.63px;">spring boot</a> <a href="/tags/spring-cloud微服务调用/" style="font-size: 13px;">spring cloud微服务调用</a> <a href="/tags/spring-transaction/" style="font-size: 13.13px;">spring transaction</a> <a href="/tags/springboot/" style="font-size: 13.88px;">springboot</a> <a href="/tags/springboot-jar包可运行/" style="font-size: 13px;">springboot jar包可运行</a> <a href="/tags/springboot-loader/" style="font-size: 13px;">springboot loader</a> <a href="/tags/springboot加载/" style="font-size: 13px;">springboot加载</a> <a href="/tags/springcloud/" style="font-size: 13.25px;">springcloud</a> <a href="/tags/tcpip/" style="font-size: 13.13px;">tcpip</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/wait-timeout/" style="font-size: 13px;">wait_timeout</a> <a href="/tags/书籍会说话/" style="font-size: 13px;">书籍会说话</a> <a href="/tags/加密/" style="font-size: 13.13px;">加密</a> <a href="/tags/命令行下载视频/" style="font-size: 13px;">命令行下载视频</a> <a href="/tags/大牛技术/" style="font-size: 13px;">大牛技术</a> <a href="/tags/婚姻/" style="font-size: 13px;">婚姻</a> <a href="/tags/开发效率工具/" style="font-size: 13.13px;">开发效率工具</a> <a href="/tags/得失感悟/" style="font-size: 13px;">得失感悟</a> <a href="/tags/思考/" style="font-size: 13px;">思考</a> <a href="/tags/找工作/" style="font-size: 13px;">找工作</a> <a href="/tags/技术文章/" style="font-size: 13px;">技术文章</a> <a href="/tags/投资/" style="font-size: 13.25px;">投资</a> <a href="/tags/拦截器/" style="font-size: 13px;">拦截器</a> <a href="/tags/教育/" style="font-size: 13px;">教育</a> <a href="/tags/数字签名/" style="font-size: 13.13px;">数字签名</a> <a href="/tags/数字证书/" style="font-size: 13.13px;">数字证书</a> <a href="/tags/生活/" style="font-size: 13.13px;">生活</a> <a href="/tags/生活感悟/" style="font-size: 13px;">生活感悟</a> <a href="/tags/神器/" style="font-size: 13px;">神器</a> <a href="/tags/策略模式/" style="font-size: 13px;">策略模式</a> <a href="/tags/类加载/" style="font-size: 13.13px;">类加载</a> <a href="/tags/考试/" style="font-size: 13.25px;">考试</a> <a href="/tags/股市/" style="font-size: 13.13px;">股市</a> <a href="/tags/读书/" style="font-size: 13.88px;">读书</a> <a href="/tags/读取文件/" style="font-size: 13px;">读取文件</a> <a href="/tags/读取日志文件/" style="font-size: 13px;">读取日志文件</a> <a href="/tags/随机写/" style="font-size: 13px;">随机写</a> <a href="/tags/面试/" style="font-size: 13px;">面试</a> <a href="/tags/顺序写/" style="font-size: 13px;">顺序写</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">十一月 2024</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">七月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">六月 2024</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/life/">生活</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/15/生活-活生生的活着/" class="title">男性强身健体的运动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-15T03:10:10.000Z" itemprop="datePublished">2025-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/穷人的特征/" class="title">穷人的特征</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T02:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/11/如何培养一个优秀的小孩/" class="title">如何培养一个优秀的小孩</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-11T01:05:32.000Z" itemprop="datePublished">2025-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测-1-言语理解/" class="title">言语理解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/考试/">考试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/09/考公记录-行测/" class="title">考试记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-09T03:10:59.000Z" itemprop="datePublished">2025-10-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope="" itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#带着问题学习"><span class="toc-number">1.</span> <span class="toc-text">带着问题学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用例代码"><span class="toc-number">2.</span> <span class="toc-text">用例代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证和生成代理的入口"><span class="toc-number">3.</span> <span class="toc-text">验证和生成代理的入口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#postProcessBeforeInstantiation"><span class="toc-number">3.1.</span> <span class="toc-text">postProcessBeforeInstantiation()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#postProcessAfterInitialization"><span class="toc-number">3.2.</span> <span class="toc-text">postProcessAfterInitialization()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题回答"><span class="toc-number">3.3.</span> <span class="toc-text">问题回答</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-细节知多少 - spring boot aop动态代理解析之阶段二" class="article article-type-post" itemscope="" itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      细节知多少 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/" class="article-date">
+	  <time datetime="2019-04-27T16:00:00.000Z" itemprop="datePublished">2019-04-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/spring/">spring</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/spring/">spring</a>, <a class="article-tag-link" href="/tags/spring-aop/">spring aop</a>, <a class="article-tag-link" href="/tags/springboot/">springboot</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.4k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 20(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>此篇是细节知多少-spring boot aop过程解析系列的第二篇，即第二阶段</p>
+<p>我们把spring boot的aop实现分为三个阶段</p>
+<ul>
+<li>AnnotationAwareAspectJAutoProxyCreator加载(初始化和实例化)阶段</li>
+<li>AnnotationAwareAspectJAutoProxyCreator使用post-process基于@Aspect验证beanName或beanClass是否可以生成Proxy代理类阶段</li>
+<li>CglibAopProxy或JdkDynamicAopProxy生成Proxy代理类阶段</li>
+</ul>
+<p>上一篇中，笔者和大家一起学习了<a href="https://yaoyuanyy.github.io/2019/04/21/%E7%BB%86%E8%8A%82%E6%8A%A0%E5%87%BA%E8%A1%80%20-%20spring%20boot%20aop%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%98%B6%E6%AE%B5%E4%B8%80/">spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载</a>。这篇我们说下阶段二：<b>判断beanName或beanClass是否生成Proxy代理类</b>。在spring boot中，每个类在生成代理类时，都会判断是否可以生成代理类</p>
+<h2 id="带着问题学习"><a href="#带着问题学习" class="headerlink" title="带着问题学习"></a>带着问题学习</h2><blockquote>
+<p>带着问题学习往往起到更好的效果</p>
+</blockquote>
+<p>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. spring aop是如果获取和解析@Aspect注解的</span><br><span class="line">2. spring aop是如果获取和解析@Pointcut注解的</span><br><span class="line">3. @Pointcut注解的execution(expression)存放在哪个对象，什么时候被使用</span><br></pre></td></tr></table></figure></p>
+<h2 id="用例代码"><a href="#用例代码" class="headerlink" title="用例代码"></a>用例代码</h2><p>实际工作中，我们都写过@Aspect的代码吧。我们这里定义一个，便于后面知识点阐述<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class TimeFeeAspect &#123;</span><br><span class="line"></span><br><span class="line">    @Pointcut(&quot;execution(* com.yy..rest..*(..))&quot;)</span><br><span class="line">    public void cut()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    @Before(&quot;cut()&quot;)</span><br><span class="line">    public void doTimeFeeIntercepter(JoinPoint joinPoint) throws Throwable &#123;</span><br><span class="line">        System.out.println(&quot;args:&quot; + joinPoint.getArgs());</span><br><span class="line">        System.out.println(&quot;target&quot; + joinPoint.getTarget().toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如上代码，定义一个Aspect类，目的是对<code>com.yy..rest</code>包下所有的类的访问都经过切面，也就是要走<code>doTimeFeeIntercepter()</code>方法。<br>下面我们通过debug追踪源码，了解实现原理。</p>
+<h2 id="验证和生成代理的入口"><a href="#验证和生成代理的入口" class="headerlink" title="验证和生成代理的入口"></a>验证和生成代理的入口</h2><p>通过《spring boot aop过程解析之阶段一: AnnotationAwareAspectJAutoProxyCreator加载》我们知道一个bean要生成代理的入口在<code>AnnotationAwareAspectJAutoProxyCreator</code>的前后置方法中实现。为了方便我定义了一个<code>@Component
+CustomInstantiationAwarePostProcessorAdapter</code>。在<code>CustomInstantiationAwarePostProcessorAdapter</code>被创建成bean过程中，由于post-process机制当经过<code>AnnotationAwareAspectJAutoProxyCreator的postProcessBeforeInstantiation()和postProcessAfterInitialization()</code>方法时，都会进行代理类的创建逻辑，即判断是否能创建，如果通过则创建。现在说下这两个方法生成代理类逻辑的源码</p>
+<h3 id="postProcessBeforeInstantiation"><a href="#postProcessBeforeInstantiation" class="headerlink" title="postProcessBeforeInstantiation()"></a>postProcessBeforeInstantiation()</h3><p>进入方法，验证逻辑就开始了，如下图代码<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210116.png" alt="20201029210116"><br>验证逻辑为beanClass是否为aop基础结构类型或者是否可以跳过。由于beanClass不是Pointcut、Advice、Advisor等aop基础结构的子类，所以isInfrastructureClass(beanClass)返回false，代码进入shouldSkip(beanClass, beanName)方法逻辑，这个很重要的方法，逻辑很复杂。进入方法内部<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected boolean shouldSkip(Class&lt;?&gt; beanClass, String beanName) &#123;</span><br><span class="line">    //advisor候选者</span><br><span class="line">	List&lt;Advisor&gt; candidateAdvisors = findCandidateAdvisors();</span><br><span class="line">	for (Advisor advisor : candidateAdvisors) &#123;</span><br><span class="line">		if (advisor instanceof AspectJPointcutAdvisor) &#123;</span><br><span class="line">			if (((AbstractAspectJAdvice) advisor.getAdvice()).getAspectName().equals(beanName)) &#123;</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return super.shouldSkip(beanClass, beanName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先获取advisor候选者列表，然后遍历，如果有AspectName等于beanName，说明这个beanName是Aspect，不用生成代理，方法返回true，否则走父类逻辑(返回false)。查看获取advisor候选者方法findCandidateAdvisors()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected List&lt;Advisor&gt; findCandidateAdvisors() &#123;</span><br><span class="line">	// Add all the Spring advisors found according to superclass rules.</span><br><span class="line">	List&lt;Advisor&gt; advisors = super.findCandidateAdvisors();</span><br><span class="line">	// Build Advisors for all AspectJ aspects in the bean factory.</span><br><span class="line">	advisors.addAll(this.aspectJAdvisorsBuilder.buildAspectJAdvisors());</span><br><span class="line">	return advisors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>方法内部逻辑很简单，但是意义重大，从两个角度获取Advisor。角度一是从beanFactory容器中获取Advisor类；角度二是从beanFactory容器中获取Aspect类。先看其一<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;Advisor&gt; findAdvisorBeans() &#123;</span><br><span class="line"> 	String[] advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(</span><br><span class="line">					this.beanFactory, Advisor.class, true, false);</span><br><span class="line">			......</span><br><span class="line">			</span><br><span class="line">    List&lt;Advisor&gt; advisors = new LinkedList&lt;Advisor&gt;();</span><br><span class="line">	for (String name : advisorNames) &#123;</span><br><span class="line">		if (isEligibleBean(name)) &#123;</span><br><span class="line">	       advisors.add(this.beanFactory.getBean(name, Advisor.class));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return advisors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里只列出了关键代码，可以看到，从beanFactory容器中获取Advisor的子类name集合，然后验证下name是否合格，合格后获取name对应的bean。但是实际debug代码时，这步却没有获取到Advisor的子类，所以返回的是空list。<br>回到findCandidateAdvisors()方法,看其二</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">BeanFactoryAspectJAdvisorsBuilder类</span><br><span class="line">public List&lt;Advisor&gt; buildAspectJAdvisors() &#123;</span><br><span class="line">  List&lt;String&gt; aspectNames = new LinkedList&lt;String&gt;();</span><br><span class="line">      // 从beanFactory中获取所有的beanName</span><br><span class="line">      String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(</span><br><span class="line">          this.beanFactory, Object.class, true, false);</span><br><span class="line">      // 遍历beanName集合对beanName进行合格性验证</span><br><span class="line">      for (String beanName : beanNames) &#123;</span><br><span class="line">        // 默认true,除非有aop:include使用</span><br><span class="line">        if (!isEligibleBean(beanName)) &#123; //(1)</span><br><span class="line">          continue;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        Class&lt;?&gt; beanType = this.beanFactory.getType(beanName);</span><br><span class="line">        if (beanType == null) &#123;</span><br><span class="line">          continue;</span><br><span class="line">        &#125;</span><br><span class="line">        if (this.advisorFactory.isAspect(beanType)) &#123; //(2)</span><br><span class="line">          aspectNames.add(beanName);</span><br><span class="line">          AspectMetadata amd = new AspectMetadata(beanType, beanName);</span><br><span class="line">          // 单例 bean</span><br><span class="line">          if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) &#123;</span><br><span class="line">            MetadataAwareAspectInstanceFactory factory =</span><br><span class="line">                new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName); //(3)</span><br><span class="line">            List&lt;Advisor&gt; classAdvisors = this.advisorFactory.getAdvisors(factory); //(4)</span><br><span class="line">            advisors.addAll(classAdvisors);</span><br><span class="line">          &#125;</span><br><span class="line">          else &#123; // 单例Prototype bean</span><br><span class="line">            MetadataAwareAspectInstanceFactory factory =</span><br><span class="line">                new PrototypeAspectInstanceFactory(this.beanFactory, beanName);</span><br><span class="line">            advisors.addAll(this.advisorFactory.getAdvisors(factory));</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      return advisors;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码(2)处，判断beanType是否为Aspect，实现逻辑为<code>AnnotationUtils.findAnnotation(clazz, Aspect.class) != null</code>，开头我定义了一个TimeFeeAspect切面类，所以这里只有TimeFeeAspect符合条件，进入if块里面<br>代码(3)处，构造一个带有Aspect metadata和beanFactory的BeanFactoryAspectInstanceFactory实例，传给关键代码(4)块，看代码(4)内部逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ReflectiveAspectJAdvisorFactory类</span><br><span class="line">public List&lt;Advisor&gt; getAdvisors(MetadataAwareAspectInstanceFactory aspectInstanceFactory) &#123;</span><br><span class="line">	Class&lt;?&gt; aspectClass = aspectInstanceFactory.getAspectMetadata().getAspectClass();</span><br><span class="line">	String aspectName = aspectInstanceFactory.getAspectMetadata().getAspectName();</span><br><span class="line"></span><br><span class="line">	MetadataAwareAspectInstanceFactory lazySingletonAspectInstanceFactory =</span><br><span class="line">			new LazySingletonAspectInstanceFactoryDecorator(aspectInstanceFactory);</span><br><span class="line"></span><br><span class="line">	List&lt;Advisor&gt; advisors = new LinkedList&lt;Advisor&gt;();</span><br><span class="line">	// 获取aspectClass的方法集合</span><br><span class="line">	for (Method method : getAdvisorMethods(aspectClass)) &#123;</span><br><span class="line">		Advisor advisor = getAdvisor(method, lazySingletonAspectInstanceFactory, advisors.size(), aspectName); // 关键代码</span><br><span class="line">		if (advisor != null) &#123;</span><br><span class="line">			advisors.add(advisor);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return advisors;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法的目的很明确：获取advisor。方法解析出入参aspectClass的methods，遍历methods从而获取advisor集合，advisor包含advice和pointcut。</p>
+<p><font color="green">获取methods的方法值得说下</font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private List&lt;Method&gt; getAdvisorMethods(Class&lt;?&gt; aspectClass) &#123;</span><br><span class="line">	final List&lt;Method&gt; methods = new LinkedList&lt;Method&gt;();</span><br><span class="line">	ReflectionUtils.doWithMethods(aspectClass, new ReflectionUtils.MethodCallback() &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public void doWith(Method method) throws IllegalArgumentException &#123;</span><br><span class="line">			if (AnnotationUtils.getAnnotation(method, Pointcut.class) == null) &#123;</span><br><span class="line">				methods.add(method);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">	Collections.sort(methods, METHOD_COMPARATOR);</span><br><span class="line">	return methods;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段方法逻辑是通用的：获取一个类中带有(不带有)某注解的方法集合，<font color="green">这个逻辑可以轻易的为你实际所用</font>。<br>根据method获取advisor的getAdvisor(..)方法就是核心逻辑了，看其内部<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ReflectiveAspectJAdvisorFactory类</span><br><span class="line">public Advisor getAdvisor(Method candidateAdviceMethod, MetadataAwareAspectInstanceFactory aspectInstanceFactory,</span><br><span class="line">		int declarationOrderInAspect, String aspectName) &#123;</span><br><span class="line"></span><br><span class="line">    // 验证aspectClass是否有@Aspect注解，其父类是否没有Aspect注解</span><br><span class="line">    validate(aspectInstanceFactory.getAspectMetadata().getAspectClass());</span><br><span class="line">    // 核心：生成PointCut</span><br><span class="line">	AspectJExpressionPointcut expressionPointcut = getPointcut(</span><br><span class="line">			candidateAdviceMethod, aspectInstanceFactory.getAspectMetadata().getAspectClass());</span><br><span class="line">	</span><br><span class="line">	return new InstantiationModelAwarePointcutAdvisorImpl(expressionPointcut, candidateAdviceMethod,</span><br><span class="line">			this, aspectInstanceFactory, declarationOrderInAspect, aspectName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>方法首先验证后，根据adviceMethod和aspectClass生成PointCut，然后构造成<code>InstantiationModelAwarePointcutAdvisorImpl</code>实例。首先看生成<code>PointCut</code>的逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">ReflectiveAspectJAdvisorFactory类</span><br><span class="line">private AspectJExpressionPointcut getPointcut(Method candidateAdviceMethod, Class&lt;?&gt; candidateAspectClass) &#123;</span><br><span class="line">    // 获取method的Advice,即Before.class, Around.class, After.class, AfterReturning.class, AfterThrowing.class</span><br><span class="line">    // AspectJAnnotation包括具体类型的Advice和PointCut的expression</span><br><span class="line">	AspectJAnnotation&lt;?&gt; aspectJAnnotation =</span><br><span class="line">			AbstractAspectJAdvisorFactory.findAspectJAnnotationOnMethod(candidateAdviceMethod);</span><br><span class="line">   // 构造PointCut</span><br><span class="line">   AspectJExpressionPointcut ajexp =</span><br><span class="line">			new AspectJExpressionPointcut(candidateAspectClass, new String[0], new Class&lt;?&gt;[0]);</span><br><span class="line">	ajexp.setExpression(aspectJAnnotation.getPointcutExpression());</span><br><span class="line">	ajexp.setBeanFactory(this.beanFactory);</span><br><span class="line">	return ajexp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AbstractAspectJAdvisorFactory类</span><br><span class="line">protected static AspectJAnnotation&lt;?&gt; findAspectJAnnotationOnMethod(Method method) &#123;</span><br><span class="line">	Class&lt;?&gt;[] classesToLookFor = new Class&lt;?&gt;[] &#123;</span><br><span class="line">			Before.class, Around.class, After.class, AfterReturning.class, AfterThrowing.class, Pointcut.class&#125;;</span><br><span class="line">	// 匹配方法的Advice类型：Before.class, Around.class, After.class, AfterReturning.class, AfterThrowing.class, Pointcut.class</span><br><span class="line">	// 匹配即返回</span><br><span class="line">	for (Class&lt;?&gt; c : classesToLookFor) &#123;</span><br><span class="line">		AspectJAnnotation&lt;?&gt; foundAnnotation = findAnnotation(method, (Class&lt;Annotation&gt;) c);</span><br><span class="line">		if (foundAnnotation != null) &#123;</span><br><span class="line">			return foundAnnotation;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>生成PointCut后，代码回到ReflectiveAspectJAdvisorFactory.getAdvisor()方法的构造<code>InstantiationModelAwarePointcutAdvisorImpl</code>实例部分，查看其构造方法<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210209.png" alt="20201029210209"></p>
+<p>可以看到，<code>InstantiationModelAwarePointcutAdvisorImpl</code>类包含<code>AspectJExpressionPointcut</code>类型的pointcut名属性，adviceName，aspectJAdviceMethod切面方法等属性。同时也会根据advice的type生成对应的xxxAdvice对象。看最后一行<code>instantiatedAdvice</code>的解析代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">private Advice instantiateAdvice(AspectJExpressionPointcut pcut) &#123;</span><br><span class="line">	return this.aspectJAdvisorFactory.getAdvice(this.aspectJAdviceMethod, pcut,</span><br><span class="line">			this.aspectInstanceFactory, this.declarationOrder, this.aspectName);</span><br><span class="line">&#125;</span><br><span class="line">	</span><br><span class="line">public Advice getAdvice(Method candidateAdviceMethod, AspectJExpressionPointcut expressionPointcut,</span><br><span class="line">    	MetadataAwareAspectInstanceFactory aspectInstanceFactory, int declarationOrder, String aspectName) &#123;</span><br><span class="line">    </span><br><span class="line">    Class&lt;?&gt; candidateAspectClass = aspectInstanceFactory.getAspectMetadata().getAspectClass(); </span><br><span class="line">    AspectJAnnotation&lt;?&gt; aspectJAnnotation =</span><br><span class="line">    		AbstractAspectJAdvisorFactory.findAspectJAnnotationOnMethod(candidateAdviceMethod);</span><br><span class="line">    </span><br><span class="line">    AbstractAspectJAdvice springAdvice;</span><br><span class="line">    switch (aspectJAnnotation.getAnnotationType()) &#123;</span><br><span class="line">    	case AtBefore:</span><br><span class="line">    		springAdvice = new AspectJMethodBeforeAdvice(</span><br><span class="line">    				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</span><br><span class="line">    		break;</span><br><span class="line">    	case AtAfter:</span><br><span class="line">    		springAdvice = new AspectJAfterAdvice(</span><br><span class="line">    				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</span><br><span class="line">    		break;</span><br><span class="line">    	case AtAfterReturning:</span><br><span class="line">    		springAdvice = new AspectJAfterReturningAdvice(</span><br><span class="line">    				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</span><br><span class="line">    		AfterReturning afterReturningAnnotation = (AfterReturning) aspectJAnnotation.getAnnotation();</span><br><span class="line">    		if (StringUtils.hasText(afterReturningAnnotation.returning())) &#123;</span><br><span class="line">    			springAdvice.setReturningName(afterReturningAnnotation.returning());</span><br><span class="line">    		&#125;</span><br><span class="line">    		break;</span><br><span class="line">    	case AtAfterThrowing:</span><br><span class="line">    		springAdvice = new AspectJAfterThrowingAdvice(</span><br><span class="line">    				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</span><br><span class="line">    		AfterThrowing afterThrowingAnnotation = (AfterThrowing) aspectJAnnotation.getAnnotation();</span><br><span class="line">    		if (StringUtils.hasText(afterThrowingAnnotation.throwing())) &#123;</span><br><span class="line">    			springAdvice.setThrowingName(afterThrowingAnnotation.throwing());</span><br><span class="line">    		&#125;</span><br><span class="line">    		break;</span><br><span class="line">    	case AtAround:</span><br><span class="line">    		springAdvice = new AspectJAroundAdvice(</span><br><span class="line">    				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</span><br><span class="line">    		break;</span><br><span class="line">    	case AtPointcut:</span><br><span class="line">    		if (logger.isDebugEnabled()) &#123;</span><br><span class="line">    			logger.debug(&quot;Processing pointcut &apos;&quot; + candidateAdviceMethod.getName() + &quot;&apos;&quot;);</span><br><span class="line">    		&#125;</span><br><span class="line">    		return null;</span><br><span class="line">    	default:</span><br><span class="line">    		···</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // Now to configure the advice...</span><br><span class="line">    springAdvice.setAspectName(aspectName);</span><br><span class="line">    springAdvice.setDeclarationOrder(declarationOrder);</span><br><span class="line">    String[] argNames = this.parameterNameDiscoverer.getParameterNames(candidateAdviceMethod);</span><br><span class="line">    if (argNames != null) &#123;</span><br><span class="line">    	springAdvice.setArgumentNamesFromStringArray(argNames);</span><br><span class="line">    &#125;</span><br><span class="line">    springAdvice.calculateArgumentBindings();</span><br><span class="line">    return springAdvice;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>整个方法就是为了获取Advice，根据切面方法(即<code>TimeFeeAspect.doTimeFeeIntercepter</code>)上的advice注解type返回对应的xxxxAdvice实例。这里<code>doTimeFeeIntercepter</code>方法上注解了<code>@Before advice</code>，所以我们得到是<code>AspectJMethodBeforeAdvice</code>对象。<code>AspectJMethodBeforeAdvice</code>包含<code>advice method</code>, <code>pointcut</code>, <code>aspect class name</code>。<code>AspectJMethodBeforeAdvice</code>相当于<code>interceptor</code>。当生成proxy代理类时，<code>AspectJMethodBeforeAdvice</code>就是proxy代理类的interceptor，proxy的切入的方法就是<code>AspectJMethodBeforeAdvice</code>的<code>advice method</code>，即TimeFeeAspect.doTimeFeeIntercepter方法。这样，就把目标类的被切入方法和aspect的想切入的方法关联起来了。所以每次程序走到目标类的被切入方法时，都会先走aspect的想切入的方法。</p>
+<p>这样<code>InstantiationModelAwarePointcutAdvisorImpl</code>对象就new出来了。包含属性如下图<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210402.png" alt="20201029210402"><br>所以，对外暴露的advisor其实就是<code>InstantiationModelAwarePointcutAdvisorImpl</code>对象，当生成proxy代理类的时候传进去的advisor也就是<code>InstantiationModelAwarePointcutAdvisorImpl</code>对象了。当我们讲解<a href="https://yaoyuanyy.github.io/2019/05/28/%E7%BB%86%E8%8A%82%E6%8A%A0%E5%87%BA%E8%A1%80%20-%20spring%20boot%20aop%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E8%A7%A3%E6%9E%90%E4%B9%8B%E9%98%B6%E6%AE%B5%E4%B8%89/">spring boot aop过程解析之阶段三：生成Proxy代理类</a>时接着说这里</p>
+<p>到这,<font color="green">Advice class获取到了，Advice的PointCut也拿到了，但是PointCut自身的表达式(Expression)值还没有拿到。</font>接着走代码</p>
+<p>回到<code>postProcessBeforeInstantiation()</code>方法，由于我们找到了Advisor，所以shouldSkip(beanClass, beanName)返回false，逻辑往下走。又由于<code>getCustomTargetSource(beanClass, beanName)</code>返回null，所以这步没有生成入参beanName或beanClass的代理<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210446.png" alt="20201029210446"><br>这样，postProcessBeforeInstantiatioin()方法的逻辑就走完了。但是beanName或beanClass还有一次生成代理类的机会，就是<code>postProcessAfterInitialization()</code>方法提供的</p>
+<h3 id="postProcessAfterInitialization"><a href="#postProcessAfterInitialization" class="headerlink" title="postProcessAfterInitialization()"></a>postProcessAfterInitialization()</h3><p>我们在方法开始处打个断点，F9 debug放开，断点进入postProcessAfterInitialization()方法<br><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210536.png" alt="20201029210536"><br>可以看到：wrapIfNecessary方法是核心，查看其内部代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) &#123;</span><br><span class="line">	if (beanName != null &amp;&amp; this.targetSourcedBeans.contains(beanName)) &#123;</span><br><span class="line">		return bean;</span><br><span class="line">	&#125;</span><br><span class="line">	if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) &#123;</span><br><span class="line">		return bean;</span><br><span class="line">	&#125;</span><br><span class="line">	if (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) &#123;</span><br><span class="line">		this.advisedBeans.put(cacheKey, Boolean.FALSE);</span><br><span class="line">		return bean;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Create proxy if we have advice.</span><br><span class="line">	Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);</span><br><span class="line">	if (specificInterceptors != DO_NOT_PROXY) &#123;</span><br><span class="line">		this.advisedBeans.put(cacheKey, Boolean.TRUE);</span><br><span class="line">		Object proxy = createProxy(</span><br><span class="line">				bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));</span><br><span class="line">		this.proxyTypes.put(cacheKey, proxy.getClass());</span><br><span class="line">		return proxy;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	this.advisedBeans.put(cacheKey, Boolean.FALSE);</span><br><span class="line">	return bean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，方法上半部分与postProcessBeforeInstantiation()方法相同，刚才的分析就是shouldSkip(bean.getClass(), beanName)方法，所以我们直接看<code>getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null)</code>。这个方法获取Advisor，看其内部逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protected Object[] getAdvicesAndAdvisorsForBean(Class&lt;?&gt; beanClass, String beanName, TargetSource targetSource) &#123;</span><br><span class="line">	List&lt;Advisor&gt; advisors = findEligibleAdvisors(beanClass, beanName);</span><br><span class="line">	return advisors.toArray();</span><br><span class="line">&#125;</span><br><span class="line">	</span><br><span class="line">protected List&lt;Advisor&gt; findEligibleAdvisors(Class&lt;?&gt; beanClass, String beanName) &#123;</span><br><span class="line">    // 获取Advisor候选者</span><br><span class="line">	List&lt;Advisor&gt; candidateAdvisors = findCandidateAdvisors();</span><br><span class="line">	List&lt;Advisor&gt; eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);</span><br><span class="line">	extendAdvisors(eligibleAdvisors);</span><br><span class="line">	return eligibleAdvisors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>findEligibleAdvisors()方法首先获取Advisor候选者(findCandidateAdvisors()的逻辑在postProcessBeforeInstantiation()方法分析时已经说过)，然后通过findAdvisorsThatCanApply()方法<font color="green">检验这些Advisor候选者对beanClass来说是否是合格的Advisor</font>。这里就很关键了，我们看其内部代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">AopUtils 类</span><br><span class="line">protected List&lt;Advisor&gt; findAdvisorsThatCanApply( List&lt;Advisor&gt; candidateAdvisors, Class&lt;?&gt; beanClass, String beanName) &#123;</span><br><span class="line">    return AopUtils.findAdvisorsThatCanApply(candidateAdvisors, beanClass);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static List&lt;Advisor&gt; findAdvisorsThatCanApply(List&lt;Advisor&gt; candidateAdvisors, Class&lt;?&gt; clazz) &#123;</span><br><span class="line">	List&lt;Advisor&gt; eligibleAdvisors = new LinkedList&lt;Advisor&gt;();</span><br><span class="line">	···</span><br><span class="line">	boolean hasIntroductions = !eligibleAdvisors.isEmpty();</span><br><span class="line">	for (Advisor candidate : candidateAdvisors) &#123;</span><br><span class="line">		if (canApply(candidate, clazz, hasIntroductions)) &#123;</span><br><span class="line">			eligibleAdvisors.add(candidate);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return eligibleAdvisors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>方法重点是条件判断。这里只列出部分代码，其实方法将候选者Advisor分为两拨，一拨是IntroductionAdvisor，然后条件判断canApply(candidate, clazz)；另一拨是其他Advisor，然后条件判断canApply(candidate, clazz, hasIntroductions)，我们debug时走的后一个条件判断方法逻辑，看其内部代码逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">AopUtils 类</span><br><span class="line">public static boolean canApply(Advisor advisor, Class&lt;?&gt; targetClass, boolean hasIntroductions) &#123;</span><br><span class="line">	if (advisor instanceof PointcutAdvisor) &#123;</span><br><span class="line">		PointcutAdvisor pca = (PointcutAdvisor) advisor;</span><br><span class="line">		return canApply(pca.getPointcut(), targetClass, hasIntroductions);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AopUtils 类</span><br><span class="line">public static boolean canApply(Pointcut pc, Class&lt;?&gt; targetClass, boolean hasIntroductions) &#123;</span><br><span class="line">         // 使用Pointcut匹配targetClass,此时的Pointcut.pointcutExpression赋值就隐藏在pc.getClassFilter()中</span><br><span class="line">	if (!pc.getClassFilter().matches(targetClass)) &#123;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	MethodMatcher methodMatcher = pc.getMethodMatcher();</span><br><span class="line">	if (methodMatcher == MethodMatcher.TRUE) &#123;</span><br><span class="line">		// No need to iterate the methods if we&apos;re matching any method anyway...</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	IntroductionAwareMethodMatcher introductionAwareMethodMatcher = null;</span><br><span class="line">	if (methodMatcher instanceof IntroductionAwareMethodMatcher) &#123;</span><br><span class="line">		introductionAwareMethodMatcher = (IntroductionAwareMethodMatcher) methodMatcher;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">        //(1)</span><br><span class="line">	Set&lt;Class&lt;?&gt;&gt; classes = new LinkedHashSet&lt;Class&lt;?&gt;&gt;(ClassUtils.getAllInterfacesForClassAsSet(targetClass));</span><br><span class="line">	classes.add(targetClass);</span><br><span class="line">	for (Class&lt;?&gt; clazz : classes) &#123;</span><br><span class="line">		Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);</span><br><span class="line">		for (Method method : methods) &#123;</span><br><span class="line">			if ((introductionAwareMethodMatcher != null &amp;&amp;</span><br><span class="line">					introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions)) ||</span><br><span class="line">					methodMatcher.matches(method, targetClass)) &#123;//(2)</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>整个方法都在判断targerClass是否匹配这个pointcut，由于此时的pointcut.pointcutExpression还没有赋值呢，所以在判断匹配之前，需要<font color="green">pointcut.pointcutExpression赋值</font>，所以整个AopUtis.canApply分为两部分：</p>
+<ol>
+<li>给pointcut.pointcutExpression赋值</li>
+<li>targerClass匹配pointcut检验<br>而第一部分的赋值在pc.getClassFilter()里，看方法代码</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">AspectJExpressionPointcut类</span><br><span class="line">public ClassFilter getClassFilter() &#123;</span><br><span class="line">	checkReadyToMatch();</span><br><span class="line">	return this;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br><span class="line">private void checkReadyToMatch() </span><br><span class="line">	if (this.pointcutExpression == null) &#123;</span><br><span class="line">		this.pointcutClassLoader = determinePointcutClassLoader();</span><br><span class="line">		this.pointcutExpression = buildPointcutExpression(this.pointcutClassLoader);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private PointcutExpression buildPointcutExpression(ClassLoader classLoader) &#123;</span><br><span class="line">	PointcutParser parser = initializePointcutParser(classLoader);</span><br><span class="line">	return parser.parsePointcutExpression(replaceBooleanOperators(getExpression()),</span><br><span class="line">			this.pointcutDeclarationScope, pointcutParameters);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PointcutParser类</span><br><span class="line">public PointcutExpression parsePointcutExpression(String expression, Class&lt;?&gt; inScope, PointcutParameter[] formalParameters)  &#123; </span><br><span class="line">	Pointcut pc = resolvePointcutExpression(expression, inScope, formalParameters);</span><br><span class="line">	PointcutExpressionImpl pcExpr = new PointcutExpressionImpl(pc, expression, formalParameters, getWorld());</span><br><span class="line">	return pcExpr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected Pointcut resolvePointcutExpression(String expression, Class&lt;?&gt; inScope, PointcutParameter[] formalParameters) &#123;</span><br><span class="line">	PatternParser parser = new PatternParser(expression);</span><br><span class="line">	parser.setPointcutDesignatorHandlers(pointcutDesignators, world);</span><br><span class="line">	Pointcut pc = parser.parsePointcut();</span><br><span class="line">	IScope resolutionScope = buildResolutionScope((inScope == null ? Object.class : inScope), formalParameters);</span><br><span class="line">	pc = pc.resolve(resolutionScope);</span><br><span class="line">	return pc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码的核心逻辑就是给AspectJExpressionPointcut.PointcutExpression赋值，这个就是开篇时的例子代码：@Pointcut(“execution(<em> com.yy..rest..</em>(..))”)。赋值操作是通过PointcutParser、PatternParser和Pointcut来完成的。具体的赋值过程入口为pc = pc.resolve(resolutionScope)。resolve方法调用栈：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Pointcut.resolve()</span><br><span class="line">-this.resolveBindings()</span><br><span class="line">--searchType.findPointcut(name)</span><br><span class="line">searchType就是TimeFeeAspect，name就是cut方法名</span><br><span class="line">       ... 经过getPointcuts().iterator循环 ...</span><br><span class="line">---Java15ReflectionBasedReferenceTypeDelegate.getDeclaredPointcuts()</span><br><span class="line">----AjType.getDeclaredPointcuts()</span><br><span class="line">-----Method[] methods = clazz.getDeclaredMethods(）</span><br></pre></td></tr></table></figure></p>
+<p>clazz就是TimeFeeAspect,<font color="green">循环methods，判断method是否有@Pointcut注解：Pointcut pcAnn = method.getAnnotation(Pointcut.class);<br>拿到pcAnn.value()。构造成一个Pointcut，再构造成一个PointcutExpressionImpl，再构造成一个PointcutImpl。最后AspectJExpressionPointcut.PointcutExpression被赋值了</font>。切入点的表达式已经有了，接下来要做的自然是使用表达式来验证目标了。这部分即是<code>AopUtils.canApply()</code>方法的第二部分的逻辑。</p>
+<p>下面看<code>AopUtils.canApply()</code>方法的第二部分：targerClass匹配pointcut检验，首先看<code>pc.getClassFilter().matches(targetClass)</code>如果匹配，代码往下走；如果不匹配，直接返回false。接着走(2)处代码，即获取targerClass的所有接口和父类，遍历每个类的每个方法，使用Pointcut的expression去match每个方法，一旦有匹配上，返回true，退出遍历。所以匹配的逻辑就是重点了。这里列下关键的代码段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">AspectJExpressionPointcut类</span><br><span class="line">public boolean matches(Method method, Class&lt;?&gt; targetClass, boolean beanHasIntroductions) &#123;</span><br><span class="line">	Method targetMethod = AopUtils.getMostSpecificMethod(method, targetClass);</span><br><span class="line">	ShadowMatch shadowMatch = getShadowMatch(targetMethod, method);  //关键代码</span><br><span class="line">	if (shadowMatch.alwaysMatches()) &#123;</span><br><span class="line">	  return true;</span><br><span class="line">	&#125;</span><br><span class="line">	else if (shadowMatch.neverMatches()) &#123;</span><br><span class="line">	  return false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 可以看到这个方法中使用了双重检查机制(double check)，double check结合synchronized可以有效的</span><br><span class="line">// 避免锁的竞争，这个组合我们可以在很多地方使用，想想在你的项目中使用它，很棒，面试也是高频知识点</span><br><span class="line">private ShadowMatch getShadowMatch(Method targetMethod, Method originalMethod) &#123;</span><br><span class="line">  // Avoid lock contention for known Methods through concurrent access...</span><br><span class="line">  ShadowMatch shadowMatch = this.shadowMatchCache.get(targetMethod);</span><br><span class="line">  if (shadowMatch == null) &#123;</span><br><span class="line">    synchronized (this.shadowMatchCache) &#123;</span><br><span class="line">        shadowMatch = this.shadowMatchCache.get(targetMethod);</span><br><span class="line">        if (shadowMatch == null) &#123;</span><br><span class="line">					// pointcutExpression对象包含KindedpPointcut类型的属性pointcut &quot;execution(* com.yy..rest..*(..))&quot;</span><br><span class="line">					// KindedpPointcut包含SignaturePattern类型的属性signature &quot;* com.yy..rest..*(..)&quot;</span><br><span class="line">          shadowMatch = this.pointcutExpression.matchesMethodExecution(methodToMatch);  //关键代码</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PointcutExpressionImpl类</span><br><span class="line">private ShadowMatchImpl getShadowMatch(Shadow forShadow) &#123;</span><br><span class="line">	org.aspectj.util.FuzzyBoolean match = pointcut.match(forShadow); //关键代码</span><br><span class="line">	Test residueTest = Literal.TRUE;</span><br><span class="line">	ExposedState state = getExposedState();</span><br><span class="line">	if (match.maybeTrue()) &#123;</span><br><span class="line">		residueTest = pointcut.findResidue(forShadow, state);</span><br><span class="line">	&#125;</span><br><span class="line">	ShadowMatchImpl sm = new ShadowMatchImpl(match, residueTest, state, parameters);</span><br><span class="line">	sm.setMatchingContext(this.matchContext);</span><br><span class="line">	return sm;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">WildTypePattern类，真正的验证逻辑就在这个类。</span><br><span class="line">protected boolean matchesExactly(ResolvedType type, ResolvedType annotatedType) &#123;</span><br><span class="line">	String targetTypeName = type.getName();</span><br><span class="line"></span><br><span class="line">	// System.err.println(&quot;match: &quot; + targetTypeName + &quot;, &quot; + knownMatches); //Arrays.asList(importedPrefixes));</span><br><span class="line">	// Ensure the annotation pattern is resolved</span><br><span class="line">	annotationPattern.resolve(type.getWorld());</span><br><span class="line"></span><br><span class="line">        // 四个方法的&amp;&amp;结果</span><br><span class="line">	return matchesExactlyByName(targetTypeName, type.isAnonymous(), type.isNested()) &amp;&amp; matchesParameters(type, STATIC)</span><br><span class="line">			&amp;&amp; matchesBounds(type, STATIC)</span><br><span class="line">			&amp;&amp; annotationPattern.matches(annotatedType, type.temporaryAnnotationTypes).alwaysTrue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>matchesExactlyByName(..)</code>比较全限定类名是否匹配。会把pointcut的expression和目标类的全限定名变为.分隔的数组，对应下标值依次比较。像这样：<code>pattern[pi].matches(target[ti])</code>。</li>
+<li><code>matchesParameters(..)</code>比较方法的参数是否匹配</li>
+<li><code>matchesBounds(..)</code>比较方法或参数带?时是否匹配</li>
+<li><code>annotationPattern(..)</code>比较方法或参数的注解是否匹配<br>当然，根据&amp;&amp;短路原则，前面的方法返回false时，后面的方法不用走了，直接返回结果。本例debug时，pointcut为”execution(<em> com.yy..rest..</em>(..))，目标target类为com.yy.custom_spring.custom5.CustomInstantiationAwarePostProcessorAdapter，两者比较，包名不一样，所以不匹配，返回false</li>
+</ul>
+<p>另外，targerClass是否匹配pointcut的过程我们也可以通过debug的调用栈来观察调用关系，如下图。这样，你自己debug走代码的时候体会的更直接</p>
+<p><img src="https://raw.githubusercontent.com/yaoyuanyy/MarkdownPhotos/master/img/20201029210636.png" alt="20201029210636"></p>
+<p>到这里，spring boot aop过程解析之阶段二判断beanName或beanClass是否生成Proxy代理类就走完了。没有面面俱到，但关键地方都有提到。如有任何疑问和问题，欢迎一起交流进步，可以留言或邮箱 <a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a> <a href="mailto:yaoyihao1@gmail.com" target="_blank" rel="noopener">yaoyihao1@gmail.com</a></p>
+<h3 id="问题回答"><a href="#问题回答" class="headerlink" title="问题回答"></a>问题回答</h3><ul>
+<li>针对文章开头的问题我们可以回答下了：</li>
+</ul>
+<p>问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. spring aop是如果获取和解析Aspect(advisor)切面类的</span><br><span class="line">2. spring aop是如果获取和解析@Pointcut注解的</span><br><span class="line">3. @Pointcut注解的execution(expression)存放在哪个对象，什么时候被使用</span><br><span class="line">4. @Before注解spring aop是如果获取和解析的，spring aop如何找到@Before对应的Pointcut？</span><br><span class="line">5. 什么时候什么位置在真实对象方法前后加上代理逻辑的</span><br></pre></td></tr></table></figure></p>
+<p>答案：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. spring是从两个方面获取Aspect(advisor)切面类的</span><br><span class="line">一方面：String[] advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this.beanFactory, Advisor.class, true, false);</span><br><span class="line">另一方面：String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this.beanFactory, Object.class, true, false);然后遍历beanNames，找到对应的bean，看看这个bean是否有@Aspect注解，有就是Aspect(advisor)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. spring是找到并解析Aspect类中Advice方法的参数，如@Before(&quot;cut()&quot;) public void doTimeFeeIntercepter方法。具体的解析位置是AspectJExpressionPointcut=ReflectiveAspectJAdvisorFactory.getPointcut()方法，这时的AspectJExpressionPointcut只有值cut(),表达式还没有赋值呢。然后再根据cut()重新解析Aspect类，找到Expression并赋值给AspectJExpressionPointcut，这步是在Pointcut.resolve()中完成的</span><br><span class="line"></span><br><span class="line">3. execution(expression)存放在KindedPointcut对象中，在验证targerClass是否匹配时被使用</span><br></pre></td></tr></table></figure></p>
+<p>如有任何疑问和问题，欢迎一起交流进步，可以留言或邮箱 <a href="mailto:skyler_11@163.com" target="_blank" rel="noopener">skyler_11@163.com</a> <a href="mailto:yaoyihao1@gmail.com" target="_blank" rel="noopener">yaoyihao1@gmail.com</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://yaoyuanyy.github.io/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/" title="细节知多少 - spring boot aop过程解析之阶段二 判断beanName或beanClass是否生成Proxy代理类" target="_blank" rel="external">https://yaoyuanyy.github.io/2019/04/28/细节知多少 - spring boot aop动态代理解析之阶段二/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yaoyuanyy" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/meinv.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yaoyuanyy" target="_blank"><span class="text-dark">skyler</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>java后端开发，to B业务，趋于蓝色的性格，喜欢篮球等</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom="">
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/05/13/开发效率提升神器之alfred集成ssh+iterm/" title="开发效率神器之alfred集成ssh+iTerm2实现一步登录服务器"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/04/21/细节知多少 - spring boot aop动态代理解析之阶段一/" title="细节知多少 - spring boot aop过程解析之阶段一 AnnotationAwareAspectJAutoProxyCreator加载和初始化"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/wechat_pay.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope="" itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yaoyuanyy" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://juejin.cn/user/729731449759047/posts" target="_blank" title="Juejin" data-toggle="tooltip" data-placement="top"><i class="icon icon-juejin"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/mingliangniwo" target="_blank" title="Csdn" data-toggle="tooltip" data-placement="top"><i class="icon icon-csdn"></i></a></li>
+        
+        <li><a href="https://yaoyuanyy.github.io" target="_blank" title="Github Pages" data-toggle="tooltip" data-placement="top"><i class="icon icon-github pages"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'FA5MfMbhgGSiEPOyVmYfHbR6-gzGzoHsz',
+    appKey: '2aAdTrUVOhFxm0uqpBFC1dhv',
+    placeholder: 'tell anything',
+    avatar: '',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+    <!-- <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-WR4XDKYXVY', 'auto');
+ga('send', 'pageview');
+
+</script> -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR4XDKYXVY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WR4XDKYXVY');
+</script>
+
+
+
+</body>
+</html>
